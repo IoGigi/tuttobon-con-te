@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1677e8">
+<meta name="description" content="Assistente clienti TUTTOBON. Prototipo installabile con supporto offline.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>TUTTOBON Assistant</title>
+<style>
+:root{--tb-text-scale:1;--tb-button-scale:1;color-scheme:light dark;--blue:#1677e8;--blue-deep:#0758bd;--yellow:#ffd84d;--ink:light-dark(#172538,#eef4fc);--muted:light-dark(#728198,#a2b1c5);--line:light-dark(#e3eaf3,#2b3b50);--page:light-dark(#f2f6fb,#101923);--panel:light-dark(#ffffff,#182431);--chat:light-dark(#eaf2fa,#111d29);--bot:light-dark(#ffffff,#223243);--mine:light-dark(#d9efff,#17436a);--soft:light-dark(#f5f8fc,#1d2c3b);--shadow:0 8px 30px rgba(19,49,83,.08)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--page);color:var(--ink)}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #8cc7ff;outline-offset:2px}.app{height:100dvh;min-height:0;max-height:100dvh;max-width:760px;margin:0 auto;background:var(--panel);display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative;overflow:hidden}.topbar{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--panel);border-bottom:1px solid var(--line);z-index:2}.brand-mark{height:44px;width:44px;border-radius:15px;background:var(--blue);display:grid;place-items:center;color:white;font-weight:900;font-size:15px;letter-spacing:-1px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.12);flex-shrink:0}.brand-mark span{color:var(--yellow)}.brand-copy{min-width:0;flex:1}.brand-name{font-size:18px;font-weight:850;letter-spacing:-.5px;line-height:1.15}.brand-name .tutto{color:var(--blue)}.brand-name .bon{color:#d7a900}.brand-sub{font-size:12px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:6px}.online-dot{width:7px;height:7px;background:#25b875;border-radius:50%;display:inline-block}.top-action{width:40px;height:40px;border:1px solid var(--line);background:var(--soft);border-radius:13px;color:var(--ink);display:grid;place-items:center;font-size:18px}.chat-area{flex:1 1 auto;min-height:0;background:var(--chat);padding:17px 13px 22px;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:smooth;background-image:radial-gradient(light-dark(rgba(30,100,170,.055),rgba(150,190,230,.035)) .8px,transparent .8px);background-size:16px 16px}.date-pill{margin:0 auto 17px;width:max-content;max-width:100%;padding:6px 11px;border-radius:20px;background:light-dark(#dbe6f1,#26394b);color:var(--muted);font-size:11px;font-weight:700}.message-row{display:flex;align-items:flex-end;gap:8px;margin:0 0 13px;animation:arrive .18s ease-out}.message-row.mine{justify-content:flex-end}.avatar{width:29px;height:29px;border-radius:11px;background:var(--blue);color:white;display:grid;place-items:center;font-size:10px;font-weight:900;flex-shrink:0;margin-bottom:2px}.bubble{max-width:min(88%,510px);padding:12px 13px 9px;border-radius:17px 17px 17px 5px;background:var(--bot);box-shadow:0 2px 5px rgba(20,50,80,.045);line-height:1.43;font-size:14px;overflow-wrap:anywhere}.mine .bubble{background:var(--mine);border-radius:17px 17px 5px 17px}.bubble strong{font-weight:800}.bubble p{margin:0 0 8px}.bubble p:last-child{margin-bottom:2px}.time{display:block;text-align:right;font-size:10px;color:var(--muted);margin-top:5px}.quick-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin:18px 0 9px 3px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:0 0 17px 37px;max-width:510px}.quick-btn{border:1px solid light-dark(#d8e6f6,#304a64);background:var(--panel);border-radius:15px;min-height:65px;padding:11px 12px;text-align:left;display:flex;align-items:center;gap:10px;color:var(--ink);box-shadow:0 2px 5px rgba(20,50,80,.035);transition:transform .12s,border-color .12s}.quick-btn:hover{border-color:var(--blue);transform:translateY(-1px)}.quick-btn .ico{width:35px;height:35px;border-radius:11px;background:light-dark(#e8f2ff,#173a5b);display:grid;place-items:center;font-size:17px;flex-shrink:0}.quick-btn .label{font-weight:750;font-size:12px;line-height:1.25}.quick-btn .sub{display:block;font-weight:500;color:var(--muted);font-size:10px;margin-top:3px}.wide-btn{grid-column:1/-1;min-height:54px}.inline-actions{display:flex;flex-direction:column;gap:7px;margin:10px 0 2px}.action-btn{border:1px solid light-dark(#c8def6,#355c7f);background:light-dark(#f5faff,#1a3a55);color:light-dark(#0758bd,#bfe0ff);border-radius:12px;padding:11px 12px;text-align:center;font-size:13px;font-weight:800;width:100%}.action-btn.primary{background:var(--blue);color:white;border-color:var(--blue)}.action-btn.cancel{color:#d44848;background:light-dark(#fff6f5,#382329);border-color:light-dark(#f5d5d2,#70434a)}.bottom-nav{display:none!important}.nav-btn{border:0;background:transparent;color:var(--muted);border-radius:13px;min-width:0;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}.nav-btn span{font-size:19px;line-height:1.1}.nav-btn small{font-size:10px;font-weight:750}.nav-btn.active{background:light-dark(#e8f2ff,#173a5b);color:var(--blue)}.composer-wrap{background:var(--panel);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom));z-index:2}.composer-hint{font-size:10px;color:var(--muted);margin:0 0 7px 4px}.composer{display:flex;gap:8px;align-items:center}.attach-btn,.send-btn{height:45px;width:45px;flex-shrink:0;border:1px solid var(--line);border-radius:15px;background:var(--soft);color:var(--ink);display:grid;place-items:center;font-size:19px}.send-btn{background:var(--blue);border-color:var(--blue);color:white;font-size:17px}.message-input{height:45px;min-width:0;flex:1;border:1px solid var(--line);border-radius:15px;background:var(--soft);padding:0 14px;color:var(--ink);outline:none}.message-input::placeholder{color:var(--muted)}.footer-note{text-align:center;color:var(--muted);font-size:10px;padding-top:8px}.typing{display:flex;gap:4px;padding:4px 2px}.typing i{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:bop 1s infinite}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}.prototype-tag{position:fixed;right:12px;bottom:94px;background:#fff4c6;color:#725a00;border:1px solid #f0d86c;border-radius:10px;padding:6px 9px;font-size:10px;font-weight:800;box-shadow:0 3px 10px #0001;z-index:3}.toast{position:fixed;left:50%;bottom:105px;transform:translate(-50%,15px);opacity:0;pointer-events:none;background:#172538;color:#fff;border-radius:12px;padding:10px 14px;font-size:12px;box-shadow:0 8px 24px #0003;transition:.2s;z-index:5;max-width:90%;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}.modal-backdrop{position:fixed;inset:0;background:rgba(8,20,35,.48);display:grid;place-items:center;padding:22px;z-index:10}.modal-backdrop[hidden]{display:none}.modal-card{width:min(100%,360px);background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:22px;padding:23px 20px 18px;box-shadow:0 18px 60px #0003;text-align:center}.modal-icon{font-size:31px}.modal-card h2{font-size:19px;margin:10px 0 8px}.modal-card p{font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 18px}.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.modal-actions .action-btn{min-height:44px}.modal-actions .cancel{font-weight:850}@keyframes arrive{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}@keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+/* Accessibilità: dimensioni regolabili dalle Impostazioni */
+.bubble{font-size:calc(14px * var(--tb-text-scale));line-height:1.5}
+.bubble .time{font-size:calc(10px * var(--tb-text-scale))}
+.quick-title{font-size:calc(11px * var(--tb-text-scale))}
+.quick-btn{min-height:calc(65px * var(--tb-button-scale));padding:calc(11px * var(--tb-button-scale)) calc(12px * var(--tb-button-scale));gap:calc(10px * var(--tb-button-scale))}
+.quick-btn .ico{width:calc(35px * var(--tb-button-scale));height:calc(35px * var(--tb-button-scale));font-size:calc(17px * var(--tb-text-scale))}
+.quick-btn .label{font-size:calc(12px * var(--tb-text-scale));line-height:1.3}
+.quick-btn .sub{font-size:calc(10px * var(--tb-text-scale))}
+.action-btn{font-size:calc(13px * var(--tb-text-scale));padding:calc(11px * var(--tb-button-scale)) calc(12px * var(--tb-button-scale));min-height:calc(44px * var(--tb-button-scale))}
+.nav-btn{min-height:calc(54px * var(--tb-button-scale))}
+.nav-btn span{font-size:calc(19px * var(--tb-text-scale))}
+.nav-btn small{font-size:calc(10px * var(--tb-text-scale))}
+.top-action{width:calc(40px * var(--tb-button-scale));height:calc(40px * var(--tb-button-scale));font-size:calc(18px * var(--tb-text-scale))}
+.message-input{font-size:calc(16px * var(--tb-text-scale));min-height:calc(45px * var(--tb-button-scale))}
+.attach-btn,.send-btn{width:calc(45px * var(--tb-button-scale));height:calc(45px * var(--tb-button-scale));font-size:calc(19px * var(--tb-text-scale))}
+.settings-group{margin:16px 0;text-align:left}
+.settings-group label{display:flex;justify-content:space-between;gap:12px;font-size:calc(15px * var(--tb-text-scale));font-weight:750;margin-bottom:8px}
+.settings-group input[type=range]{width:100%;min-height:42px;accent-color:var(--blue)}
+.settings-scale-note{font-size:calc(13px * var(--tb-text-scale));color:var(--muted);line-height:1.45}
+.settings-preview{padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--soft);font-size:calc(15px * var(--tb-text-scale));line-height:1.5}
+.settings-preview button{display:block;width:100%;min-height:calc(44px * var(--tb-button-scale));margin-top:8px;border:0;border-radius:12px;background:var(--blue);color:white;font-size:calc(14px * var(--tb-text-scale));font-weight:800;padding:8px}
+@media(max-width:390px){.quick-btn{gap:calc(7px * var(--tb-button-scale))}.quick-btn .ico{width:calc(31px * var(--tb-button-scale));height:calc(31px * var(--tb-button-scale))}}
+@media(min-width:650px){body{padding:22px 0}.app{min-height:calc(100dvh - 44px);border-radius:24px;border:1px solid var(--line)}.topbar{padding:16px 20px}.chat-area{padding:22px 22px}.composer-wrap{padding:12px 18px}.prototype-tag{right:calc((100vw - 760px)/2 + 14px);bottom:110px}}
+@media(max-width:390px){.quick-grid{margin-left:0}.quick-btn{padding:10px 8px;gap:7px}.quick-btn .ico{width:31px;height:31px}.bubble{max-width:92%}.topbar{padding:12px}.brand-name{font-size:17px}}
+</style>
+</head>
+<body>
+<main class="app" aria-label="Prototipo assistente TUTTOBON">
+  <header class="topbar">
+    <div class="brand-mark">tu<span>t</span></div>
+    <div class="brand-copy">
+      <div class="brand-name"><span class="tutto">tutto</span><span class="bon">bon</span> <span style="font-weight:650;font-size:13px;color:var(--muted)">Assistant</span></div>
+      <div class="brand-sub"><span class="online-dot"></span> Assistente clienti <span>·</span> demo installabile · dati fittizi</div>
+    </div>
+    <button class="top-action" id="clearChatBtn" aria-label="Pulisci chat" title="Pulisci chat">🧹</button>
+    <button class="top-action" id="settingsBtn" aria-label="Impostazioni accessibilità" title="Impostazioni accessibilità">⚙️</button>
+    <button class="top-action" id="menuBtn" aria-label="Menu" title="Menu">☰</button>
+  </header>
+  <section class="chat-area" id="chatArea" aria-live="polite">
+    <div class="date-pill">OGGI</div>
+    <div class="message-row">
+      <div class="avatar">TB</div>
+      <div class="bubble"><p><strong>Ciao! 👋 Benvenuto in TUTTOBON.</strong></p><p>Sono qui per aiutarti con i tuoi buoni e le gift card.</p><p><strong>Sei alla cassa?</strong> Oppure scegli una delle operazioni qui sotto.</p><span class="time">20:14</span></div>
+    </div>
+    <div class="quick-title">Scegli un'operazione</div>
+    <div class="quick-grid" id="homeButtons">
+      <button class="quick-btn" data-action="cassa"><span class="ico">🛒</span><span class="label">Sono alla cassa<span class="sub">Usa un buono adesso</span></span></button>
+      <button class="quick-btn" data-action="buoni"><span class="ico">🎟️</span><span class="label">I miei buoni<span class="sub">Cerca per esercente</span></span></button>
+      <button class="quick-btn" data-action="scadenze"><span class="ico">📅</span><span class="label">Scadenze<span class="sub">Controlla le date</span></span></button>
+      <button class="quick-btn" data-action="ordini"><span class="ico">🧾</span><span class="label">Ordina buoni<span class="sub">Prepara una richiesta</span></span></button>
+      <button class="quick-btn wide-btn" data-action="aiuto"><span class="ico">💬</span><span class="label">Ho bisogno di aiuto<span class="sub">Scrivi all'assistenza</span></span></button>
+    </div>
+  </section>
+  <nav class="bottom-nav" aria-label="Operazioni principali">
+    <button class="nav-btn active" data-nav="cassa"><span>🛒</span><small>Cassa</small></button>
+    <button class="nav-btn" data-nav="buoni"><span>🎟️</span><small>Buoni</small></button>
+    <button class="nav-btn" data-nav="scadenze"><span>📅</span><small>Scadenze</small></button>
+    <button class="nav-btn" data-nav="ordini"><span>🧾</span><small>Ordini</small></button>
+    <button class="nav-btn" data-nav="aiuto"><span>💬</span><small>Aiuto</small></button>
+  </nav>
+  <footer class="composer-wrap">
+    <div class="composer-hint">Puoi usare i pulsanti oppure scrivere qui sotto.</div>
+    <form class="composer" id="composerForm">
+      <button class="attach-btn" type="button" id="plusBtn" aria-label="Altre opzioni" title="Altre opzioni">＋</button>
+      <input class="message-input" id="messageInput" autocomplete="off" placeholder="Scrivi un messaggio…" aria-label="Scrivi un messaggio">
+      <button class="send-btn" type="submit" aria-label="Invia messaggio" title="Invia">➤</button>
+    </form>
+    <div class="footer-note">I tuoi dati sono accessibili solo con il tuo account.</div>
+  </footer>
+</main>
+<div class="prototype-tag">ANTEPRIMA · DATI DIMOSTRATIVI</div>
+<div class="toast" id="toast"></div>
+<div class="modal-backdrop" id="clearModal" hidden role="dialog" aria-modal="true" aria-labelledby="clearTitle">
+  <div class="modal-card">
+    <div class="modal-icon">🧹</div>
+    <h2 id="clearTitle">Pulire la chat?</h2>
+    <p>Verranno rimossi i messaggi visualizzati in questa conversazione. I buoni e i dati del tuo account non verranno cancellati.</p>
+    <div class="modal-actions"><button id="keepChatBtn" class="action-btn">Mantieni chat</button><button id="confirmClearBtn" class="action-btn cancel">Pulisci chat</button></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="settingsModal" hidden role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+  <div class="modal-card" style="text-align:left;max-height:90%;overflow:auto">
+    <div class="modal-icon" aria-hidden="true">👁️</div>
+    <h2 id="settingsTitle" style="text-align:center">Impostazioni di accessibilità</h2>
+    <p>Ingrandisci il testo e i pulsanti per leggere e premere più facilmente. Le preferenze vengono salvate su questo dispositivo.</p>
+    <div class="settings-group">
+      <label for="textSizeRange"><span>Dimensione del testo</span><output id="textSizeValue">100%</output></label>
+      <input id="textSizeRange" type="range" min="100" max="170" step="10" value="100" aria-describedby="textSizeHelp">
+      <div id="textSizeHelp" class="settings-scale-note">Da normale a molto grande.</div>
+    </div>
+    <div class="settings-group">
+      <label for="buttonSizeRange"><span>Dimensione dei pulsanti</span><output id="buttonSizeValue">100%</output></label>
+      <input id="buttonSizeRange" type="range" min="100" max="160" step="10" value="100" aria-describedby="buttonSizeHelp">
+      <div id="buttonSizeHelp" class="settings-scale-note">Pulsanti più grandi e facili da toccare.</div>
+    </div>
+    <div class="settings-group">
+      <div class="settings-preview" aria-live="polite"><strong>Anteprima</strong><br>Così appariranno testo e pulsanti.<button type="button" tabindex="-1">Pulsante di esempio</button></div>
+    </div>
+    <div class="modal-actions"><button id="resetSettingsBtn" class="action-btn">Ripristina</button><button id="closeSettingsBtn" class="action-btn primary">Salva e chiudi</button></div>
+  </div>
+</div>
+<script>
+const chat=document.getElementById('chatArea');const input=document.getElementById('messageInput');const toast=document.getElementById('toast');let toastTimer;let stage='home';
+// Ogni area principale ha una conversazione separata: i messaggi non si mescolano.
+let activeSection='home';const sectionChats={};const homeMarkup=chat.innerHTML;
+function sectionForAction(action){if(['cassa','buoni','scadenze','ordini','aiuto'].includes(action))return action;return null;}
+function activateSection(section,reset=false){if(activeSection) sectionChats[activeSection]=chat.innerHTML;activeSection=section;if(section==='home'){chat.innerHTML=homeMarkup;stage='home';}else if(reset||!sectionChats[section]){chat.innerHTML='<div class="date-pill">'+new Date().toLocaleDateString('it-IT')+'</div>';stage=section;}else{chat.innerHTML=sectionChats[section];}document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===section));scrollLatest();}
+let scrollLatestTimer;
+function scrollLatest(){
+  // Aspetta che il browser abbia aggiornato layout e altezze dei messaggi.
+  clearTimeout(scrollLatestTimer);
+  const goBottom=()=>{
+    const max=Math.max(0,chat.scrollHeight-chat.clientHeight);
+    // Prima posizionamento immediato, poi una seconda verifica dopo il layout.
+    chat.scrollTop=max;
+    if(max>0) chat.scrollTo({top:max,behavior:'smooth'});
+  };
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    goBottom();
+    scrollLatestTimer=setTimeout(goBottom,180);
+  }));
+}
+function timeNow(){return new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function addMessage(text,mine=false,html=false){const row=document.createElement('div');row.className='message-row'+(mine?' mine':'');if(!mine){const av=document.createElement('div');av.className='avatar';av.textContent='TB';row.appendChild(av);}const b=document.createElement('div');b.className='bubble';b.innerHTML=(html?text:`<p>${escapeHtml(text).replace(/\n/g,'<br>')}</p>`)+`<span class="time">${timeNow()}</span>`;row.appendChild(b);chat.appendChild(row);scrollLatest();return b;}
+function addActions(actions){const grid=document.createElement('div');grid.className='quick-grid';grid.style.marginTop='-3px';actions.forEach(a=>{const btn=document.createElement('button');btn.className='quick-btn'+(a.wide?' wide-btn':'');btn.innerHTML=`<span class="ico">${a.icon||'➡️'}</span><span class="label">${a.label}${a.sub?`<span class="sub">${a.sub}</span>`:''}</span>`;btn.addEventListener('click',()=>runAction(a.action,a.label));grid.appendChild(btn);});chat.appendChild(grid);scrollLatest();}
+function addInline(actions){const wrap=document.createElement('div');wrap.className='inline-actions';actions.forEach(a=>{const btn=document.createElement('button');btn.className='action-btn '+(a.kind||'');btn.textContent=a.label;btn.onclick=()=>runAction(a.action,a.label);wrap.appendChild(btn);});chat.appendChild(wrap);scrollLatest();}
+function notify(s){toast.textContent=s;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2600);}
+function bot(text){addMessage(text,false,/<[a-z][\s\S]*>/i.test(text));}
+function runAction(action,label){const targetSection=sectionForAction(action);if(action==='home'){activateSection('home',true);return;}if(targetSection&&targetSection!==activeSection){activateSection(targetSection,true);stage=targetSection;label='';}if(label)addMessage(label,true);switch(action){
+case 'home':activateSection('home',true);break;
+case 'cassa':stage='cassa';bot('<p><strong>Sei alla cassa 🛒</strong></p><p>Dimmi dove ti trovi oppure scegli l’esercente. Questa anteprima usa dati dimostrativi e non mostra codici reali.</p>');addActions([{icon:'🟡',label:'Rossetto',sub:'Buoni spesa',action:'merchant_rossetto'},{icon:'🛒',label:'Tosano',sub:'Buoni spesa',action:'merchant_tosano'},{icon:'⛽',label:'IP',sub:'Buoni carburante',action:'merchant_ip'},{icon:'⛽',label:'Tamoil',sub:'Buoni carburante',action:'merchant_tamoil'},{icon:'↩️',label:'Annulla',action:'home',wide:true}]);break;
+case 'buoni':stage='buoni';bot('<p><strong>I tuoi buoni 🎟️</strong></p><p>Scegli un esercente per vedere un esempio di elenco. I saldi qui sono fittizi.</p>');addActions([{icon:'🟥',label:'Rossetto',action:'merchant_rossetto'},{icon:'🟨',label:'Martinelli',action:'merchant_martinelli'},{icon:'🟩',label:'Pam',action:'merchant_pam'},{icon:'🟦',label:'Tosano',action:'merchant_tosano'},{icon:'🔎',label:'Cerca un esercente',action:'search'},{icon:'↩️',label:'Annulla',action:'home',wide:true}]);break;
+case 'scadenze':stage='scadenze';bot('<p><strong>Le tue scadenze 📅</strong></p><p><strong>Anteprima dimostrativa</strong></p><p>🟠 Rossetto — esempio: 25 € · scade il 30/11/2026</p><p>🟢 Tosano — esempio: 50 € · nessuna scadenza indicata</p><p>Le scadenze reali saranno mostrate dopo il collegamento sicuro al tuo account.</p>');addInline([{label:'Aggiorna scadenze',action:'refresh',kind:'primary'},{label:'Annulla',action:'home',kind:'cancel'}]);break;
+case 'ordini':stage='ordini';bot('<p><strong>Prepariamo il tuo ordine 🧾</strong></p><p>Scrivi in un unico messaggio cosa ti serve, ad esempio:</p><p>“Vorrei 2 buoni Rossetto da 50 euro”.</p><p>Prima dell’invio ti mostrerò sempre un riepilogo da controllare. Nessun ordine reale viene inviato da questa anteprima.</p>');addInline([{label:'Annulla',action:'home',kind:'cancel'}]);break;
+case 'aiuto':stage='aiuto';bot('<p><strong>Assistenza 💬</strong></p><p>Scrivi qui il problema che hai riscontrato. Nella versione collegata, la richiesta verrà inoltrata all’amministratore tramite il sistema esistente.</p>');addInline([{label:'Annulla',action:'home',kind:'cancel'}]);break;
+case 'merchant_rossetto':case 'merchant_tosano':case 'merchant_ip':case 'merchant_tamoil':case 'merchant_martinelli':case 'merchant_pam':{const m=action.split('_')[1];const names={rossetto:'Rossetto',tosano:'Tosano',ip:'IP',tamoil:'Tamoil',martinelli:'Martinelli',pam:'Pam'};stage='merchant';bot(`<p><strong>${names[m]} — esempio di buoni</strong></p><p>• Buono dimostrativo: 25,00 €</p><p>• Disponibilità e codici reali compariranno soltanto dopo il collegamento all’account.</p><p>Da qui, nella versione definitiva, si potrà aprire il dettaglio e mostrare il codice a barre quando serve.</p>`);addInline([{label:'Apri buono dimostrativo',action:'show_code',kind:'primary'},{label:'Torna agli esercenti',action:'buoni'},{label:'Annulla',action:'home',kind:'cancel'}]);break;}
+case 'show_code':bot('<p><strong>Buono dimostrativo</strong></p><p>Importo: 25,00 €</p><p>Codice: •••• •••• ••••</p><p>Il codice è oscurato in questa anteprima. La versione reale mostrerà soltanto i dati del cliente autenticato.</p>');addInline([{label:'Ho utilizzato il codice',action:'used',kind:'primary'},{label:'Annulla',action:'home',kind:'cancel'}]);break;
+case 'used':bot('Operazione dimostrativa conclusa. Nella versione reale, l’eventuale aggiornamento del saldo sarà confermato dal server.');addInline([{label:'Annulla',action:'home',kind:'cancel'}]);break;
+case 'search':bot('Scrivi il nome dell’esercente nella casella qui sotto.');input.focus();stage='search';break;
+case 'refresh':bot('In questa anteprima non è collegato il database, quindi non posso aggiornare le scadenze reali.');addInline([{label:'Annulla',action:'home',kind:'cancel'}]);break;
+case 'free_text':handleText(label||'');break;
+default:bot('Questa funzione sarà collegata al sistema TUTTOBON nella fase successiva.');addInline([{label:'Annulla',action:'home',kind:'cancel'}]);}scrollLatest();}
+function homeButtons(){addActions([{icon:'🛒',label:'Sono alla cassa',sub:'Usa un buono adesso',action:'cassa'},{icon:'🎟️',label:'I miei buoni',sub:'Cerca per esercente',action:'buoni'},{icon:'📅',label:'Scadenze',sub:'Controlla le date',action:'scadenze'},{icon:'🧾',label:'Ordina buoni',sub:'Prepara una richiesta',action:'ordini'},{icon:'💬',label:'Ho bisogno di aiuto',sub:'Scrivi all’assistenza',action:'aiuto',wide:true}]);}
+function handleText(raw){const t=raw.trim();if(!t)return;addMessage(t,true);const l=t.toLowerCase();if(/\b(annulla|annullare|indietro|inizio|menu)\b/.test(l)){runAction('home');return;}if(/cassa|sono all.?ip|benzina|distributore/.test(l)){runAction('cassa');return;}if(/scaden/.test(l)){runAction('scadenze');return;}if(/buon|gift card|rossetto|tosano|martinelli|pam|tamoil|\bip\b/.test(l)&&!/ordina|ordine|vorrei|mi servono|mi serve/.test(l)){runAction('buoni');return;}if(/ordina|ordine|vorrei|mi servono|mi serve/.test(l)){stage='ordini';bot('<p><strong>Riepilogo ordine — anteprima</strong></p><p>Ho ricevuto la tua richiesta:</p><p>“'+escapeHtml(t)+'”</p><p>Prima di inviarla, nella versione reale controlleremo esercente, quantità e importi e ti chiederemo conferma. Qui non viene trasmesso alcun ordine.</p>');addInline([{label:'Conferma dimostrativa',action:'demo_confirm',kind:'primary'},{label:'Annulla',action:'home',kind:'cancel'}]);return;}if(stage==='aiuto'){bot('Richiesta di esempio ricevuta. Nella versione collegata verrà inviata all’assistenza e potrai vedere la conferma.');addInline([{label:'Annulla',action:'home',kind:'cancel'}]);return;}if(stage==='search'){bot('Ricerca dimostrativa: quando saremo collegati al tuo account, qui compariranno gli esercenti corrispondenti a “'+escapeHtml(t)+'”.');addInline([{label:'Cerca un altro esercente',action:'search',kind:'primary'},{label:'Annulla',action:'home',kind:'cancel'}]);return;}bot('Ho letto il messaggio. Nella versione collegata potrò interpretare la richiesta e mostrarti i pulsanti corretti. Per ora puoi provare i tasti qui sotto.');addActions([{icon:'🛒',label:'Sono alla cassa',action:'cassa'},{icon:'🎟️',label:'I miei buoni',action:'buoni'},{icon:'↩️',label:'Annulla',action:'home',wide:true}]);}
+function resetChat(){Object.keys(sectionChats).forEach(k=>delete sectionChats[k]);activateSection('home',true);chat.innerHTML='<div class="date-pill">OGGI</div>';stage='home';addMessage('<p><strong>Ciao! 👋 Bentornato in TUTTOBON.</strong></p><p>La schermata iniziale è stata ripristinata. I dati del tuo account non sono stati modificati.</p><p><strong>Sei alla cassa?</strong> Scegli un’operazione dal menu qui sotto.</p>',false,true);homeButtons();sectionChats.home=chat.innerHTML;notify('Schermata iniziale ripristinata. I tuoi buoni non sono stati cancellati.');}
+const clearModal=document.getElementById('clearModal');
+document.getElementById('clearChatBtn').addEventListener('click',()=>{clearModal.hidden=false;});
+document.getElementById('keepChatBtn').addEventListener('click',()=>{clearModal.hidden=true;});
+document.getElementById('confirmClearBtn').addEventListener('click',()=>{clearModal.hidden=true;resetChat();});
+clearModal.addEventListener('click',e=>{if(e.target===clearModal)clearModal.hidden=true;});
+document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click',()=>runAction(b.dataset.nav,b.querySelector('small').textContent)));
+chat.addEventListener('click',e=>{if(e.target.closest('button'))setTimeout(scrollLatest,0);});
+const chatObserver=new MutationObserver(()=>scrollLatest());chatObserver.observe(chat,{childList:true,subtree:true,characterData:true});
+window.addEventListener('resize',scrollLatest);
+document.getElementById('composerForm').addEventListener('submit',e=>{e.preventDefault();const v=input.value;input.value='';handleText(v);});// Delegazione sul contenitore stabile: il blocco homeButtons viene ricreato quando si torna alla schermata iniziale.
+chat.addEventListener('click',e=>{const b=e.target.closest('#homeButtons [data-action]');if(!b)return;const label=b.querySelector('.label')?.childNodes?.[0]?.textContent?.trim()||b.innerText.trim();runAction(b.dataset.action,label);});document.getElementById('plusBtn').addEventListener('click',()=>{addMessage('Altre opzioni',true);addActions([{icon:'🏠',label:'Torna all’inizio',action:'home'},{icon:'💬',label:'Assistenza',action:'aiuto'},{icon:'✖️',label:'Annulla',action:'home',wide:true}]);});document.getElementById('menuBtn').addEventListener('click',()=>{addMessage('Menu',true);addActions([{icon:'🏠',label:'Schermata iniziale',action:'home'},{icon:'🎟️',label:'I miei buoni',action:'buoni'},{icon:'📅',label:'Scadenze',action:'scadenze'},{icon:'💬',label:'Assistenza',action:'aiuto',wide:true}]);});
+// Impostazioni accessibilità: dimensione testo e pulsanti, salvate sul dispositivo.
+const settingsModal=document.getElementById('settingsModal');
+const textSizeRange=document.getElementById('textSizeRange');
+const buttonSizeRange=document.getElementById('buttonSizeRange');
+const textSizeValue=document.getElementById('textSizeValue');
+const buttonSizeValue=document.getElementById('buttonSizeValue');
+function applyAccessibilitySettings(save=false){
+  const textScale=Math.min(1.7,Math.max(1,Number(textSizeRange.value)/100));
+  const buttonScale=Math.min(1.6,Math.max(1,Number(buttonSizeRange.value)/100));
+  document.documentElement.style.setProperty('--tb-text-scale',String(textScale));
+  document.documentElement.style.setProperty('--tb-button-scale',String(buttonScale));
+  textSizeValue.value=textSizeRange.value+'%';textSizeValue.textContent=textSizeRange.value+'%';
+  buttonSizeValue.value=buttonSizeRange.value+'%';buttonSizeValue.textContent=buttonSizeRange.value+'%';
+  if(save){try{localStorage.setItem('tuttobon_accessibility',JSON.stringify({text:textSizeRange.value,buttons:buttonSizeRange.value}));}catch(e){} }
+}
+try{const saved=JSON.parse(localStorage.getItem('tuttobon_accessibility')||'null');if(saved){if(Number(saved.text)>=100&&Number(saved.text)<=170)textSizeRange.value=String(saved.text);if(Number(saved.buttons)>=100&&Number(saved.buttons)<=160)buttonSizeRange.value=String(saved.buttons);}}catch(e){}
+applyAccessibilitySettings(false);
+textSizeRange.addEventListener('input',()=>applyAccessibilitySettings(false));
+buttonSizeRange.addEventListener('input',()=>applyAccessibilitySettings(false));
+function closeSettings(){applyAccessibilitySettings(true);settingsModal.hidden=true;notify('Impostazioni di accessibilità salvate.');}
+document.getElementById('settingsBtn').addEventListener('click',()=>{settingsModal.hidden=false;});
+document.getElementById('closeSettingsBtn').addEventListener('click',closeSettings);
+document.getElementById('resetSettingsBtn').addEventListener('click',()=>{textSizeRange.value='100';buttonSizeRange.value='100';applyAccessibilitySettings(false);});
+settingsModal.addEventListener('click',e=>{if(e.target===settingsModal)closeSettings();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!settingsModal.hidden)closeSettings();});
+// PWA: registra il service worker solo su HTTPS o localhost.
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', async () => {
+    try { const reg = await navigator.serviceWorker.register('./sw.js'); reg.update().catch(() => {}); }
+    catch (e) { console.info('Modalità offline non attivata in questa apertura.', e); }
+  });
+}
+</script>
+</body>
+</html>

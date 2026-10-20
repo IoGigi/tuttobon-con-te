@@ -1,0 +1,6 @@
+/* TUTTOBON Service Worker V3.66: cache app shell; mai cache per API, login o dati personali. */
+const CACHE_NAME='tuttobon-shell-v366';
+const APP_SHELL=['./','./index.html','./manifest.webmanifest'];
+self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(APP_SHELL)).then(()=>self.skipWaiting()));});
+self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('tuttobon-shell-')&&k!==CACHE_NAME).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
+self.addEventListener('fetch',event=>{const req=event.request;const url=new URL(req.url);if(req.method!=='GET'||url.origin!==self.location.origin)return;if(url.pathname.includes('/api/')||url.pathname.includes('firebase')||url.pathname.includes('worker'))return;event.respondWith(fetch(req).then(response=>{if(response.ok){const copy=response.clone();caches.open(CACHE_NAME).then(cache=>cache.put(req,copy));}return response;}).catch(async()=>{const cached=await caches.match(req);if(cached)return cached;const fallback=await caches.match('./index.html');if(fallback&&req.mode==='navigate')return fallback;return new Response('Risorsa non disponibile offline.',{status:503,headers:{'Content-Type':'text/plain; charset=utf-8'}});}));});

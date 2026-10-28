@@ -1,0 +1,972 @@
+<!-- TUTTOBON CON TE V3.83 PWA OFFLINE-FIRST: rimossi i pulsanti Annulla che comparivano sotto la conferma di invio messaggio scritto o vocale; mantenuti i due pulsanti fissi Cancella chat e Annulla; vocale visibile nella chat cliente. -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1677e8">
+<meta name="description" content="TUTTOBON CON TE: i tuoi buoni e la cassa, anche offline dopo il primo accesso online.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>TUTTOBON CON TE V3.78 PWA OFFLINE-FIRST AVVIO AGGIORNATO</title>
+<style>
+:root{--tb-text-scale:1.2;--tb-button-scale:1.2;color-scheme:light dark;--blue:#1677e8;--blue-deep:#0758bd;--yellow:#ffd84d;--ink:light-dark(#172538,#eef4fc);--muted:light-dark(#728198,#a2b1c5);--line:light-dark(#e3eaf3,#2b3b50);--page:light-dark(#f2f6fb,#101923);--panel:light-dark(#ffffff,#182431);--chat:light-dark(#eaf2fa,#111d29);--bot:light-dark(#ffffff,#223243);--mine:light-dark(#d9efff,#17436a);--soft:light-dark(#f5f8fc,#1d2c3b);--shadow:0 8px 30px rgba(19,49,83,.08)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--page);color:var(--ink)}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #8cc7ff;outline-offset:2px}.app{height:100dvh;min-height:0;max-height:100dvh;max-width:760px;margin:0 auto;background:var(--panel);display:flex;flex-direction:column;box-shadow:var(--shadow);position:relative;overflow:hidden}.topbar{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--panel);border-bottom:1px solid var(--line);z-index:2}.brand-mark{height:44px;width:44px;border-radius:15px;background:var(--blue);display:grid;place-items:center;color:white;font-weight:900;font-size:15px;letter-spacing:-1px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.12);flex-shrink:0}.brand-mark span{color:var(--yellow)}.brand-copy{min-width:0;flex:1}.brand-name{font-size:18px;font-weight:850;letter-spacing:-.5px;line-height:1.15}.brand-name .tutto{color:var(--blue)}.brand-name .bon{color:#d7a900}.welcome-brand{white-space:nowrap;font-weight:900;letter-spacing:-.3px}.welcome-brand .tutto{color:#1677e8}.welcome-brand .bon{color:#d7a900}.brand-sub{font-size:12px;color:var(--muted);margin-top:4px;display:flex;align-items:center;gap:6px}.online-dot{width:7px;height:7px;background:#25b875;border-radius:50%;display:inline-block}.top-action{width:40px;height:40px;border:1px solid var(--line);background:var(--soft);border-radius:13px;color:var(--ink);display:grid;place-items:center;font-size:18px}.chat-area{flex:1 1 auto;min-height:0;background:var(--chat);padding:17px 13px 22px;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:smooth;background-image:radial-gradient(light-dark(rgba(30,100,170,.055),rgba(150,190,230,.035)) .8px,transparent .8px);background-size:16px 16px}.date-pill{margin:0 auto 17px;width:max-content;max-width:100%;padding:6px 11px;border-radius:20px;background:light-dark(#dbe6f1,#26394b);color:var(--muted);font-size:11px;font-weight:700}.message-row{display:flex;align-items:flex-end;gap:8px;margin:0 0 13px;animation:arrive .18s ease-out}.message-row.mine{justify-content:flex-end}.avatar{width:29px;height:29px;border-radius:11px;background:var(--blue);color:white;display:grid;place-items:center;font-size:10px;font-weight:900;flex-shrink:0;margin-bottom:2px}.bubble{max-width:min(88%,510px);padding:12px 13px 9px;border-radius:17px 17px 17px 5px;background:var(--bot);box-shadow:0 2px 5px rgba(20,50,80,.045);line-height:1.43;font-size:14px;overflow-wrap:anywhere}.mine .bubble{background:var(--mine);border-radius:17px 17px 5px 17px}.bubble strong{font-weight:800}.bubble p{margin:0 0 8px}.bubble p:last-child{margin-bottom:2px}.time{display:block;text-align:right;font-size:10px;color:var(--muted);margin-top:5px}.quick-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin:18px 0 9px 3px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:0 0 17px 37px;max-width:510px}.quick-btn{border:1px solid light-dark(#d8e6f6,#304a64);background:var(--panel);border-radius:15px;min-height:65px;padding:11px 12px;text-align:left;display:flex;align-items:center;gap:10px;color:var(--ink);box-shadow:0 2px 5px rgba(20,50,80,.035);transition:transform .12s,border-color .12s}.quick-btn:hover{border-color:var(--blue);transform:translateY(-1px)}.quick-btn .ico{width:35px;height:35px;border-radius:11px;background:light-dark(#e8f2ff,#173a5b);display:grid;place-items:center;font-size:17px;flex-shrink:0}.quick-btn .label{font-weight:750;font-size:12px;line-height:1.25}.quick-btn .sub{display:block;font-weight:500;color:var(--muted);font-size:10px;margin-top:3px}.wide-btn{grid-column:1/-1;min-height:54px}.inline-actions{display:flex;flex-direction:column;gap:7px;margin:10px 0 2px}.action-btn{border:1px solid light-dark(#c8def6,#355c7f);background:light-dark(#f5faff,#1a3a55);color:light-dark(#0758bd,#bfe0ff);border-radius:12px;padding:11px 12px;text-align:center;font-size:13px;font-weight:800;width:100%}.action-btn.primary{background:var(--blue);color:white;border-color:var(--blue)}.action-btn.used-buono{background:#16a34a!important;color:#fff!important;border:2px solid #08752b!important;font-weight:900;animation:usedBuonoPulse 1.05s ease-in-out infinite;box-shadow:0 0 0 3px #22c55e35}.action-btn.used-confirmed{background:#dc2626!important;color:#fff!important;border:2px solid #991b1b!important;font-weight:900;animation:none!important;filter:none!important;box-shadow:none!important}.action-btn.checkout-next{background:#16a34a!important;color:#fff!important;border:2px solid #08752b!important;font-weight:900;animation:none!important;box-shadow:0 0 0 2px #22c55e28}.action-btn.checkout-final{background:#16a34a!important;color:#fff!important;border:2px solid #08752b!important;font-weight:900;animation:usedBuonoPulse 1.05s ease-in-out infinite;box-shadow:0 0 0 3px #22c55e35}.action-btn.cancel{color:#d44848;background:light-dark(#fff6f5,#382329);border-color:light-dark(#f5d5d2,#70434a)}@keyframes usedBuonoPulse{0%,100%{filter:brightness(1);transform:scale(1)}50%{filter:brightness(1.18);transform:scale(1.015)}}.action-btn.cancel{color:#d44848;background:light-dark(#fff6f5,#382329);border-color:light-dark(#f5d5d2,#70434a)}.action-btn.cancel{color:#d44848;background:light-dark(#fff6f5,#382329);border-color:light-dark(#f5d5d2,#70434a)}.bottom-nav{display:none!important}.nav-btn{border:0;background:transparent;color:var(--muted);border-radius:13px;min-width:0;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}.nav-btn span{font-size:19px;line-height:1.1}.nav-btn small{font-size:10px;font-weight:750}.nav-btn.active{background:light-dark(#e8f2ff,#173a5b);color:var(--blue)}.composer-wrap{display:none;background:var(--panel);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom));z-index:2}.composer-wrap.assistance-active{display:block}.composer-hint{font-size:10px;color:var(--muted);margin:0 0 7px 4px}.composer{display:flex;gap:8px;align-items:center}.attach-btn,.send-btn{height:45px;width:45px;flex-shrink:0;border:1px solid var(--line);border-radius:15px;background:var(--soft);color:var(--ink);display:grid;place-items:center;font-size:19px}.send-btn{background:var(--blue);border-color:var(--blue);color:white;font-size:17px}.message-input{height:45px;min-width:0;flex:1;border:1px solid var(--line);border-radius:15px;background:var(--soft);padding:0 14px;color:var(--ink);outline:none}.message-input::placeholder{color:var(--muted)}.footer-note{text-align:center;color:var(--muted);font-size:10px;padding-top:8px}.typing{display:flex;gap:4px;padding:4px 2px}.typing i{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:bop 1s infinite}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}.prototype-tag{position:fixed;right:12px;bottom:94px;background:#fff4c6;color:#725a00;border:1px solid #f0d86c;border-radius:10px;padding:6px 9px;font-size:10px;font-weight:800;box-shadow:0 3px 10px #0001;z-index:3}.toast{position:fixed;left:50%;bottom:105px;transform:translate(-50%,15px);opacity:0;pointer-events:none;background:#172538;color:#fff;border-radius:12px;padding:10px 14px;font-size:12px;box-shadow:0 8px 24px #0003;transition:.2s;z-index:5;max-width:90%;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}.modal-backdrop{position:fixed;inset:0;background:rgba(8,20,35,.48);display:grid;place-items:center;padding:22px;z-index:10}.modal-backdrop[hidden]{display:none}.modal-card{width:min(100%,360px);background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:22px;padding:23px 20px 18px;box-shadow:0 18px 60px #0003;text-align:center}.modal-icon{font-size:31px}.modal-card h2{font-size:19px;margin:10px 0 8px}.modal-card p{font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 18px}.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.modal-actions .action-btn{min-height:44px}.modal-actions .cancel{font-weight:850}@keyframes arrive{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}@keyframes bop{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+/* Accessibilità: dimensioni regolabili dalle Impostazioni */
+.bubble{font-size:calc(14px * var(--tb-text-scale));line-height:1.5}
+.bubble .time{font-size:calc(10px * var(--tb-text-scale))}
+.quick-title{font-size:calc(11px * var(--tb-text-scale))}
+.quick-btn{min-height:calc(65px * var(--tb-button-scale));padding:calc(11px * var(--tb-button-scale)) calc(12px * var(--tb-button-scale));gap:calc(10px * var(--tb-button-scale))}
+.quick-btn .ico{width:calc(35px * var(--tb-button-scale));height:calc(35px * var(--tb-button-scale));font-size:calc(17px * var(--tb-text-scale))}
+.quick-btn .label{font-size:calc(12px * var(--tb-text-scale));line-height:1.3}
+.quick-btn .sub{font-size:calc(10px * var(--tb-text-scale))}
+.action-btn{font-size:calc(13px * var(--tb-text-scale));padding:calc(11px * var(--tb-button-scale)) calc(12px * var(--tb-button-scale));min-height:calc(44px * var(--tb-button-scale))}
+.nav-btn{min-height:calc(54px * var(--tb-button-scale))}
+.nav-btn span{font-size:calc(19px * var(--tb-text-scale))}
+.nav-btn small{font-size:calc(10px * var(--tb-text-scale))}
+.top-action{width:calc(40px * var(--tb-button-scale));height:calc(40px * var(--tb-button-scale));font-size:calc(18px * var(--tb-text-scale))}
+.message-input{font-size:calc(16px * var(--tb-text-scale));min-height:calc(45px * var(--tb-button-scale))}
+.attach-btn,.send-btn{width:calc(45px * var(--tb-button-scale));height:calc(45px * var(--tb-button-scale));font-size:calc(19px * var(--tb-text-scale))}
+.auth-field{width:100%;height:46px;margin:6px 0 10px;padding:0 12px;border:1px solid var(--line);border-radius:12px;background:var(--soft);color:var(--ink)}.barcode-panel{background:#fff;color:#111;border-radius:12px;padding:12px;margin:10px 0;text-align:center}.barcode-panel svg{display:block;width:100%;max-width:100%;height:105px}.barcode-value{font-family:ui-monospace,monospace;word-break:break-all;font-size:14px;letter-spacing:.7px;margin-top:6px}.live-muted{font-size:12px;color:var(--muted)}.settings-group{margin:16px 0;text-align:left}
+.settings-group label{display:flex;justify-content:space-between;gap:12px;font-size:calc(15px * var(--tb-text-scale));font-weight:750;margin-bottom:8px}
+.settings-group input[type=range]{width:100%;min-height:42px;accent-color:var(--blue)}
+.settings-scale-note{font-size:calc(13px * var(--tb-text-scale));color:var(--muted);line-height:1.45}
+.settings-preview{padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--soft);font-size:calc(15px * var(--tb-text-scale));line-height:1.5}
+.settings-preview button{display:block;width:100%;min-height:calc(44px * var(--tb-button-scale));margin-top:8px;border:0;border-radius:12px;background:var(--blue);color:white;font-size:calc(14px * var(--tb-text-scale));font-weight:800;padding:8px}
+@media(max-width:390px){.quick-btn{gap:calc(7px * var(--tb-button-scale))}.quick-btn .ico{width:calc(31px * var(--tb-button-scale));height:calc(31px * var(--tb-button-scale))}}
+@media(min-width:650px){body{padding:22px 0}.app{min-height:calc(100dvh - 44px);border-radius:24px;border:1px solid var(--line)}.topbar{padding:16px 20px}.chat-area{padding:22px 22px}.composer-wrap{padding:12px 18px}.prototype-tag{right:calc((100vw - 760px)/2 + 14px);bottom:110px}}
+@media(max-width:390px){.quick-grid{margin-left:0}.quick-btn{padding:10px 8px;gap:7px}.quick-btn .ico{width:31px;height:31px}.bubble{max-width:92%}.topbar{padding:12px}.brand-name{font-size:17px}}
+
+/* V1.9: chat a piena altezza, intestazione minima e barra di scrittura indipendente */
+:root{--tb-input-height:45px;--tb-button-text-stroke:0.25px}
+.app{max-width:none;width:100%;box-shadow:none}
+.topbar{height:48px;min-height:48px;padding:4px 10px;justify-content:flex-end;border-bottom:0;background:var(--chat)}
+.topbar .brand-mark,.topbar .brand-copy,.topbar #connectBtn,.topbar #clearChatBtn,.topbar #settingsBtn{display:none!important}
+#clearAssistanceChatBtn{display:flex!important}
+#clearAssistanceChatBtn{height:auto;min-height:48px;width:auto;min-width:76px;margin-top:12px; margin-bottom:0;padding:5px 8px;gap:1px;flex-direction:column;align-items:center;justify-content:center;color:#d44848;border-color:#f0c8c8;background:light-dark(#fff6f5,#382329);border-radius:12px}
+#clearAssistanceChatBtn .broom-icon{font-size:21px;line-height:23px}
+#clearAssistanceChatBtn .broom-label{font-size:10px;line-height:12px;font-weight:800;white-space:nowrap}
+.quick-btn[data-action="aiuto"]{position:relative}.quick-btn[data-action="aiuto"] .support-unread-badge{position:absolute;top:-5px;right:-5px;z-index:3;display:block;width:15px;height:15px;padding:0;border:2px solid white;border-radius:50%;background:#dc2626;color:transparent;font-size:0;line-height:0;box-shadow:0 2px 7px #0003;animation:supportUnreadPulse 1s infinite;vertical-align:middle;margin:0}.support-unread-badge[hidden]{display:none!important}.support-unread-badge::before,.support-unread-badge::after{content:none!important;display:none!important}
+.quick-btn[data-action="scadenze"],.nav-btn[data-nav="scadenze"]{position:relative}.quick-btn[data-action="scadenze"] .expiry-warning-badge,.nav-btn[data-nav="scadenze"] .expiry-warning-badge{position:absolute;top:-5px;right:-5px;z-index:3;display:block;width:15px;height:15px;padding:0;border:2px solid white;border-radius:50%;background:#dc2626;color:transparent;font-size:0;line-height:0;box-shadow:0 2px 7px #0003;animation:supportUnreadPulse 1s infinite;vertical-align:middle;margin:0}.nav-btn[data-nav="scadenze"] .expiry-warning-badge{top:2px;right:calc(50% - 24px);width:11px;height:11px}.expiry-warning-badge[hidden]{display:none!important}
+@keyframes supportUnreadPulse{50%{opacity:.35;transform:scale(1.12)}}
+.top-action#menuBtn{width:40px;height:40px;margin-left:0}.top-action.refresh-app-btn{width:36px;height:36px;min-width:36px;border-radius:50%;font-size:25px;line-height:1;color:var(--blue);background:var(--panel);border:1px solid var(--line);margin-left:auto;box-shadow:0 1px 3px #0001}.top-action.refresh-app-btn:active{transform:rotate(25deg)}
+.chat-area{padding-top:8px;flex:1 1 auto}
+.composer-wrap{padding:7px 10px calc(7px + env(safe-area-inset-bottom));}
+.composer-hint,.footer-note{display:none!important}
+.composer{gap:8px}
+#plusBtn{display:none!important}
+.message-input{height:var(--tb-input-height)!important;min-height:var(--tb-input-height)!important;border-radius:14px;padding:0 13px}
+.send-btn{height:var(--tb-input-height)!important;width:var(--tb-input-height)!important;border-radius:14px}
+.prototype-tag{display:none!important}
+@media(min-width:650px){body{padding:0}.app{min-height:100dvh;border-radius:0;border:0}.topbar{padding:4px 12px}.chat-area{padding:8px 18px 16px}.composer-wrap{padding:7px 12px calc(7px + env(safe-area-inset-bottom))}}
+.checkout-keypad{position:relative;overflow:visible;overflow-anchor:none}.checkout-keys{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:24px 0 12px}.checkout-key{min-height:58px;border:1px solid #cbd5e1;border-radius:12px;background:#f3f5f8;color:#111;font-weight:850;font-size:24px;box-shadow:0 1px 2px #00000012}.checkout-display{position:relative;top:auto;z-index:1;background:#fff;color:#142033;border:2px solid #111;border-radius:14px;padding:12px;text-align:center;font-size:30px;font-weight:900;font-variant-numeric:tabular-nums;width:100%;max-width:420px;margin:0 auto;min-height:66px;display:flex;align-items:center;justify-content:center;overflow-wrap:anywhere;box-shadow:0 4px 12px #0002}.checkout-keypad .action-btn{margin-top:7px}
+/* V2.2: colore pieno dell’esercente, bordo nero e scritta nera in stampatello */
+.quick-btn.checkout-merchant{border:2px solid #111!important;background:var(--merchant-color,#1677e8)!important;color:#111!important;text-transform:uppercase;font-weight:900;min-height:52px;box-shadow:none!important}
+.quick-btn.checkout-merchant .label{color:#111!important;font-weight:900;letter-spacing:.25px}
+/* V2.7: tutti i nomi degli esercenti in maiuscolo grassetto */
+.quick-btn.checkout-merchant .label,.merchant-name-pill,.merchant-title{ text-transform:uppercase!important; font-weight:900!important; letter-spacing:.3px; }
+.merchant-title{display:inline-block;color:inherit;}
+.quick-btn.checkout-merchant .ico{display:none!important}
+.quick-btn.checkout-merchant .sub{color:#333!important;text-transform:none;font-weight:600}
+.merchant-name-pill{display:inline-block;border:2px solid var(--merchant-color,#1677e8);border-radius:8px;padding:4px 9px;background:#fff;color:#111;font-weight:900;text-transform:uppercase;letter-spacing:.2px}
+
+.quick-btn{white-space:normal;min-width:0;max-width:100%;overflow-wrap:anywhere}.quick-btn .label{white-space:normal;min-width:0;flex:1;overflow-wrap:anywhere;line-height:1.3}.quick-btn .sub{white-space:normal;overflow-wrap:anywhere}.inline-actions .action-btn{white-space:normal;overflow-wrap:anywhere}
+/* V3.4: centered home and readable voucher rows on mobile */
+.chat-area{padding-left:12px;padding-right:12px}
+.quick-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);width:100%;max-width:510px;margin:0 auto 17px;min-width:0;gap:8px}
+.quick-btn{min-width:0;max-width:100%;padding:10px 9px;gap:7px}
+.quick-btn .label{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;min-width:0;flex:1;line-height:1.3}
+.quick-btn .sub{white-space:normal;overflow-wrap:anywhere;line-height:1.3}
+.quick-btn.wide-btn{grid-column:1/-1}
+.message-row{min-width:0;width:100%}.bubble{min-width:0;max-width:calc(100% - 37px);overflow-wrap:anywhere}
+@media(max-width:390px){.quick-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);margin-left:auto;margin-right:auto;gap:7px}.quick-btn{padding:9px 7px}.quick-btn .ico{flex-shrink:0}.quick-btn .label{font-size:12px}.bubble{max-width:calc(100% - 37px)}}
+.red-barcode-warning{border:2px solid #c62828;background:#fff0f0;color:#b71c1c;border-radius:10px;padding:11px 12px;margin:10px 0;font-weight:900;text-align:center;font-size:13px;line-height:1.35}
+.barcode-panel{cursor:zoom-in;transition:transform .12s,box-shadow .12s}.barcode-panel:active{transform:scale(.99)}
+.barcode-hint{font-size:11px!important;color:#334155!important;font-weight:800;margin:8px 0 0!important}
+.modal-backdrop#barcodeModal{position:fixed;inset:0;z-index:2147483000;background:#fff;padding:0;display:flex;align-items:stretch;justify-content:center}
+.modal-backdrop#barcodeModal[hidden]{display:none!important}
+.barcode-modal-card{width:100%;height:100%;max-height:100dvh;overflow:auto;background:#fff;color:#111;border-radius:0;padding:calc(18px + env(safe-area-inset-top)) 14px calc(16px + env(safe-area-inset-bottom));box-shadow:none;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.barcode-modal-card h2{font-size:clamp(22px,6vw,30px);margin:4px 0 16px;color:#111;font-weight:950}
+.barcode-modal-card .barcode-panel{margin:12px 0;padding:22px 10px;border:3px solid #111;border-radius:14px;cursor:default;flex:0 0 auto}
+.barcode-modal-card .barcode-panel svg{height:auto;min-height:150px;max-height:32dvh;width:100%;}
+.barcode-modal-card .barcode-value{font-size:clamp(24px,7vw,36px);font-weight:950;letter-spacing:1.2px;line-height:1.5;overflow-wrap:anywhere;color:#000}
+.barcode-modal-close{width:100%;margin-top:18px;background:#d93636!important;color:#fff!important;border-color:#a91e1e!important;font-size:19px!important;font-weight:900!important;min-height:58px;flex:0 0 auto}
+@media(min-width:700px){.barcode-modal-card{max-width:760px}.barcode-modal-card .barcode-panel svg{max-height:38dvh}}
+
+
+/* V3.8: etichette principali della schermata iniziale in maiuscolo e grassetto */
+#homeButtons .quick-btn .label{font-weight:900;text-transform:uppercase;letter-spacing:.015em}
+#homeButtons .quick-btn .label .sub{font-weight:500;text-transform:none;letter-spacing:normal}
+
+
+/* V3.17: pulsanti home in colonna, alti e leggibili, testo maiuscolo/grassetto. */
+#homeButtons.quick-grid{display:flex;flex-direction:column;gap:10px;}
+#homeButtons .quick-btn{width:100%;min-height:72px;display:flex;align-items:center;justify-content:flex-start;padding:14px 16px;box-sizing:border-box;}
+#homeButtons .quick-btn .ico{flex:0 0 38px;font-size:26px;text-align:center;}
+#homeButtons .quick-btn .label{font-size:calc(clamp(16px,4.3vw,20px) * var(--tb-text-scale));line-height:1.2;font-weight:950;font-style:italic;text-transform:uppercase;letter-spacing:.02em;min-width:0;overflow-wrap:anywhere;}
+#homeButtons .quick-btn .label .sub{display:block;font-size:12px;line-height:1.3;margin-top:4px;font-weight:600;text-transform:none;letter-spacing:normal;}
+#homeButtons .quick-btn.wide-btn{min-height:76px;}
+
+
+.assistance-fixed-actions{display:none;gap:8px;margin:0 0 9px;}
+body.assistance-mode .assistance-fixed-actions{display:flex;}
+.assistance-fixed-actions .action-btn{flex:1 1 50%;width:50%;min-width:0;min-height:44px;margin:0;padding:10px 6px;font-weight:900;font-style:italic;font-size:clamp(11px,3vw,14px);}
+#clearAssistanceChatBtn{width:auto;height:auto;min-height:44px;min-width:0;margin:0;padding:10px 8px;display:flex!important;flex-direction:row;gap:6px;align-items:center;justify-content:center;white-space:normal;}
+#clearAssistanceChatBtn .broom-icon{font-size:inherit;line-height:inherit}#clearAssistanceChatBtn .broom-label{font-size:inherit;line-height:inherit;white-space:normal}
+#homeButtons .quick-btn .label{font-style:italic;}
+/* V3.32: azioni assistenza più leggibili, rosse e centrate in due metà uguali. */
+body.assistance-mode .assistance-fixed-actions{display:flex;gap:8px;align-items:stretch;}
+body.assistance-mode .assistance-fixed-actions .action-btn,
+body.assistance-mode #clearAssistanceChatBtn,
+body.assistance-mode #assistanceHomeBtn{flex:1 1 0;width:0;min-width:0;min-height:56px;padding:10px 8px;display:flex!important;align-items:center;justify-content:center;text-align:center;white-space:normal;overflow-wrap:anywhere;font-size:clamp(13px,3.7vw,16px);line-height:1.2;font-weight:900;font-style:normal;color:#fff!important;background:#d62828!important;border:2px solid #a91616!important;border-radius:12px;}
+body.assistance-mode #clearAssistanceChatBtn{flex-direction:row;gap:5px;}
+body.assistance-mode #clearAssistanceChatBtn span{font-size:16px;line-height:1;}
+body.assistance-mode #assistanceHomeBtn{font-size:clamp(13px,3.7vw,16px);}
+
+
+/* V3.21: buoni e righe selezionabili più leggibili; entrambi i cursori agiscono anche qui */
+.quick-btn .label{font-size:calc(14px * var(--tb-text-scale));font-weight:850;line-height:1.35}
+.quick-btn .sub{font-size:calc(11px * var(--tb-text-scale));line-height:1.35}
+.quick-btn{min-height:calc(76px * var(--tb-button-scale));padding:calc(13px * var(--tb-button-scale));}
+.action-btn{font-size:calc(14px * var(--tb-text-scale));min-height:calc(48px * var(--tb-button-scale));padding:calc(13px * var(--tb-button-scale)) calc(14px * var(--tb-button-scale));line-height:1.35}
+.barcode-panel{padding:calc(14px * var(--tb-button-scale));border-radius:calc(14px * var(--tb-button-scale));}
+.barcode-value{font-size:calc(16px * var(--tb-text-scale));line-height:1.5;letter-spacing:1px;}
+.barcode-hint,.live-muted{font-size:calc(12px * var(--tb-text-scale));line-height:1.5;}
+
+
+/* V3.26 */
+.merchant-summary-list{display:flex;flex-direction:column;gap:11px;margin:16px 0 8px 37px;max-width:510px}
+.merchant-summary-list .quick-btn{width:100%;min-height:60px}
+.welcome-message{justify-content:center;margin:18px auto 24px;width:100%}.welcome-message .avatar{display:none}.welcome-message .bubble{font-size:clamp(21px,5.4vw,25px);line-height:1.5;text-align:center;padding:24px 18px;max-width:560px}.welcome-message .time,.assistance-welcome .time{display:none!important}
+.assistance-welcome .bubble{font-size:clamp(19px,5vw,23px);text-align:center;padding:24px 18px;line-height:1.55}
+#assistanceHomeBtn{display:flex!important}
+
+/* V3.28: correzione banner e centratura delle schermate home/assistenza */
+html, body { overflow-x:hidden; }
+.app { margin-left:auto; margin-right:auto; }
+.chat-area { padding-top:10px; }
+#chatArea > .date-pill { margin-top:0; }
+#chatArea > .welcome-message { justify-content:center; margin:10px auto 18px; width:100%; }
+#chatArea > .welcome-message .bubble { margin-left:auto; margin-right:auto; }
+#chatArea > .quick-title { text-align:center; margin-top:10px; }
+#homeButtons.quick-grid { width:100%; max-width:510px; margin-left:auto; margin-right:auto; }
+body.assistance-mode #chatArea { padding-top:8px; }
+body.assistance-mode #chatArea .message-row { margin-top:8px; }
+body.assistance-mode #chatArea .assistance-welcome { justify-content:center; margin:10px auto 18px; width:100%; }
+body.assistance-mode #chatArea .assistance-welcome .bubble { margin-left:auto; margin-right:auto; }
+
+
+/* V3.29: area I miei buoni, righe a colore pieno e ritorno pulito */
+.merchant-summary-list{margin:14px 0 8px 0!important;max-width:100%;gap:9px}
+.merchant-summary-list .quick-btn{width:100%;min-height:64px;border-radius:13px!important;border:2px solid rgba(0,0,0,.12)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)!important;padding:12px 14px!important}
+.merchant-summary-list .quick-btn .ico{background:rgba(255,255,255,.28)!important;border:1px solid rgba(0,0,0,.08);}
+.merchant-summary-list .quick-btn .label{color:#111!important;font-size:15px!important;font-weight:900!important;text-transform:uppercase;}
+.merchant-summary-list .quick-btn .sub{color:#202020!important;font-size:12px!important;font-weight:650!important;}
+.buoni-intro{margin-bottom:14px!important}
+
+
+.tb-network-badge{display:inline-flex;align-items:center;gap:6px;min-width:0;max-width:calc(100% - 56px);font-size:10px;font-weight:800;color:#36506b;background:#eef5ff;border:1px solid #d8e7f8;border-radius:999px;padding:6px 9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-network-badge i{display:inline-block;flex:0 0 7px;width:7px;height:7px;border-radius:50%;background:#d7a900}
+.tb-network-badge[data-state="online"]{color:#17603b;background:#eafaf1;border-color:#bde9cf}
+.tb-network-badge[data-state="online"] i{background:#20a464}
+.tb-network-badge[data-state="offline"]{color:#9a3412;background:#fff4e8;border-color:#fed7aa}
+.tb-network-badge[data-state="offline"] i{background:#ea580c}
+.tb-network-badge[data-state="pending"]{color:#854d0e;background:#fefce8;border-color:#fde68a}
+.tb-network-badge[data-state="pending"] i{background:#ca8a04}
+
+/* V3.49: funzioni solo online restano visibili ma chiaramente disabilitate. */
+button.tb-online-disabled, button:disabled.tb-online-disabled { opacity:.42!important; filter:grayscale(1)!important; cursor:not-allowed!important; transform:none!important; box-shadow:none!important; position:relative; }
+button.tb-online-disabled::after { content:'SOLO ONLINE'; display:block; font-size:9px; font-weight:900; letter-spacing:.04em; color:currentColor; opacity:.95; margin-top:4px; }
+.tb-network-badge[data-state="connecting"] i { background:#1677e8; animation:tbSpin 1s linear infinite; border:1px solid #1677e8; border-top-color:transparent; }
+.tb-network-badge[data-state="connecting"] { color:#0758bd; background:#eef5ff; border-color:#b7d7ff; }
+@keyframes tbSpin { to { transform:rotate(360deg); } }
+#authEmailLabel,#authPasswordLabel { display:block; }
+
+/* V3.52: messaggi della procedura cassa più leggibili, in stampatello. I codici restano invariati. */
+.checkout-procedure-message{font-size:clamp(18px,4.8vw,21px)!important;line-height:1.58!important;font-weight:600;}
+.checkout-procedure-message p{font-size:inherit;line-height:inherit;text-transform:uppercase;letter-spacing:.012em;margin-bottom:12px!important;}
+.checkout-procedure-message p strong{font-weight:900;}
+.checkout-procedure-message .time{font-size:11px!important;text-transform:none;letter-spacing:normal;font-weight:400;}
+.checkout-procedure-message .barcode-panel,.checkout-procedure-message .barcode-panel *,
+.checkout-procedure-message .barcode-value,.checkout-procedure-message .barcode-value *,
+.checkout-procedure-message .live-muted,.checkout-procedure-message .red-barcode-warning{font-size:inherit;}
+.checkout-procedure-message .barcode-value{text-transform:none!important;letter-spacing:normal!important;font-weight:800;}
+
+
+/* V3.55: schede I MIEI BUONI e CASSA ingrandite con bordo nero */
+.merchant-summary-list{
+  margin:24px 0 18px!important;
+  max-width:100%!important;
+  width:100%!important;
+  gap:16px!important;
+}
+.merchant-summary-list .quick-btn{
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  width:100%!important;
+  min-height:112px!important;
+  padding:20px 18px!important;
+  border-radius:17px!important;
+  text-align:left!important;
+}
+.merchant-summary-list .quick-btn .ico{
+  flex:0 0 48px!important;
+  width:48px!important;
+  height:48px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:27px!important;
+  border-radius:13px!important;
+}
+.merchant-summary-list .quick-btn .label{
+  display:flex!important;
+  flex:1 1 auto!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  gap:7px!important;
+  min-width:0!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  font-size:clamp(20px,5.4vw,25px)!important;
+  line-height:1.25!important;
+  font-weight:950!important;
+}
+.merchant-summary-list .quick-btn .sub{
+  display:block!important;
+  width:100%!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  font-size:clamp(17px,4.5vw,21px)!important;
+  line-height:1.4!important;
+  font-weight:850!important;
+}
+.buoni-intro{margin-bottom:22px!important}
+
+
+/* V3.62: Scadenze più leggibili; modifiche limitate alla presentazione dell'elenco */
+#chatArea .expiry-intro{display:block;padding:13px 14px;margin:2px 0 14px;border:1px solid var(--line);border-radius:13px;background:var(--panel);font-size:calc(15px * var(--tb-text-scale));line-height:1.5}
+#chatArea .expiry-intro>strong{display:block;font-size:calc(18px * var(--tb-text-scale));font-weight:900;margin-bottom:6px}
+#chatArea .expiry-intro p{margin:0;font-size:calc(14px * var(--tb-text-scale));line-height:1.5}
+#chatArea .expiry-alert{margin-top:10px;padding:10px 11px;border:1px solid #fecdd3;border-radius:10px;background:#fff1f2;color:#9f1239;font-size:calc(13px * var(--tb-text-scale));line-height:1.45}
+#chatArea .expiry-legend{padding:12px 12px 13px;margin:0 0 19px;border:1px solid var(--line);border-radius:13px;background:var(--panel)}
+#chatArea .expiry-legend>strong{display:block;margin-bottom:10px;font-size:calc(14px * var(--tb-text-scale));font-weight:900;letter-spacing:.02em}
+#chatArea .expiry-legend-items{display:flex;flex-wrap:wrap;gap:10px 14px}
+#chatArea .expiry-legend-items>span{display:flex;align-items:center;gap:7px;font-size:calc(13px * var(--tb-text-scale));font-weight:700;line-height:1.35}
+#chatArea .expiry-key{display:inline-block;flex:0 0 14px;width:14px;height:14px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #333}
+#chatArea .expiry-key-black{background:#111827}#chatArea .expiry-key-red{background:#dc2626;animation:expiryBlink 1s infinite}#chatArea .expiry-key-orange{background:#f97316;animation:expiryBlink 1.2s infinite}#chatArea .expiry-key-yellow{background:#eab308;animation:expiryBlink 1.4s infinite}#chatArea .expiry-key-green{background:#16a34a}
+#chatArea .expiry-list{display:flex;flex-direction:column;gap:13px;margin:0 0 17px}
+#chatArea .expiry-card{display:block;padding:12px 13px 13px;margin:0;border:2px solid var(--expiry-merchant-color,#1677e8);border-radius:13px;background:var(--panel);color:var(--ink);box-shadow:0 2px 5px rgba(20,50,80,.05);overflow-wrap:anywhere}
+#chatArea .expiry-card-main{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:7px}
+#chatArea .expiry-shop{font-size:calc(16px * var(--tb-text-scale));font-weight:950;text-transform:uppercase;line-height:1.3}
+#chatArea .expiry-status-dot{display:flex;align-items:center;justify-content:center;flex:0 0 26px;width:26px;height:26px;border:2px solid #fff;border-radius:50%;background:#fff;box-shadow:0 0 0 1.5px #222,0 0 0 4px #fff;}
+#chatArea .expiry-status-dot .expiry-dot{width:16px!important;height:16px!important;flex:0 0 16px!important;margin:0!important;border:1px solid #333;box-shadow:0 0 0 1px #fff}
+#chatArea .expiry-card-date{font-size:calc(14px * var(--tb-text-scale));line-height:1.45;margin-bottom:3px}
+#chatArea .expiry-card-date strong{font-weight:900}
+#chatArea .expiry-card-description{font-size:calc(13px * var(--tb-text-scale));line-height:1.45;color:var(--muted)}
+#chatArea .expiry-dot.expiry-red{animation:expiryBlink .85s infinite}#chatArea .expiry-dot.expiry-orange{animation:expiryBlink 1.1s infinite}#chatArea .expiry-dot.expiry-yellow{animation:expiryBlink 1.3s infinite}#chatArea .expiry-dot.expiry-black{animation:expiryBlink .85s infinite}
+@keyframes expiryBlink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.9)}}
+
+</style>
+<!-- TUTTOBON CON TE V3.51: scadenze nere e regole automatiche del Cestino; V3.52: testo cassa più leggibile. -->
+
+
+
+
+<style id="tuttobon_v376_assistance_voice">
+/* V3.78: player vocale chiaro e leggibile nella cronologia della chat cliente. */
+.client-voice-message{display:block;width:100%;max-width:360px;margin:8px 0 2px}
+</style>
+</head>
+<body>
+<main class="app" aria-label="Assistente TUTTOBON CON TE">
+  <header class="topbar" aria-label="Menu impostazioni">
+    <span id="tbNetworkBadge" class="tb-network-badge" role="status" aria-live="polite"><i></i><span>Connessione da verificare</span></span>
+    <button class="top-action refresh-app-btn" id="refreshAppBtn" aria-label="Aggiorna buoni e sito" title="Aggiorna buoni e sito">↻</button>
+    <button class="top-action" id="menuBtn" aria-label="Apri impostazioni" title="Impostazioni">☰</button>
+  </header>
+  <section class="chat-area" id="chatArea" aria-live="polite">
+    <div class="date-pill">OGGI</div>
+    <div class="message-row welcome-message">
+      <div class="avatar">TB</div>
+      <div class="bubble"><p><strong>Ciao! 👋 Benvenuto in <span class="welcome-brand"><span class="tutto">tutto</span><span class="bon">bon</span></span>.</strong></p><p>Sono qui per aiutarti con i tuoi buoni e le gift card.</p><p><strong>Sei alla cassa?</strong> Oppure scegli una delle operazioni qui sotto.</p></div>
+    </div>
+    <div class="quick-title">Scegli un'operazione</div>
+    <div class="quick-grid" id="homeButtons">
+      <button class="quick-btn" data-action="cassa"><span class="ico">🛒</span><span class="label">SONO ALLA CASSA<span class="sub">Usa un buono adesso</span></span></button>
+      <button class="quick-btn" data-action="ordini"><span class="ico">🧾</span><span class="label">ORDINA I BUONI<span class="sub">Prepara una richiesta</span></span></button>
+      <button class="quick-btn" data-action="buoni"><span class="ico">🎟️</span><span class="label">I MIEI BUONI<span class="sub">Cerca per esercente</span></span></button>
+      <button class="quick-btn" data-action="scadenze"><span class="ico">📅</span><span class="label">SCADENZE<span class="sub">Controlla le date</span></span></button>
+      <button class="quick-btn wide-btn" data-action="aiuto"><span class="ico">💬</span><span class="label">ASSISTENZA<span class="sub">Scrivi all’assistenza</span></span></button>
+    </div>
+  </section>
+  <nav class="bottom-nav" aria-label="Operazioni principali">
+    <button class="nav-btn active" data-nav="cassa"><span>🛒</span><small>Cassa</small></button>
+    <button class="nav-btn" data-nav="buoni"><span>🎟️</span><small>Buoni</small></button>
+    <button class="nav-btn" data-nav="scadenze"><span>📅</span><small>Scadenze</small></button>
+    <button class="nav-btn" data-nav="ordini"><span>🧾</span><small>Ordini</small></button>
+    <button class="nav-btn" data-nav="aiuto"><span>💬</span><small>Aiuto</small></button>
+  </nav>
+  <footer class="composer-wrap" id="composerWrap">
+    <div class="assistance-fixed-actions" id="assistanceFixedActions">
+      <button type="button" class="action-btn cancel" id="clearAssistanceChatBtn"><span aria-hidden="true">🧹</span> Cancella chat</button>
+      <button type="button" class="action-btn" id="assistanceHomeBtn">Torna alla pagina iniziale</button>
+    </div>
+    <div class="composer-hint">Assistenza: scrivi qui il tuo messaggio.</div>
+    <form class="composer" id="composerForm">
+      <input class="message-input" id="messageInput" autocomplete="off" placeholder="Scrivi un messaggio…" aria-label="Scrivi un messaggio">
+      <button class="send-btn" type="submit" aria-label="Invia messaggio" title="Invia">➤</button>
+      <button class="attach-btn" id="voiceButton" type="button" aria-label="Registra e invia un messaggio vocale all’assistenza" title="Registra e invia un vocale all’assistenza">🎙️</button>
+    </form>
+    <div id="voiceStatus" class="voice-status" aria-live="polite"></div>
+    <div class="footer-note">Il vocale verrà inviato all’assistenza TUTTOBON su Telegram.</div>
+  </footer>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-backdrop" id="barcodeModal" hidden role="dialog" aria-modal="true" aria-labelledby="barcodeModalTitle">
+  <div class="barcode-modal-card">
+    <h2 id="barcodeModalTitle">BUONO DA MOSTRARE AL LETTORE</h2>
+    <div id="checkoutPopupAmount" class="checkout-popup-amount" aria-live="polite"></div>
+    <button type="button" id="barcodeRotateBtn" class="barcode-rotate-btn" aria-label="Ruota il buono in verticale" title="Ruota il buono" aria-pressed="false">⟳</button>
+    <div id="barcodeModalContent"></div>
+    <div class="checkout-popup-controls"><button type="button" id="barcodeModalClose" class="action-btn barcode-modal-close" aria-label="Annulla procedura">✕</button><button type="button" id="checkoutPopupNext" class="action-btn checkout-popup-next" aria-label="Conferma buono e passa al successivo">✓</button></div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="clearModal" hidden role="dialog" aria-modal="true" aria-labelledby="clearTitle">
+  <div class="modal-card">
+    <div class="modal-icon">🧹</div>
+    <h2 id="clearTitle">Cancellare la chat?</h2>
+    <p>Verranno rimossi i messaggi visualizzati in questa conversazione. I buoni e i dati del tuo account non verranno cancellati.</p>
+    <div class="modal-actions"><button id="keepChatBtn" class="action-btn">Mantieni chat</button><button id="confirmClearBtn" class="action-btn cancel">Cancella chat</button></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="settingsModal" hidden role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+  <div class="modal-card" style="text-align:left;max-height:90%;overflow:auto">
+    <div class="modal-icon" aria-hidden="true">👁️</div>
+    <h2 id="settingsTitle" style="text-align:center">Impostazioni di accessibilità</h2>
+    <p>Ingrandisci il testo e i pulsanti per leggere e premere più facilmente. Le preferenze vengono salvate su questo dispositivo.</p>
+    <div class="settings-group">
+      <label for="textSizeRange"><span>Dimensione del testo</span><output id="textSizeValue">100%</output></label>
+      <input id="textSizeRange" type="range" min="100" max="170" step="10" value="120" aria-describedby="textSizeHelp">
+      <div id="textSizeHelp" class="settings-scale-note">Da normale a molto grande.</div>
+    </div>
+    <div class="settings-group">
+      <label for="buttonSizeRange"><span>Dimensione dei pulsanti</span><output id="buttonSizeValue">100%</output></label>
+      <input id="buttonSizeRange" type="range" min="100" max="180" step="10" value="120" aria-describedby="buttonSizeHelp">
+      <div id="buttonSizeHelp" class="settings-scale-note">Pulsanti più grandi e facili da toccare.</div>
+    </div>
+    <div class="settings-group">
+      <label for="buttonContrastRange"><span>Contrasto scritte nei pulsanti</span><output id="buttonContrastValue">Medio</output></label>
+      <input id="buttonContrastRange" type="range" min="0" max="3" step="1" value="2" aria-describedby="buttonContrastHelp">
+      <div id="buttonContrastHelp" class="settings-scale-note">Aumenta o diminuisci lo spessore delle lettere nei pulsanti.</div>
+    </div>
+    <div class="settings-group">
+      <button id="settingsConnectBtn" class="action-btn" type="button">Collega / verifica account TUTTOBON</button>
+    </div>
+    <div class="modal-actions"><button id="resetSettingsBtn" class="action-btn">Ripristina</button><button id="closeSettingsBtn" class="action-btn primary">Salva e chiudi</button></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="authModal" hidden role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <div class="modal-card" style="text-align:left;max-height:90%;overflow:auto">
+    <div class="modal-icon" style="text-align:center">🔐</div>
+    <h2 id="authTitle" style="text-align:center">Collega TUTTOBON</h2>
+    <p>Accedi con le stesse credenziali del tuo account TUTTOBON. I buoni e le scadenze vengono letti dal Worker; le richieste vengono inoltrate all’amministratore. Questa schermata non modifica automaticamente i saldi.</p>
+    <label id="authEmailLabel" for="authEmail" style="font-size:13px;font-weight:750">Email</label>
+    <input id="authEmail" class="auth-field" type="email" autocomplete="username" placeholder="La tua email">
+    <label id="authPasswordLabel" for="authPassword" style="font-size:13px;font-weight:750">Password</label>
+    <input id="authPassword" class="auth-field" type="password" autocomplete="current-password" placeholder="La password del tuo account">
+    <p id="authMessage" aria-live="polite" style="min-height:18px;margin-top:8px"></p>
+    <div class="modal-actions"><button id="authCancelBtn" class="action-btn cancel">Annulla</button><button id="authSubmitBtn" class="action-btn primary">Accedi</button></div>
+    <button id="authDisconnectBtn" class="action-btn" style="display:none;margin-top:9px">Scollega account</button>
+  </div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script>
+const chat=document.getElementById('chatArea');const input=document.getElementById('messageInput');const toast=document.getElementById('toast');let toastTimer;let stage='home';
+const API_URL='https://gift-wallet-app.cl1981.workers.dev';
+const FIREBASE_CONFIG={apiKey:'AIzaSyAppv6_zp8OI8z0BtIKT0xPNL-qN1-Ad-g',authDomain:'giftwallet-628bd.firebaseapp.com',projectId:'giftwallet-628bd',storageBucket:'giftwallet-628bd.firebasestorage.app',messagingSenderId:'274062432336',appId:'1:274062432336:web:8eb32b77117d4ccf225955'};
+let gwAuth=null,liveMode=false,liveUser=null,liveState=null,liveCards=[],liveMerchants=[];
+try{const cachedMerchantColors=JSON.parse(localStorage.getItem('tuttobon_merchant_config_cache_v1')||'[]');if(Array.isArray(cachedMerchantColors))liveMerchants=cachedMerchantColors;}catch(e){}
+function tbNormalizeMerchantName(v){return String(v||'').trim().toLocaleLowerCase('it-IT').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
+async function tbRefreshMerchantColors(){try{const d=await workerRequest('/api/merchants');if(Array.isArray(d?.merchants)){liveMerchants=d.merchants;try{localStorage.setItem('tuttobon_merchant_config_cache_v1',JSON.stringify(liveMerchants));}catch(e){}return true;}}catch(e){console.warn('Colori esercenti non aggiornati; uso configurazione memorizzata:',e);}return false;}
+function tbCanonicalMerchantKey(value){const n=tbNormalizeMerchantName(value).replace(/[^a-z0-9]/g,'');if(n==='ip'||n==='italianapetroli'||n==='ipitalianapetroli'||n==='ipgruppoapi'||n==='gruppoapi'||n==='apiip'||n==='ipcarburanti')return 'italianapetroli';if(n.includes('italianapetroli'))return 'italianapetroli';return n;}
+function tbMerchantColorKeys(value){const raw=tbNormalizeMerchantName(value);const n=raw.replace(/[^a-z0-9]/g,'');const canonical=tbCanonicalMerchantKey(value);const keys=new Set([raw,n,canonical]);if(canonical==='italianapetroli'){['ip','italiana petroli','italianapetroli','ip italiana petroli','ip gruppo api','gruppo api','api ip','ip carburanti'].forEach(k=>keys.add(k));}return [...keys].filter(Boolean);} 
+function canonicalShop(s){return tbCanonicalMerchantKey(s)||normalizedShop(s);} 
+
+function tbConfiguredMerchantColor(shop){const target=tbMerchantColorKeys(shop);const m=liveMerchants.find(x=>{const names=[x?.name,...(Array.isArray(x?.aliases)?x.aliases:[])];if(!Array.isArray(x?.aliases)&&typeof x?.aliases_json==='string'){try{names.push(...JSON.parse(x.aliases_json));}catch{}}return names.some(name=>tbMerchantColorKeys(name).some(key=>target.includes(key)));});const c=String(m?.color||'').trim();return /^#[0-9a-f]{6}$/i.test(c)?c:'';}
+// V3.49: online-only features stay locked until the authenticated Worker confirms connectivity.
+let accountOnlineReady=false;
+function tbCanUseOnlineFeatures(){return !!navigator.onLine&&(!gwAuth?.currentUser||accountOnlineReady);}
+function setConnectionStatus(connected,label){const t=document.getElementById('connectionStatus'),d=document.getElementById('connectionDot');if(t)t.textContent=label||(connected?'Account collegato · dati reali':'Connessione in attesa');if(d)d.style.background=connected?'#25b875':'#d7a900';const tag=document.querySelector('.prototype-tag');if(tag)tag.textContent=connected?'ACCOUNT COLLEGATO · DATI REALI':'CONNESSIONE IN ATTESA';tbSetNetworkBadge();}
+function openAuthModal(){const user=gwAuth?.currentUser||liveUser;const linked=!!user;document.getElementById('authModal').hidden=false;document.getElementById('authDisconnectBtn').style.display=linked?'block':'none';document.getElementById('authEmailLabel').style.display=linked?'none':'block';document.getElementById('authPasswordLabel').style.display=linked?'none':'block';document.getElementById('authEmail').style.display=linked?'none':'block';document.getElementById('authPassword').style.display=linked?'none':'block';document.getElementById('authSubmitBtn').style.display=linked?'none':'block';document.getElementById('authCancelBtn').textContent=linked?'Chiudi':'Annulla';document.getElementById('authTitle').textContent=linked?'Account TUTTOBON':'Collega TUTTOBON';document.getElementById('authMessage').textContent=linked?(navigator.onLine?'Account già collegato. Non serve accedere di nuovo. Puoi scollegarlo qui.':'Account già collegato. In attesa di connessione: non serve accedere di nuovo.'):'Accedi con le credenziali già usate in TUTTOBON.';if(linked)document.getElementById('authEmail').value=user.email||'';}
+function closeAuthModal(){document.getElementById('authModal').hidden=true;}
+
+function friendlyFirebaseError(e){const c=e?.code||'';return ({'auth/invalid-credential':'Email o password non corrette.','auth/user-not-found':'Account non trovato.','auth/wrong-password':'Password non corretta.','auth/invalid-email':'Email non valida.','auth/too-many-requests':'Troppi tentativi. Riprova più tardi.','auth/network-request-failed':'Connessione internet non disponibile.','auth/operation-not-allowed':'Accesso email/password non abilitato in Firebase.'})[c]||e?.message||'Errore di accesso.';}
+async function workerRequest(path,options={}){if(!gwAuth?.currentUser)throw new Error('Accedi prima al tuo account TUTTOBON.');const timeoutMs=Math.max(1000,Number(options.timeoutMs)||10000);const controller=new AbortController();let timer;try{return await Promise.race([(async()=>{const token=await gwAuth.currentUser.getIdToken(true);const method=options.method||'GET';const headers={Authorization:'Bearer '+token};if(options.body!==undefined)headers['Content-Type']='application/json';const r=await fetch(API_URL+path,{method,headers,body:options.body===undefined?undefined:JSON.stringify(options.body),signal:controller.signal});const data=await r.json().catch(()=>({}));if(!r.ok||data.success===false){const err=new Error(data.error||('Worker HTTP '+r.status));err.status=r.status;throw err;}return data;})(),new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();const e=new Error('Connessione lenta o server non raggiungibile: timeout dopo '+Math.round(timeoutMs/1000)+' secondi.');e.networkTimeout=true;reject(e);},timeoutMs);})]);}finally{clearTimeout(timer);}}
+let tbAccountBlockPollTimer=null,tbAccountBlockLogoutInProgress=false;
+async function tbCheckAccountStatus(){
+ const user=gwAuth?.currentUser;if(!user)return false;if(!navigator.onLine)return true;
+ try{const token=await user.getIdToken(true);const r=await fetch(API_URL+'/api/account/status',{method:'GET',headers:{Authorization:'Bearer '+token}});const d=await r.json().catch(()=>({}));if(!r.ok||d?.success!==true)throw new Error(d?.error||('Worker HTTP '+r.status));
+  if(d.blocked){if(!tbAccountBlockLogoutInProgress){tbAccountBlockLogoutInProgress=true;accountOnlineReady=false;liveMode=false;liveUser=null;liveState=null;liveCards=[];updateOfflineControls();setConnectionStatus(false,'ACCOUNT BLOCCATO');notify('🔒 ACCOUNT BLOCCATO DALL’AMMINISTRATORE. Accesso sospeso fino allo sblocco.');try{await gwAuth.signOut();}catch(e){}if(tbAccountBlockPollTimer)clearInterval(tbAccountBlockPollTimer);tbAccountBlockPollTimer=null;tbAccountBlockLogoutInProgress=false;}return false;}return true;
+ }catch(e){console.warn('Controllo blocco account:',e);return true;}
+}
+function tbStartAccountBlockMonitor(){if(tbAccountBlockPollTimer)clearInterval(tbAccountBlockPollTimer);if(!gwAuth?.currentUser)return;tbAccountBlockPollTimer=setInterval(()=>{if(navigator.onLine)tbCheckAccountStatus();},5000);}
+window.addEventListener('online',()=>{if(gwAuth?.currentUser)tbCheckAccountStatus();});
+
+async function connectAccount(){if(gwAuth?.currentUser){document.getElementById('authMessage').textContent=navigator.onLine?'Account già collegato. Aggiorno i dati senza richiedere un nuovo login…':'Account già collegato. In attesa di connessione…';if(!navigator.onLine){setNetworkConnecting(true);return;}setNetworkConnecting(true);try{await loadLiveData();closeAuthModal();notify('Account già collegato e dati aggiornati.');}catch(e){document.getElementById('authMessage').textContent='Connessione non disponibile. Il collegamento resta memorizzato: non serve rifare il login.';}finally{setNetworkConnecting(false);}return;}const msg=document.getElementById('authMessage'),email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;if(!email||!password){msg.textContent='Inserisci email e password.';return;}const btn=document.getElementById('authSubmitBtn');btn.disabled=true;btn.textContent='Collegamento…';setNetworkConnecting(true);try{if(!gwAuth)throw new Error('Firebase non è stato caricato. Controlla la connessione e ricarica la pagina.');await gwAuth.signInWithEmailAndPassword(email,password);await loadLiveData();closeAuthModal();notify('Account TUTTOBON collegato.');runAction(activeSection==='buoni'||activeSection==='scadenze'||activeSection==='cassa'?activeSection:'home');}catch(e){msg.textContent='⚠️ '+friendlyFirebaseError(e);if(gwAuth?.currentUser){/* Non cancellare una sessione valida per un errore temporaneo di rete. */if(e?.code&&String(e.code).startsWith('auth/'))await gwAuth.signOut().catch(()=>{});}}finally{btn.disabled=false;btn.textContent='Accedi';setNetworkConnecting(false);}}
+// V3.73: la cassa valuta la raggiungibilità reale del Worker, non soltanto navigator.onLine.
+let tbCheckoutOfflineMode=false,tbNetworkQuality='unknown',tbLastGoodNetworkAt=0,tbCheckoutProbeTimer=null,tbCheckoutProbeRunning=false;
+async function tbProbeWorker(timeoutMs=2200){if(!navigator.onLine||!gwAuth?.currentUser){tbNetworkQuality='offline';return false;}const controller=new AbortController();let timer;try{const ok=await Promise.race([(async()=>{const token=await gwAuth.currentUser.getIdToken();const r=await fetch(API_URL+'/api/auth-test',{method:'GET',headers:{Authorization:'Bearer '+token},cache:'no-store',signal:controller.signal});if(!r.ok)return false;const d=await r.json().catch(()=>({}));return d?.success===true;})(),new Promise(resolve=>{timer=setTimeout(()=>{controller.abort();resolve(false);},timeoutMs);})]);tbNetworkQuality=ok?'online':'offline';if(ok)tbLastGoodNetworkAt=Date.now();return ok;}catch(e){tbNetworkQuality='offline';return false;}finally{clearTimeout(timer);}}
+function tbIsCheckoutFlowActive(){return activeSection==='cassa'&&/^cassa_|^checkout_/.test(String(stage||''));}
+function tbStartCheckoutNetworkMonitor(){if(tbCheckoutProbeTimer)clearInterval(tbCheckoutProbeTimer);tbCheckoutProbeTimer=setInterval(async()=>{if(!tbIsCheckoutFlowActive()||tbCheckoutProbeRunning||!gwAuth?.currentUser)return;tbCheckoutProbeRunning=true;try{const ok=await tbProbeWorker(1800);if(ok){if(stage==='cassa_shop'){const wasOffline=tbCheckoutOfflineMode;try{if(wasOffline||!accountOnlineReady)await loadLiveData();tbCheckoutOfflineMode=false;accountOnlineReady=true;tbSetNetworkBadge();updateOfflineControls();await tbSyncQueue();}catch(e){tbCheckoutOfflineMode=true;accountOnlineReady=false;console.warn('Rete tornata ma dati non ancora aggiornabili:',e);tbSetNetworkBadge();}}else if(tbCheckoutOfflineMode){const badge=document.getElementById('tbNetworkBadge');if(badge){badge.dataset.state='online';badge.querySelector('span').textContent='Rete tornata · fine cassa offline';}}}else{tbCheckoutOfflineMode=true;accountOnlineReady=false;tbSetNetworkBadge();}}finally{tbCheckoutProbeRunning=false;}},7000);}
+function tbStopCheckoutNetworkMonitor(){if(tbCheckoutProbeTimer){clearInterval(tbCheckoutProbeTimer);tbCheckoutProbeTimer=null;}}
+// V3.47 PWA OFFLINE: cache privata per UID e coda persistente delle casse.
+const TB_OFFLINE_DB='tuttobon-con-te-offline-v2';
+let tbSyncRunning=false;
+function tbDb(){return new Promise((resolve,reject)=>{const req=indexedDB.open(TB_OFFLINE_DB,1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains('snapshots'))db.createObjectStore('snapshots');if(!db.objectStoreNames.contains('queue'))db.createObjectStore('queue',{keyPath:'id'});};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+async function tbStore(store,mode,fn){const db=await tbDb();return new Promise((resolve,reject)=>{const tx=db.transaction(store,mode),s=tx.objectStore(store);let req;try{req=fn(s)}catch(e){db.close();reject(e);return;}if(req){req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);}else{tx.oncomplete=()=>resolve(true);tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Operazione locale interrotta'));}tx.oncomplete=()=>{db.close();if(!req)resolve(true);};});}
+async function tbSaveSnapshot(uid,state){if(!uid||!state)return false;try{await tbStore('snapshots','readwrite',s=>s.put({state:JSON.parse(JSON.stringify(state)),savedAt:Date.now()},uid));return true;}catch(e){console.warn('Snapshot offline non salvato:',e);return false;}}
+async function tbGetSnapshot(uid){if(!uid)return null;try{return await tbStore('snapshots','readonly',s=>s.get(uid));}catch(e){return null;}}
+async function tbGetQueue(){try{return await tbStore('queue','readonly',s=>s.getAll());}catch(e){return [];}}
+async function tbPendingCount(){const uid=gwAuth?.currentUser?.uid;if(!uid)return 0;return (await tbGetQueue()).filter(x=>x.uid===uid&&x.status!=='done').length;}
+function tbOperationId(){return 'tbcheckout-'+(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2));}
+function tbCents(v){const n=Number(String(v??0).replace(',','.'));return Number.isFinite(n)?Math.round(n*100):NaN;}
+function tbCardId(c){return String(c?.id??c?.cardId??c?.uidCard??'');}
+function tbApplyCheckoutToState(state,body){const next=JSON.parse(JSON.stringify(state||{}));const cards=Array.isArray(next.cards)?next.cards:[];const trash=Array.isArray(next.trash)?next.trash:[];const zero=[];for(const item of body.items||[]){const c=cards.find(x=>tbCardId(x)===String(item.cardId));if(!c)throw new Error('Un buono non è più presente nei dati salvati sul telefono. Collega Internet e aggiorna prima di procedere.');const balance=tbCents(c.balance??c.saldo??c.amount??c.original_amount??c.originalAmount??c.value??0);if(!Number.isSafeInteger(balance)||balance!==Number(item.expectedBalanceCents)||Number(item.useCents)>balance)throw new Error('Il saldo locale non coincide con il riepilogo della cassa. Nessuna modifica locale effettuata.');}
+ for(const item of body.items||[]){const c=cards.find(x=>tbCardId(x)===String(item.cardId));const remaining=Number(item.expectedBalanceCents)-Number(item.useCents);c.balance=remaining/100;if(Object.prototype.hasOwnProperty.call(c,'saldo'))c.saldo=remaining/100;if(Object.prototype.hasOwnProperty.call(c,'amount'))c.amount=remaining/100;if(remaining===0){c.balance=0;c.saldo=0;c.amount=0;c.usedUp=true;c.usedUpAt=new Date().toISOString();c.trashedAt=c.trashedAt||new Date().toISOString();c.trashReason='used';zero.push(c);}}
+ const zeroIds=new Set(zero.map(tbCardId));next.cards=cards.filter(c=>!zeroIds.has(tbCardId(c)));const existing=new Set(trash.map(tbCardId));next.trash=[...trash,...zero.filter(c=>!existing.has(tbCardId(c)))];return next;}
+function tbApplyLocalExpiryRules(state){const next=JSON.parse(JSON.stringify(state||{}));const cards=Array.isArray(next.cards)?next.cards:[];const trash=Array.isArray(next.trash)?next.trash:[];const now=new Date(),today=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate()),nowIso=now.toISOString(),cutoff=now.getTime()-30*86400000;const id=c=>String(c?.id??c?.cardId??c?.uidCard??'');const trashById=new Map(trash.map(c=>[id(c),c]));const keep=[];for(const c of cards){const stamp=expiryValue(c);if(stamp!==null&&stamp<today){const old=trashById.get(id(c));trashById.set(id(c),{...(old||{}),...c,trashedAt:old?.trashedAt||c?.trashedAt||nowIso,trashReason:'expired'});}else keep.push(c);}next.cards=keep;next.trash=[...trashById.values()].map(c=>({...c,trashedAt:c.trashedAt||nowIso})).filter(c=>{const t=Date.parse(c.trashedAt);return !Number.isFinite(t)||t>cutoff;});return next;}
+async function tbQueueCheckout(body){const uid=gwAuth?.currentUser?.uid;if(!uid)throw new Error('Account non riconosciuto sul telefono. Ricollegati a Internet prima della cassa offline.');const entry={id:body.operationId||tbOperationId(),uid,path:'/api/webapp/checkout/complete',body:{...body,operationId:body.operationId||tbOperationId()},createdAt:Date.now(),status:'pending'};entry.id=entry.body.operationId;await tbStore('queue','readwrite',s=>s.put(entry));return entry;}
+async function tbSetLocalState(state){liveState=tbApplyLocalExpiryRules(state);liveCards=Array.isArray(liveState?.cards)?liveState.cards:[];updateExpiryWarningBadge();const uid=gwAuth?.currentUser?.uid||liveUser?.uid;if(uid)await tbSaveSnapshot(uid,liveState);}
+function tbSetNetworkBadge(){const badge=document.getElementById('tbNetworkBadge');if(!badge)return;tbPendingCount().then(n=>{if(n){badge.dataset.state='pending';badge.querySelector('span').textContent='Cassa da sincronizzare ('+n+')';}else if(!navigator.onLine||tbNetworkQuality==='offline'||tbCheckoutOfflineMode){badge.dataset.state='offline';badge.querySelector('span').textContent='Offline · cassa locale';}else if(liveMode&&accountOnlineReady){badge.dataset.state='online';badge.querySelector('span').textContent='Account collegato';}else{badge.dataset.state='';badge.querySelector('span').textContent='Connessione da verificare';}}).catch(()=>{});}
+function setNetworkConnecting(active){const badge=document.getElementById('tbNetworkBadge');if(active&&badge){badge.dataset.state='connecting';badge.querySelector('span').textContent='⟳ In attesa di connessione';}else{tbSetNetworkBadge();}updateOfflineControls();}
+function updateOfflineControls(){const canOnline=tbCanUseOnlineFeatures();document.querySelectorAll('[data-action]').forEach(btn=>{const a=btn.dataset.action||'';const onlineOnly=a==='ordini'||a==='aiuto'||a.startsWith('order_')||a==='send_web_order'||a==='retry_web_request'||(a==='connect'&&!gwAuth?.currentUser);const blocked=!canOnline&&onlineOnly;if(blocked){btn.classList.add('tb-online-disabled');btn.disabled=true;btn.setAttribute('aria-disabled','true');if(!btn.dataset.originalTitle)btn.dataset.originalTitle=btn.title||'';btn.title='Disponibile quando la connessione all’account TUTTOBON sarà ripristinata';}else if(btn.getAttribute('aria-disabled')==='true'){btn.classList.remove('tb-online-disabled');btn.disabled=false;btn.removeAttribute('aria-disabled');btn.title=btn.dataset.originalTitle||'';}});const composer=document.getElementById('composerForm');if(composer){const off=!canOnline;composer.querySelectorAll('input,button').forEach(el=>{el.disabled=off;if(off){el.title='Assistenza disponibile quando la connessione all’account TUTTOBON sarà ripristinata';}else el.removeAttribute('title');});const hint=document.querySelector('.composer-hint');if(hint)hint.textContent=off?'Assistenza non disponibile: in attesa della connessione all’account.':'Assistenza: scrivi qui il tuo messaggio.';}const voice=document.getElementById('voiceButton');if(voice){voice.disabled=!canOnline;if(!canOnline)voice.title='Assistenza disponibile quando la connessione all’account TUTTOBON sarà ripristinata';else voice.removeAttribute('title');}}
+async function tbSyncQueue(){if(tbSyncRunning||!navigator.onLine||!gwAuth?.currentUser)return;tbSyncRunning=true;let changed=false,blocked=false;try{const uid=gwAuth.currentUser.uid;let entries=(await tbGetQueue()).filter(x=>x.uid===uid&&x.status==='pending').sort((a,b)=>a.createdAt-b.createdAt);for(const entry of entries){try{await workerRequest(entry.path,{method:'POST',body:entry.body});await tbStore('queue','readwrite',s=>s.delete(entry.id));changed=true;}catch(e){entry.lastError=String(e?.message||e);if(e?.status>=400&&e.status<500&&e.status!==429){entry.status='conflict';entry.conflictAt=Date.now();}await tbStore('queue','readwrite',s=>s.put(entry));blocked=true;console.warn('Cassa offline in attesa di verifica:',e);break;}}
+ if(changed||blocked){const data=await workerRequest('/api/data');const state=data?.state||{};let canApply=true;const remaining=(await tbGetQueue()).filter(x=>x.uid===uid&&x.status==='pending').sort((a,b)=>a.createdAt-b.createdAt);for(const entry of remaining){if(!canApply)break;try{const updated=tbApplyCheckoutToState(state,entry.body);Object.assign(state,updated);}catch(e){canApply=false;}}
+ await tbSetLocalState(state);if(changed&&!blocked)notify('Cassa offline sincronizzata con il server.');if(blocked)notify('Una cassa richiede verifica: il server segnala un saldo diverso. Non ripetere la spesa.');}
+ }catch(e){console.warn('Sincronizzazione offline non riuscita:',e);}finally{tbSyncRunning=false;tbSetNetworkBadge();}}
+window.addEventListener('online',()=>{tbNetworkQuality='unknown';accountOnlineReady=false;setNetworkConnecting(!!gwAuth?.currentUser);updateOfflineControls();if(gwAuth?.currentUser){loadLiveData().then(()=>tbSyncQueue()).catch(()=>{accountOnlineReady=false;}).finally(()=>{setNetworkConnecting(false);updateOfflineControls();});}else{updateOfflineControls();}});window.addEventListener('offline',()=>{tbNetworkQuality='offline';tbCheckoutOfflineMode=tbIsCheckoutFlowActive();accountOnlineReady=false;setNetworkConnecting(false);updateOfflineControls();tbSetNetworkBadge();});
+async function tbRegisterPwa(){if(!('serviceWorker'in navigator)||!(location.protocol==='https:'||location.hostname==='localhost'))return;try{const reg=await navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'});reg.update().catch(()=>{});if(reg.waiting&&navigator.serviceWorker.controller){reg.waiting.postMessage({type:'SKIP_WAITING'});}navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!sessionStorage.getItem('tb_sw_reloaded_v375')){sessionStorage.setItem('tb_sw_reloaded_v375','1');location.reload();}});}catch(e){console.warn('Service Worker non registrato:',e);}}
+async function loadLiveData(){if(!gwAuth?.currentUser)throw new Error('Accesso non attivo.');liveUser=gwAuth.currentUser;accountOnlineReady=false;updateOfflineControls();try{const test=await workerRequest('/api/auth-test');if(!test.success)throw new Error('Autenticazione Worker non riuscita.');const data=await workerRequest('/api/data');liveState=tbApplyLocalExpiryRules(data?.state||{});liveCards=Array.isArray(liveState.cards)?liveState.cards:[];await tbRefreshMerchantColors();liveMode=true;updateExpiryWarningBadge();await tbSaveSnapshot(liveUser.uid,liveState);accountOnlineReady=true;setConnectionStatus(true,'Account collegato · '+(liveUser.email||'dati reali'));tbSetNetworkBadge();updateOfflineControls();}
+ catch(err){accountOnlineReady=false;const cached=await tbGetSnapshot(liveUser.uid);if(cached?.state){liveState=tbApplyLocalExpiryRules(cached.state);liveCards=Array.isArray(liveState.cards)?liveState.cards:[];liveMode=true;setConnectionStatus(false,'OFFLINE · dati salvati il '+new Date(cached.savedAt||Date.now()).toLocaleString('it-IT'));tbSetNetworkBadge();updateOfflineControls();return;}liveMode=false;setConnectionStatus(false,'Worker non raggiungibile · nessun dato offline salvato');tbSetNetworkBadge();updateOfflineControls();throw err;}}
+
+// V3.14: le risposte dell'amministratore vengono mostrate esclusivamente nella chat Assistenza.
+let supportLastMessageId=0, supportPollTimer=null, supportUnreadCount=0, pendingSupportReplies=[];
+let supportClearedThrough=0;try{supportClearedThrough=Number(localStorage.getItem('tuttobon_support_cleared_through')||0)||0;}catch(e){}
+function persistSupportReadThrough(id){const value=Number(id)||0;if(value<=supportClearedThrough)return;supportClearedThrough=value;try{localStorage.setItem('tuttobon_support_cleared_through',String(supportClearedThrough));}catch(e){}}
+function saveSupportUnreadCount(){}
+async function syncNativeAppBadge(){try{if('clearAppBadge'in navigator)await navigator.clearAppBadge();}catch(e){/* Nessun badge numerico di sistema: mostriamo soltanto il pallino rosso nell'app. */}}
+function updateSupportUnreadBadge(){
+  const buttons=[...document.querySelectorAll('.quick-btn[data-action="aiuto"]')];
+  for(const button of buttons){
+    let badge=button.querySelector('.support-unread-badge');
+    if(supportUnreadCount>0){
+      if(!badge){badge=document.createElement('span');badge.className='support-unread-badge';badge.setAttribute('role','status');button.appendChild(badge);}
+      badge.replaceChildren();badge.textContent='';badge.setAttribute('aria-label','Nuovo messaggio non letto nell’area Assistenza');badge.title=badge.getAttribute('aria-label');badge.hidden=false;
+    }else if(badge)badge.remove();
+  }
+  saveSupportUnreadCount();syncNativeAppBadge();
+}
+function renderSupportReply(m){if(m.sender!=='admin')return;const when=escapeHtml(new Date(m.createdAt).toLocaleString('it-IT'));if(m.kind==='voice'&&m.audioBase64){const mime=String(m.audioMime||'audio/ogg').replace(/[^a-zA-Z0-9/;=.+-]/g,'');const audioUrl='data:'+mime+';base64,'+m.audioBase64;bot('<p><strong>💬 Risposta dell’assistenza</strong></p><p>🎤 Messaggio vocale dell’amministratore</p><audio controls preload="metadata" playsinline style="width:100%;max-width:420px" src="'+audioUrl+'"></audio><small>'+when+'</small>');}else{let content=m.kind==='voice'?'🎤 Il vocale dell’amministratore non è riuscito a caricarsi. Riprova ad aggiornare la chat.':String(m.body||'Nuovo messaggio ricevuto.');if(/ordine.{0,35}(completat|evaso)|completat.{0,35}ordine|evaso.{0,35}ordine/i.test(content)){let summary='';const lines=content.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);const start=lines.findIndex(x=>/riepilogo dell.?ordine|dettaglio dell.?ordine/i.test(x));if(start>=0){summary=lines.slice(start+1).filter(x=>!/grazie e buona spesa/i.test(x)).join('\n');}else{const keep=lines.filter(x=>/totale|\d+\s*[x×]|€|eur|rossetto|tosano|martinelli|conad|esselunga|eurospin|aldi|lidl|pam|migross|edenred|ip\b|tamoil|q8/i.test(x)&&!/ordine.{0,20}(completat|evaso)|completat.{0,20}ordine|grazie e buona spesa/i.test(x));summary=keep.join('\n');}content='✅ Il tuo ordine è stato completato!'+(summary?'\n\n🛒 Riepilogo dell’ordine\n'+summary:'')+'\n\nGrazie e buona spesa!';}bot('<p><strong>💬 Risposta dell’assistenza</strong></p><p>'+escapeHtml(content).replace(/\n/g,'<br>')+'</p><small>'+when+'</small>');}}
+function showPendingSupportReplies(){if(activeSection!=='aiuto')return;const replies=pendingSupportReplies.splice(0);if(replies.length){for(const m of replies)renderSupportReply(m);sectionChats.aiuto=chat.innerHTML;saveSupportHistory(chat.innerHTML);}supportUnreadCount=0;updateSupportUnreadBadge();persistSupportReadThrough(supportLastMessageId);}
+async function pollSupportReplies(){if(!liveMode||!gwAuth?.currentUser)return;try{try{const saved=Number(localStorage.getItem('tuttobon_support_cleared_through')||0)||0;supportClearedThrough=Math.max(supportClearedThrough,saved);}catch(e){}const r=await workerRequest('/api/webapp/messages?after='+supportLastMessageId);for(const m of (r.messages||[])){const messageId=Number(m.id)||0;supportLastMessageId=Math.max(supportLastMessageId,messageId);if(messageId<=supportClearedThrough)continue;if(m.sender==='admin'){if(activeSection==='aiuto'){renderSupportReply(m);sectionChats.aiuto=chat.innerHTML;saveSupportHistory(chat.innerHTML);persistSupportReadThrough(messageId);}else{pendingSupportReplies.push(m);supportUnreadCount++;updateSupportUnreadBadge();}}}}catch(e){console.warn('Polling assistenza:',e);}}
+function startSupportPolling(){if(supportPollTimer)clearInterval(supportPollTimer);supportLastMessageId=Math.max(supportLastMessageId,supportClearedThrough);pollSupportReplies();supportPollTimer=setInterval(pollSupportReplies,5000);}
+
+function cardShop(c){return String(c?.shop||c?.merchant||c?.merchantName||c?.esercente||c?.merchant_name||c?.store||'Altro').trim()||'Altro';}
+function cardBalance(c){const v=c?.balance??c?.saldo??c?.amount??c?.original_amount??c?.originalAmount??c?.value;const n=Number(String(v??0).replace(',','.'));return Number.isFinite(n)?n:0;}
+function euro(v){return Number(v||0).toLocaleString('it-IT',{style:'currency',currency:'EUR'});}
+function cardExpiry(c){return String(c?.expiry_date||c?.expiryDate||c?.expiry||c?.scadenza||c?.expiresAt||'').trim();}
+function displayDate(v){if(!v)return 'Non indicata';const m=String(v).match(/^(\d{4})-(\d{2})-(\d{2})/);return m?m[3]+'/'+m[2]+'/'+m[1]:String(v);}
+function cardCode1(c){return String(c?.code1??c?.barcode1??c?.code??c?.barcode??c?.cardNumber??c?.number??'').trim();}
+function cardCode2(c){return String(c?.code2??c?.barcode2??c?.secondCode??'').trim();}
+function cardPin(c){return String(c?.pin??c?.PIN??'').trim();}
+function normalizedShop(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');}
+function showLiveMerchants(mode){const grouped=new Map();liveCards.forEach(c=>{const name=cardShop(c),key=canonicalShop(name);if(!grouped.has(key))grouped.set(key,name);});const names=[...grouped.values()].sort((a,b)=>a.localeCompare(b,'it'));if(!names.length){bot('<p><strong>Nessun buono trovato</strong></p><p>Account collegato, ma il Worker non ha restituito buoni nel campo dati del cliente.</p>');addInline([{label:'Aggiorna dati',action:'live_refresh',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}if(mode==='buoni'){bot('<p class="buoni-intro"><strong>Ecco i tuoi buoni disponibili 🎟️</strong></p>');const list=document.createElement('div');list.className='merchant-summary-list';names.forEach(n=>{const cards=liveCards.filter(c=>canonicalShop(cardShop(c))===canonicalShop(n));const total=cards.reduce((sum,c)=>sum+Math.round(cardBalance(c)*100),0)/100;const color=merchantColor(n,cards[0]);const btn=document.createElement('button');btn.className='quick-btn';btn.style.setProperty('background',color,'important');btn.style.setProperty('border','2px solid #111','important');btn.style.setProperty('--merchant-color',color);btn.innerHTML=`<span class="ico">🎟️</span><span class="label">${escapeHtml(n)}<span class="sub">${cards.length} ${cards.length===1?'buono':'buoni'} · Totale ${euro(total)}</span></span>`;btn.dataset.action='live_shop_'+normalizedShop(n);btn.dataset.actionLabel=n;list.appendChild(btn);});chat.appendChild(list);addInline([{label:'✖ Annulla',action:'clear_buoni',kind:'cancel'}]);}else{bot('<p><strong>Sei alla cassa 🛒</strong></p>');{addActions(names.map(n=>({icon:'🎟️',label:n,sub:liveCards.filter(c=>canonicalShop(cardShop(c))===canonicalShop(n)).length+' buono/i',action:'live_shop_'+normalizedShop(n),merchant:true,merchantColor:merchantColor(n,liveCards.find(c=>canonicalShop(cardShop(c))===canonicalShop(n)))})).concat([{icon:'↩️',label:'✖ Annulla',action:'home',wide:true}]));}}}
+function renderLiveMerchant(shopKey){const found=liveCards.map((c,i)=>({c,i})).filter(x=>canonicalShop(cardShop(x.c))===canonicalShop(shopKey));if(!found.length){bot('<p>Non ho trovato buoni per questo esercente.</p>');addInline([{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}bot(`<p><strong>${escapeHtml(cardShop(found[0].c))}</strong></p><p>Seleziona un buono per visualizzare il valore e il codice a barre.</p>`);const shopColor=merchantColor(cardShop(found[0].c),found[0].c);addActions(found.map(({c,i})=>({icon:'🎫',label:`${euro(cardBalance(c))} · ${String(c?.type||'Buono')}`,sub:cardExpiry(c)?'Scadenza: '+displayDate(cardExpiry(c)):'Nessuna scadenza indicata',action:'live_card_'+i,wide:true,merchant:true,merchantColor:shopColor})).concat([{icon:'✖️',label:'✖ Annulla',action:'home',wide:true}]));}
+function barcodeBlock(id,label,code){return code?`<div class="barcode-panel"><strong>${label}</strong><svg id="${id}" aria-label="${label}"></svg><div class="barcode-value">${escapeHtml(code)}</div></div>`:'';}
+async function showLiveCard(index){const c=liveCards[index];if(!c){bot('Buono non trovato. Aggiorna i dati e riprova.');addInline([{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}const shop=cardShop(c),isIP=/^ip$|italiana petroli/i.test(shop),code1=cardCode1(c),code2=cardCode2(c),pin=cardPin(c),id1='livebc-'+index+'-1',id2='livebc-'+index+'-2';let html=`<p><strong>${escapeHtml(shop)} — dettaglio buono</strong></p><p><strong>Saldo:</strong> ${euro(cardBalance(c))}</p><p><strong>Scadenza:</strong> ${escapeHtml(displayDate(cardExpiry(c)))}</p><p><strong>Cumulabilità:</strong> ${escapeHtml(checkoutCumulabilityLabel(c))}</p><p><strong>Frazionabilità:</strong> ${escapeHtml(checkoutFractionabilityLabel(c,shop))}</p>`;if(code1)html+=barcodeBlock(id1,'CODICE 1',code1);if(code2)html+=barcodeBlock(id2,'CODICE 2',code2);if(pin&&!isIP)html+=`<div class="barcode-panel"><strong>PIN</strong><div class="barcode-value">${escapeHtml(pin)}</div></div>`;if(code1||code2)html+='<div class="red-barcode-warning">NON UTILIZZARE QUESTO BARCODE FUORI DALLA PROCEDURA ALLA CASSA: potresti perdere il conteggio del saldo reale.</div>';if(!code1&&!code2)html+='<p class="live-muted">Questo buono non contiene codici standard.</p>';html+='<p class="live-muted">La visualizzazione non modifica il saldo. Per registrare l’utilizzo, segui sempre la procedura alla cassa di TUTTOBON.</p>';bot(html);setTimeout(()=>{[[id1,code1],[id2,code2]].forEach(([id,value])=>{const svg=document.getElementById(id);if(svg&&value&&window.JsBarcode){try{JsBarcode(svg,value,{format:'CODE128',displayValue:false,margin:5,height:78,width:1.6,background:'#ffffff',lineColor:'#111111'});}catch(e){svg.outerHTML='<div class="live-muted">Barcode grafico non disponibile; usa il codice riportato.</div>';}}});scrollLatest();},100);addInline([{label:'✖ Annulla',action:'home',kind:'cancel'}]);}
+function handleLiveAction(action){if(action==='live_refresh'){loadLiveData().then(()=>{bot('Dati aggiornati.');if(activeSection==='cassa')startCheckoutFlow();else runAction('buoni');}).catch(e=>{bot('<p><strong>Aggiornamento non riuscito</strong></p><p>'+escapeHtml(e.message)+'</p><p>Non è necessario collegare di nuovo l’account se risulti già autenticato.</p>');addInline([{label:'✖ Annulla',action:'home',kind:'cancel'}]);});return;}if(action.startsWith('live_card_')){showLiveCard(Number(action.slice(10)));return;}if(action.startsWith('live_shop_')){renderLiveMerchant(action.slice(10));return;}}
+function expiryDays(c){const stamp=expiryValue(c);if(stamp===null)return null;const now=new Date();const today=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate());return Math.floor((stamp-today)/86400000);}
+function expiryLevel(c){const days=expiryDays(c);if(days===null)return null;if(days<0)return 'black';if(days<=7)return 'red';if(days<=30)return 'orange';if(days<=45)return 'yellow';return 'green';}
+function expiryDot(c){const level=expiryLevel(c);if(!level)return '';const colors={black:'#111827',red:'#dc2626',orange:'#f97316',yellow:'#eab308',green:'#16a34a'};const names={black:'Buono scaduto',red:'Scadenza entro 7 giorni',orange:'Scadenza entro 30 giorni',yellow:'Scadenza entro 45 giorni',green:'Scadenza oltre 45 giorni'};return `<span class="expiry-dot expiry-${level}" role="img" aria-label="${names[level]}" title="${names[level]}" style="display:inline-block;width:11px;height:11px;border-radius:50%;background:${colors[level]};margin-right:7px;vertical-align:middle;flex:0 0 11px"></span>`;}
+function expiryDescription(c){const days=expiryDays(c);if(days===null)return 'Data non disponibile';if(days<0)return `Scaduto da ${Math.abs(days)} ${Math.abs(days)===1?'giorno':'giorni'}`;if(days===0)return 'Scade oggi';if(days===1)return 'Scade domani';return `Scade tra ${days} giorni`;}
+function updateExpiryWarningBadge(){const urgent=liveCards.some(c=>{const d=expiryDays(c);return d!==null&&d<=45;});document.querySelectorAll('.quick-btn[data-action="scadenze"],.nav-btn[data-nav="scadenze"]').forEach(button=>{let badge=button.querySelector('.expiry-warning-badge');if(urgent){if(!badge){badge=document.createElement('span');badge.className='expiry-warning-badge';badge.setAttribute('role','status');button.appendChild(badge);}badge.textContent='';badge.setAttribute('aria-label','Attenzione: ci sono buoni in scadenza entro 45 giorni');badge.title=badge.getAttribute('aria-label');badge.hidden=false;}else if(badge)badge.remove();});}
+function renderLiveExpiry(){updateExpiryWarningBadge();const expiredInTrash=(Array.isArray(liveState?.trash)?liveState.trash:[]).filter(c=>{const d=expiryDays(c);return d!==null&&d<0;});const rows=[...liveCards.filter(c=>cardExpiry(c)),...expiredInTrash].filter((c,i,a)=>a.findIndex(x=>String(x?.id??x?.cardId??x?.uidCard??'')===String(c?.id??c?.cardId??c?.uidCard??''))===i).sort((a,b)=>{const da=expiryDays(a),db=expiryDays(b);return (da===null?Infinity:da)-(db===null?Infinity:db);});if(!rows.length){bot('<div class="expiry-intro"><strong>Le mie scadenze 📅</strong><p>Non risultano date di scadenza nei campi standard dei buoni restituiti.</p></div>');addInline([{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}const legend='<div class="expiry-legend"><strong>LEGENDA SCADENZE</strong><div class="expiry-legend-items"><span><i class="expiry-key expiry-key-black"></i>Già scaduto</span><span><i class="expiry-key expiry-key-red"></i>1–7 giorni</span><span><i class="expiry-key expiry-key-orange"></i>8–30 giorni</span><span><i class="expiry-key expiry-key-yellow"></i>31–45 giorni</span><span><i class="expiry-key expiry-key-green"></i>Oltre 45 giorni</span></div></div>';const items=rows.map(c=>{const shop=cardShop(c),color=merchantColor(shop,c),isTrash=(Array.isArray(liveState?.trash)?liveState.trash:[]).some(t=>String(t?.id??t?.cardId??t?.uidCard??'')===String(c?.id??c?.cardId??c?.uidCard??''));return `<div class="expiry-card" style="--expiry-merchant-color:${escapeHtml(color)}"><div class="expiry-card-main"><strong class="expiry-shop">${escapeHtml(shop)}</strong><span class="expiry-status-dot">${expiryDot(c)}</span></div><div class="expiry-card-date"><strong>Scadenza:</strong> ${escapeHtml(displayDate(cardExpiry(c)))}</div><div class="expiry-card-description">${escapeHtml(expiryDescription(c))}${isTrash?' · Nel Cestino':''}</div></div>`;}).join('');const alert=liveCards.some(c=>{const d=expiryDays(c);return d!==null&&d<=45;})?'<div class="expiry-alert"><strong>Attenzione:</strong> hai uno o più buoni in scadenza entro 45 giorni. Controlla i pallini colorati.</div>':'';bot('<div class="expiry-intro"><strong>Le mie scadenze 📅</strong><p>Elenco aggiornato dai dati del tuo account.</p>'+alert+'</div>'+legend+'<div class="expiry-list">'+items+'</div>');addInline([{label:'✖ Annulla',action:'home',kind:'cancel'}]);}
+
+// Ogni area principale ha una conversazione separata: i messaggi non si mescolano.
+let activeSection='home';const sectionChats={};const homeMarkup=chat.innerHTML;const SUPPORT_HISTORY_KEY='tuttobon_assistance_history_v338';try{const savedSupport=localStorage.getItem(SUPPORT_HISTORY_KEY);if(savedSupport)sectionChats.aiuto=savedSupport;}catch(e){}
+function saveSupportHistory(html){try{localStorage.setItem(SUPPORT_HISTORY_KEY,html||'');}catch(e){console.warn('Cronologia assistenza non salvata localmente:',e);}}
+function sectionForAction(action){if(['cassa','buoni','scadenze','ordini','aiuto'].includes(action))return action;return null;}
+function updateComposerVisibility(section){const wrap=document.getElementById('composerWrap');if(wrap)wrap.classList.toggle('assistance-active',section==='aiuto');document.body.classList.toggle('assistance-mode',section==='aiuto');const clearBtn=document.getElementById('clearAssistanceChatBtn');if(clearBtn)clearBtn.hidden=section!=='aiuto';}
+function ensureAssistanceWelcome(){let w=chat.querySelector('.assistance-welcome');if(!w){bot('<p><strong>Benvenuto nell’area assistenza <span class="welcome-brand"><span class="tutto">tutto</span><span class="bon">bon</span></span></strong></p><p>Scrivi o manda un messaggio e verrai ricontattato appena possibile!</p>');w=chat.lastElementChild;if(w)w.classList.add('assistance-welcome');}if(w){const date=chat.querySelector('.date-pill');if(date&&date.nextSibling!==w)chat.insertBefore(w,date.nextSibling);else if(!date&&chat.firstElementChild!==w)chat.insertBefore(w,chat.firstChild);}return w;}
+function activateSection(section,reset=false){updateComposerVisibility(section);if(activeSection&&activeSection!==section){sectionChats[activeSection]=chat.innerHTML;if(activeSection==='aiuto')saveSupportHistory(chat.innerHTML);}activeSection=section;if(section==='home'){chat.innerHTML=homeMarkup;stage='home';sectionChats.home=homeMarkup;updateSupportUnreadBadge();updateExpiryWarningBadge();}else if((reset&&section!=='aiuto')||['cassa','buoni','ordini','scadenze'].includes(section)||!sectionChats[section]){chat.innerHTML='<div class="date-pill">'+new Date().toLocaleDateString('it-IT')+'</div>';sectionChats[section]=chat.innerHTML;stage=section;}else{chat.innerHTML=sectionChats[section];stage=section;}document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===section));if(section==='aiuto'){ensureAssistanceWelcome();showPendingSupportReplies();supportUnreadCount=0;updateSupportUnreadBadge();persistSupportReadThrough(supportLastMessageId);sectionChats.aiuto=chat.innerHTML;saveSupportHistory(chat.innerHTML);}scrollLatest();if(typeof updateOfflineControls==='function')updateOfflineControls();}
+let scrollLatestTimer;
+function scrollLatest(){
+  // In Ordina buoni, nella schermata iniziale di scelta esercente, resta in alto:
+  // il cliente deve leggere prima la descrizione e poi scorrere da solo verso i buoni.
+  clearTimeout(scrollLatestTimer);
+  const keepOrderIntroAtTop = activeSection==='ordini' && stage==='order_shop';
+  const position=()=>{
+    if(keepOrderIntroAtTop){
+      chat.scrollTop=0;
+      chat.scrollTo({top:0,behavior:'auto'});
+      return;
+    }
+    // Home: mostra sempre dall'inizio il messaggio di benvenuto, senza tagliarlo.
+    if(activeSection==='home'){
+      chat.scrollTop=0;
+      chat.scrollTo({top:0,behavior:'auto'});
+      return;
+    }
+    const max=Math.max(0,chat.scrollHeight-chat.clientHeight);
+    chat.scrollTop=max;
+    if(max>0) chat.scrollTo({top:max,behavior:'smooth'});
+  };
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    position();
+    scrollLatestTimer=setTimeout(position,180);
+  }));
+}
+function timeNow(){return new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function addMessage(text,mine=false,html=false){const row=document.createElement('div');row.className='message-row'+(mine?' mine':'');if(!mine){const av=document.createElement('div');av.className='avatar';av.textContent='TB';row.appendChild(av);}const b=document.createElement('div');b.className='bubble';if(!mine&&activeSection==='cassa')b.classList.add('checkout-procedure-message');b.innerHTML=(html?text:`<p>${escapeHtml(text).replace(/\n/g,'<br>')}</p>`)+`<span class="time">${timeNow()}</span>`;row.appendChild(b);chat.appendChild(row);scrollLatest();return b;}
+function addActions(actions){const grid=document.createElement('div');grid.className='quick-grid';grid.style.marginTop='-3px';actions.forEach(a=>{const btn=document.createElement('button');const isCancel=a.action==='home'||a.action==='clear_buoni'||a.action==='exit_assistance';btn.className='quick-btn'+(a.wide?' wide-btn':'')+(a.merchant?' checkout-merchant':'')+(isCancel?' cancel-quick':'');if(isCancel){a={...a,icon:'✖',label:'Annulla'};}if(a.merchant){btn.style.setProperty('--merchant-color',a.merchantColor||'#1677e8');btn.style.borderColor=a.merchantColor||'#1677e8';btn.style.background=a.merchantColor||'#1677e8';btn.style.border='2px solid #111';btn.style.color='#111';btn.style.minHeight='48px';btn.style.padding='9px 14px';btn.style.justifyContent='flex-start';}btn.innerHTML=`<span class="ico">${a.icon||'➡️'}</span><span class="label">${a.label}${a.sub?`<span class="sub">${a.sub}</span>`:''}</span>`;btn.dataset.action=a.action;btn.dataset.actionLabel=a.label;grid.appendChild(btn);});chat.appendChild(grid);if(typeof updateOfflineControls==='function')updateOfflineControls();scrollLatest();}
+function addInline(actions){const wrap=document.createElement('div');wrap.className='inline-actions';actions.forEach(a=>{const btn=document.createElement('button');btn.type='button';btn.className='action-btn '+(a.kind||'');btn.textContent=a.label;btn.dataset.action=a.action;btn.dataset.actionLabel=a.label;wrap.appendChild(btn);});chat.appendChild(wrap);if(typeof updateOfflineControls==='function')updateOfflineControls();scrollLatest();}
+function notify(s){toast.textContent=s;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2600);}
+function bot(text){addMessage(text,false,/<[a-z][\s\S]*>/i.test(text));}
+// Procedure operative allineate alle regole della cassa e degli ordini Telegram.
+let checkoutShop='', checkoutTotalCents=0, checkoutAmountDraft='', checkoutPlan=[], checkoutVisited=[], orderMerchants=[], orderCart=[], orderSelectedMerchant=null, orderSelectedAmount=null, orderCustomMax=null, orderSelectedFractionable=false;
+function cents(v){const n=Number(String(v??0).replace(',','.'));return Number.isFinite(n)?Math.round(n*100):0;}
+function euroCents(v){return (Number(v||0)/100).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+function parseMoneyInput(raw){let s=String(raw??'').trim().toLowerCase().replace(/€/g,'').replace(/\b(euro|eur)\b/g,' ').replace(/\s+/g,' ').trim();let m=s.match(/^(\d{1,6})\s*(?:,|\.|e|-|\s)\s*(\d{1,2})$/i);if(m)s=m[1]+'.'+m[2].padStart(2,'0');else s=s.replace(/,/g,'.').replace(/\s/g,'');if(!/^\d+(?:\.\d{1,2})?$/.test(s))return null;const n=Number(s);return Number.isFinite(n)&&n>0&&n<=100000?Math.round(n*100):null;}
+function expiryValue(c){if(c?.no_expiry===true||c?.noExpiry===true||String(c?.no_expiry??c?.noExpiry??'').toLowerCase()==='true')return null;const raw=String(cardExpiry(c)||'').trim();if(!raw||/nessuna|senza scadenza/i.test(raw))return null;let m=raw.match(/^(\d{4})-(\d{2})-(\d{2})(?:$|T|\s)/);if(m)return Date.UTC(+m[1],+m[2]-1,+m[3]);m=raw.match(/^(\d{2})[\/-](\d{2})[\/-](\d{4})$/);if(m)return Date.UTC(+m[3],+m[2]-1,+m[1]);return null;}
+function checkoutIsFractionable(c,shop){const status=String(c?.fractionabilityStatus||'').trim().toUpperCase();if(['SI','NO'].includes(status))return status==='SI';if(/^(tamoil|rossetto|martinelli)$/.test(normalizedShop(shop)))return false;if(Object.prototype.hasOwnProperty.call(c||{},'fractionable'))return !(c.fractionable===false||String(c.fractionable).toLowerCase()==='false'||String(c.fractionable)==='0');if(Object.prototype.hasOwnProperty.call(c||{},'cumulable')&&(c.cumulable===false||String(c.cumulable)==='false'||String(c.cumulable)==='0'))return true;return true;}
+function checkoutIsCumulable(c){const status=String(c?.cumulabilityStatus||'').trim().toUpperCase();if(status==='SI')return true;if(status==='NO'||status==='DA VERIFICARE')return false;if(typeof c?.cumulable==='boolean')return c.cumulable;return true;}
+function checkoutCumulabilityLabel(c){const status=String(c?.cumulabilityStatus||'').trim().toUpperCase();if(status==='SI')return 'cumulabile';if(status==='NO')return 'non cumulabile';if(status==='DA VERIFICARE')return 'cumulabilità da verificare — usato da solo per sicurezza';return checkoutIsCumulable(c)?'cumulabile':'non cumulabile';}
+function checkoutFractionabilityLabel(c,shop){const status=String(c?.fractionabilityStatus||'').trim().toUpperCase();if(status==='SI')return 'frazionabile';if(status==='NO')return 'non frazionabile';if(status==='DA VERIFICARE')return 'da verificare (regola standard in uso)';return checkoutIsFractionable(c,shop)?'frazionabile':'non frazionabile';}
+function checkoutCardId(c){return String(c?.id??c?.cardId??c?.uidCard??'');}
+function merchantColor(shop,card){/* V3.72: colore amministrativo prioritario; riconoscimento tramite nome ufficiale e alias, coerente in tutte le viste. */const configured=tbConfiguredMerchantColor(shop);if(configured)return configured;const n=canonicalShop(shop);if(n.includes('rossetto'))return '#d93636';if(n.includes('martinelli'))return '#f5cf35';if(n==='pam'||n.includes('pam'))return '#299447';if(n.includes('tosano'))return '#ef8a22';if(n==='italianapetroli')return '#d92f36';if(n.includes('tamoil'))return '#c92e36';if(n.includes('conad'))return '#d83b3b';if(n.includes('esselunga'))return '#cf3434';if(n.includes('eurospin'))return '#1875bd';if(n.includes('migross'))return '#2b8b57';const supplied=card?.merchantColor||card?.merchant_color||card?.color||card?.colour;if(supplied&&/^#[0-9a-f]{3,8}$/i.test(String(supplied)))return String(supplied);return '#1677e8';}
+async function startCheckoutFlow(){tbCheckoutOfflineMode=false;tbStartCheckoutNetworkMonitor();if(!liveMode&&gwAuth?.currentUser){try{await loadLiveData();}catch(e){bot('<p><strong>Account già autenticato</strong></p><p>Non riesco a caricare i buoni dal servizio in questo momento. Riprova ad aggiornare i dati; non serve collegare di nuovo l’account.</p>');addInline([{label:'Riprova',action:'live_refresh',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}}if(!liveMode){bot('Per caricare i buoni reali, accedi al tuo account TUTTOBON.');addInline([{label:'Accedi',action:'connect',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}if(gwAuth?.currentUser){const reachable=await tbProbeWorker(2200);tbCheckoutOfflineMode=!reachable;accountOnlineReady=reachable;if(reachable){await tbSyncQueue();}else{accountOnlineReady=false;}}const checkoutGroups=new Map();liveCards.filter(c=>cardBalance(c)>0).forEach(c=>{const n=cardShop(c),key=canonicalShop(n);if(!checkoutGroups.has(key))checkoutGroups.set(key,n);});const shops=[...checkoutGroups.values()].sort((a,b)=>a.localeCompare(b,'it'));if(!shops.length){bot('Non risultano buoni con saldo disponibile nel tuo account.');addInline([{label:'Aggiorna buoni',action:'live_refresh',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}stage='cassa_shop';bot('<p><strong>🛒 SONO ALLA CASSA</strong></p>'+(tbCheckoutOfflineMode?'<p><strong>🟠 MODALITÀ OFFLINE</strong>: rete debole o servizio non raggiungibile. Uso i buoni già salvati su questo telefono; la cassa non aspetterà il server.</p>':'<p>Connessione disponibile. Se la rete si interrompe, passerò automaticamente alla cassa offline.</p>')+'<p>Scegli l’esercente dove stai pagando.</p>');const actions=shops.map(n=>{const c=liveCards.find(x=>canonicalShop(cardShop(x))===canonicalShop(n)&&cardBalance(x)>0);return {icon:'',label:n,action:'checkout_shop_'+encodeURIComponent(n),merchantColor:merchantColor(n,c),merchant:true,wide:true};});actions.push({icon:'✖️',label:'✖ Annulla',action:'home',wide:true});addActions(actions);}
+function showCheckoutKeypad(){stage='cassa_amount';checkoutAmountDraft='';bot(`<p><strong>${escapeHtml(checkoutShop)}</strong></p><p>Inserisci l’importo da pagare.</p><div class="checkout-keypad"><div class="checkout-display" id="checkoutAmountDisplay">0,00 €</div><div class="checkout-keys">${['1','2','3','4','5','6','7','8','9',',','0','⌫'].map(k=>`<button type="button" class="checkout-key" data-key="${k}">${k}</button>`).join('')}</div><button type="button" class="action-btn primary" data-key="submit">Invio</button><button type="button" class="action-btn cancel" data-key="cancel">Torna all’inizio</button></div>`);}
+function updateCheckoutDisplay(){const el=document.getElementById('checkoutAmountDisplay');if(!el)return;let raw=checkoutAmountDraft||'';if(!raw){el.textContent='0,00 €';return;}const parts=raw.split(',');const whole=parts[0]||'0';const decimals=parts.length>1?parts[1]:'';el.textContent=Number(whole).toLocaleString('it-IT')+(parts.length>1?','+decimals:'')+' €';}
+function submitCheckoutAmount(){const raw=checkoutAmountDraft.replace(',','.');const value=Number(raw);if(!Number.isFinite(value)||value<=0||!/^\d{1,6}(?:,\d{0,2})?$/.test(checkoutAmountDraft)){notify('Inserisci un importo valido, ad esempio 158,23.');return;}checkoutTotalCents=Math.round(value*100);const result=buildCheckoutPlan(checkoutShop,checkoutTotalCents);checkoutPlan=result.plan;checkoutVisited=[];if(!checkoutPlan.length){showCheckoutPlan();return;}showCheckoutCode(0);}
+function buildCheckoutPlan(shop,totalCents){const candidates=liveCards.map((card,index)=>({card,index,balanceCents:cents(cardBalance(card)),fractionable:checkoutIsFractionable(card,shop),cumulable:checkoutIsCumulable(card),expiry:expiryValue(card)})).filter(x=>x.balanceCents>0&&(x.expiry===null||x.expiry>=Date.UTC(new Date().getFullYear(),new Date().getMonth(),new Date().getDate()))&&canonicalShop(cardShop(x.card))===canonicalShop(shop)).sort((a,b)=>{if(a.expiry&&b.expiry&&a.expiry!==b.expiry)return a.expiry-b.expiry;if(a.expiry&&!b.expiry)return -1;if(!a.expiry&&b.expiry)return 1;return a.index-b.index;});const isolated=candidates.filter(x=>!x.cumulable);for(const x of isolated){if(!x.fractionable&&x.balanceCents>totalCents)continue;const useCents=x.fractionable?Math.min(x.balanceCents,totalCents):x.balanceCents;if(useCents>0)return {plan:[{...x,useCents,expectedBalanceCents:x.balanceCents}],remainingCents:Math.max(0,totalCents-useCents)};}const combinable=candidates.filter(x=>x.cumulable);let remaining=totalCents;const plan=[];for(const x of combinable.filter(x=>!x.fractionable)){if(remaining<=0)break;if(x.balanceCents>remaining)continue;plan.push({...x,useCents:x.balanceCents,expectedBalanceCents:x.balanceCents});remaining-=x.balanceCents;}for(const x of combinable.filter(x=>x.fractionable)){if(remaining<=0)break;const useCents=Math.min(x.balanceCents,remaining);if(useCents<=0)continue;plan.push({...x,useCents,expectedBalanceCents:x.balanceCents});remaining-=useCents;}return {plan,remainingCents:remaining};}
+function showCheckoutPlan(){const used=checkoutPlan.reduce((a,x)=>a+x.useCents,0);if(used+Math.max(0,checkoutTotalCents-used)!==checkoutTotalCents){bot('Errore nel calcolo: per sicurezza non è stata avviata alcuna modifica.');addInline([{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}let html=`<p><strong>🧾 RIEPILOGO CASSA — ${escapeHtml(checkoutShop)}</strong></p><p><strong>Importo della spesa:</strong> ${euroCents(checkoutTotalCents)}</p>`;if(!checkoutPlan.length){html+='<p>Non ho trovato buoni utilizzabili per questo importo.</p>';}else{html+='<p><strong>Buoni da utilizzare:</strong></p>';checkoutPlan.forEach((x,i)=>{html+=`<p>${i+1}. ${escapeHtml(cardShop(x.card))} — saldo ${euroCents(x.balanceCents)}, utilizzo ${euroCents(x.useCents)}${x.fractionable?' (frazionabile)':' (non frazionabile)'} · ${escapeHtml(checkoutCumulabilityLabel(x.card))}</p>`;});}html+=`<p><strong>Totale coperto dai buoni:</strong> ${euroCents(used)}</p><p><strong>Residuo da pagare con altro metodo:</strong> ${euroCents(checkoutTotalCents-used)}</p><p class="live-muted">Il saldo non cambia finché non confermi di aver utilizzato i buoni.</p>`;bot(html);const actions=[];if(checkoutPlan.length)actions.push({icon:'🎫',label:`Apri buono 1 · ${euroCents(checkoutPlan[0].useCents)}`,action:'checkout_open_0',wide:true});actions.push({icon:'✏️',label:'Modifica importo',action:'checkout_edit'});actions.push({icon:'✖️',label:'Annulla — nessun saldo modificato',action:'home',wide:true});addActions(actions);}
+let checkoutPopupActive=false;let checkoutCodeStep=1;
+function showCheckoutCode(index){
+ checkoutCodeStep=1;
+ const x=checkoutPlan[index];
+ if(!x){return;}
+ const c=x.card,shop=cardShop(c),isTamoil=/tamoil/i.test(shop),isIP=/^ip$|italiana petroli/i.test(shop),code1=cardCode1(c),code2=cardCode2(c),pin=cardPin(c);
+ const phaseColors=['#e53935','#fb8c00','#fdd835','#43a047'];
+ const phase=checkoutPlan.length<=1?3:Math.round(index*3/(checkoutPlan.length-1));
+ const phaseColor=phaseColors[phase];
+ const phaseText=phase===2?'#111':'#fff';
+ const title=document.getElementById('barcodeModalTitle');
+ const amountLabel=document.getElementById('checkoutPopupAmount');
+ barcodeModalContent.innerHTML='';
+ const tamoilTwoPages=isTamoil&&!!code2;
+ const pageCodeLabel=tamoilTwoPages?(checkoutCodeStep===1?'CODICE 1':'CODICE 2'):'';
+ if(title){title.textContent=`BUONO ${index+1} DI ${checkoutPlan.length}`+(pageCodeLabel?' — '+pageCodeLabel:'');title.style.background=phaseColor;title.style.color=phaseText;title.style.padding='8px 6px';title.style.borderRadius='10px';title.style.margin='0';}
+ if(amountLabel){amountLabel.textContent=`DA UTILIZZARE: ${euroCents(x.useCents)}`;}
+ let html='';
+ if(isTamoil&&tamoilTwoPages){
+   const value=checkoutCodeStep===1?code1:code2;
+   const label=checkoutCodeStep===1?'CODICE 1':'CODICE 2';
+   if(value)html+=barcodeBlock('checkout-popup-'+index+'-'+checkoutCodeStep,label,value);
+ }else{
+   if(code1)html+=barcodeBlock('checkout-popup-'+index+'-1',isIP?'CODICE BUONO':'CODICE 1',code1);
+   if(code2)html+=barcodeBlock('checkout-popup-'+index+'-2',isIP?'PIN':'CODICE 2',code2);
+   if(pin&&!isIP&&!isTamoil)html+=`<div class="barcode-panel"><strong>PIN</strong><div class="barcode-value">${escapeHtml(pin)}</div></div>`;
+ }
+ if(!html)html='<div class="checkout-popup-no-code">QUESTO BUONO NON CONTIENE CODICI VISUALIZZABILI</div>';
+ barcodeModalContent.innerHTML=html;
+ const visibleCode=isTamoil&&tamoilTwoPages?(checkoutCodeStep===1?code1:code2):null;
+ const visibleId=isTamoil&&tamoilTwoPages?`checkout-popup-${index}-${checkoutCodeStep}`:null;
+ const barcodePairs=visibleId?[[visibleId,visibleCode]]:[[ `checkout-popup-${index}-1`,code1],[`checkout-popup-${index}-2`,code2]];
+ barcodePairs.forEach(([id,value])=>{const svg=document.getElementById(id);if(svg&&value&&window.JsBarcode){try{JsBarcode(svg,value,{format:'CODE128',displayValue:false,margin:5,height:90,width:1.7,background:'#ffffff',lineColor:'#111111'});}catch(e){svg.outerHTML='<div class="checkout-popup-no-code">CODICE TESTUALE DISPONIBILE QUI SOTTO</div>';}}});
+ checkoutPopupActive=true;barcodeModal.style.background=phaseColor;barcodeModal.style.padding='14px';barcodeModal.hidden=false;document.body.style.overflow='hidden';
+ const next=document.getElementById('checkoutPopupNext');if(next){next.textContent=tamoilTwoPages&&checkoutCodeStep===1?'➜':'✓';next.setAttribute('aria-label',tamoilTwoPages&&checkoutCodeStep===1?'Mostra Codice 2':'Conferma buono e passa al successivo');}
+}
+async function cancelCheckoutPopup(){if(!checkoutPopupActive){closeBarcodeModal();return;}checkoutPopupActive=false;closeBarcodeModal();checkoutPlan=[];checkoutVisited=[];checkoutTotalCents=0;checkoutAmountDraft='';activateSection('cassa',true);await startCheckoutFlow();}
+async function advanceCheckoutPopup(){if(!checkoutPopupActive)return;const current=checkoutVisited.length;if(current>=checkoutPlan.length)return;const currentCard=checkoutPlan[current]?.card;const currentShop=currentCard?cardShop(currentCard):'';const isTamoil=/tamoil/i.test(currentShop);const hasSecondTamoilCode=isTamoil&&!!cardCode2(currentCard);if(hasSecondTamoilCode&&checkoutCodeStep===1){checkoutCodeStep=2;showCheckoutCodePageTwo(current);return;}checkoutVisited.push(current);if(current+1<checkoutPlan.length){showCheckoutCode(current+1);return;}checkoutPopupActive=false;closeBarcodeModal();await completeCheckout();}
+function showCheckoutCodePageTwo(index){const x=checkoutPlan[index];if(!x)return;checkoutCodeStep=2;const c=x.card,shop=cardShop(c),code2=cardCode2(c);const phaseColors=['#e53935','#fb8c00','#fdd835','#43a047'];const phase=checkoutPlan.length<=1?3:Math.round(index*3/(checkoutPlan.length-1));const phaseColor=phaseColors[phase],phaseText=phase===2?'#111':'#fff';const title=document.getElementById('barcodeModalTitle'),amountLabel=document.getElementById('checkoutPopupAmount');barcodeModalContent.innerHTML='';if(title){title.textContent=`BUONO ${index+1} DI ${checkoutPlan.length} — CODICE 2`;title.style.background=phaseColor;title.style.color=phaseText;}if(amountLabel)amountLabel.textContent=`DA UTILIZZARE: ${euroCents(x.useCents)}`;barcodeModalContent.innerHTML=code2?barcodeBlock('checkout-popup-'+index+'-2','CODICE 2',code2):'<div class="checkout-popup-no-code">CODICE 2 NON DISPONIBILE</div>';const svg=document.getElementById('checkout-popup-'+index+'-2');if(svg&&code2&&window.JsBarcode){try{JsBarcode(svg,code2,{format:'CODE128',displayValue:false,margin:5,height:90,width:1.7,background:'#ffffff',lineColor:'#111111'});}catch(e){svg.outerHTML='<div class="checkout-popup-no-code">CODICE TESTUALE DISPONIBILE QUI SOTTO</div>';}}const next=document.getElementById('checkoutPopupNext');if(next){next.textContent='✓';next.setAttribute('aria-label','Conferma Codice 2 e passa al successivo');}barcodeModal.style.background=phaseColor;barcodeModal.hidden=false;}
+
+function checkoutMarkUsed(index){checkoutVisited=checkoutVisited||[];const button=document.querySelector(`[data-action="checkout_used_${index}"]`);if(index!==checkoutVisited.length){bot('Segui l’ordine indicato: conferma prima il buono attualmente richiesto.');return;}if(button){button.classList.remove('used-buono');button.classList.add('used-confirmed');button.textContent='🔴 BUONO '+(index+1)+' UTILIZZATO';button.disabled=true;}checkoutVisited.push(index);if(index+1<checkoutPlan.length){bot(`<p><strong>BUONO ${index+1} UTILIZZATO</strong></p><p>Ora premi il pulsante verde per passare al buono ${index+2}.</p>`);addInline([{label:`PASSA AL BUONO ${index+2}`,action:'checkout_open_'+(index+1),kind:'checkout-next'},{label:'✖ ANNULLA',action:'home',kind:'cancel'}]);}else{showCheckoutFinal();}}
+function showCheckoutFinal(){const used=checkoutPlan.reduce((a,x)=>a+x.useCents,0);let html=`<p><strong>✅ RIEPILOGO FINALE DELLA CASSA</strong></p><p>Esercente: <strong>${escapeHtml(checkoutShop)}</strong></p><p>Spesa: <strong>${euroCents(checkoutTotalCents)}</strong></p><p>Coperto dai buoni: <strong>${euroCents(used)}</strong></p><p>Residuo: <strong>${euroCents(Math.max(0,checkoutTotalCents-used))}</strong></p><p>Hai confermato l'utilizzo di ${checkoutVisited.length} buono/i. Premi il pulsante finale solo se vuoi aggiornare i saldi reali.</p>`;bot(html);addInline([{label:'CONFERMA UTILIZZO E AGGIORNA SALDI',action:'checkout_complete',kind:'checkout-final'},{label:'✖ ANNULLA',action:'home',kind:'cancel'}]);}
+async function completeCheckout(){if(checkoutVisited.length<checkoutPlan.length){bot('Prima devi confermare di aver utilizzato ciascun buono previsto.');showCheckoutCode(checkoutVisited.length);return;}if(!checkoutPlan.length){bot('Non ci sono buoni da registrare come utilizzati.');return;}let entry=null;try{const items=checkoutPlan.map(x=>({cardId:checkoutCardId(x.card),useCents:x.useCents,expectedBalanceCents:x.expectedBalanceCents}));if(items.some(x=>!x.cardId)){throw new Error('Un buono non contiene un identificativo sicuro. Nessun saldo è stato modificato.');}const body={shop:checkoutShop,totalCents:checkoutTotalCents,items,operationId:tbOperationId()};
+ // Persistiamo prima l'operazione con un ID stabile: un retry non può applicare due volte la stessa spesa.
+ entry=await tbQueueCheckout(body);
+ if(!navigator.onLine||tbCheckoutOfflineMode||tbNetworkQuality==='offline'){const updated=tbApplyCheckoutToState(liveState,entry.body);await tbSetLocalState(updated);bot('<p><strong>🟠 Cassa registrata sul telefono</strong></p><p>I saldi disponibili su questo dispositivo sono stati aggiornati subito.</p><p><strong>La spesa è in attesa di verifica e sincronizzazione con il server.</strong> Non cancellare i dati del browser e non ripetere la stessa spesa. Quando tornerà Internet, TUTTOBON invierà l’operazione in modo protetto da doppie registrazioni.</p>');checkoutPlan=[];tbCheckoutOfflineMode=false;tbStopCheckoutNetworkMonitor();addInline([{label:'Torna all’inizio',action:'home'}]);tbSetNetworkBadge();if(tbNetworkQuality==='online'&&navigator.onLine)tbSyncQueue().catch(()=>{});return;}
+ try{const result=await workerRequest('/api/webapp/checkout/complete',{method:'POST',body:entry.body});await tbStore('queue','readwrite',s=>s.delete(entry.id));await loadLiveData();bot(`<p><strong>✅ Utilizzo registrato</strong></p><p>Buoni utilizzati: ${euroCents(result.usedCents)}.</p><p>Importo da pagare con altro metodo: ${euroCents(result.remainingCents)}.</p><p>I saldi sono stati aggiornati nel tuo account.${Number(result.movedToTrashCount||0)>0?' I buoni arrivati a saldo zero sono stati spostati immediatamente nel Cestino e rimossi dai disponibili.':''}</p>`);checkoutPlan=[];tbCheckoutOfflineMode=false;tbStopCheckoutNetworkMonitor();addInline([{label:'Torna all’inizio',action:'home'}]);tbSetNetworkBadge();return;}
+ catch(netErr){if(netErr?.status>=400&&netErr.status<500&&netErr.status!==429){await tbStore('queue','readwrite',s=>s.delete(entry.id));await loadLiveData().catch(()=>{});throw netErr;}const updated=tbApplyCheckoutToState(liveState,entry.body);await tbSetLocalState(updated);entry.lastError=String(netErr?.message||netErr);entry.status='pending';await tbStore('queue','readwrite',s=>s.put(entry));tbNetworkQuality='offline';tbCheckoutOfflineMode=false;tbStopCheckoutNetworkMonitor();bot('<p><strong>🟠 Connessione interrotta: cassa salvata sul telefono</strong></p><p>I saldi locali sono stati aggiornati. Il server non ha confermato la ricezione, quindi l’operazione resta in coda con lo stesso identificativo e sarà verificata appena torna la connessione.</p><p><strong>Non ripetere la stessa spesa.</strong></p>');checkoutPlan=[];addInline([{label:'Torna all’inizio',action:'home'}]);tbSetNetworkBadge();return;}
+ }catch(e){tbCheckoutOfflineMode=false;tbStopCheckoutNetworkMonitor();bot('<p><strong>Non sono riuscito a registrare la cassa.</strong></p><p>'+escapeHtml(e.message)+'</p><p>Controlla i saldi prima di riprovare.</p>');addInline([{label:'Aggiorna dati',action:'live_refresh',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);}}
+async function startGuidedOrderFlow(){if(!liveMode){bot('Collega il tuo account TUTTOBON per consultare i tagli ordinabili configurati per ogni esercente.');addInline([{label:'Collega account TUTTOBON',action:'connect',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}try{const data=await workerRequest('/api/merchants');orderMerchants=(data.merchants||[]).filter(m=>m.telegram_enabled!==false&&Number(m.telegram_enabled??1)!==0);if(!orderMerchants.length)throw new Error('Nessun esercente abilitato agli ordini.');orderCart=[];showOrderMerchantPicker();}catch(e){bot('Non riesco a leggere la configurazione degli esercenti: '+escapeHtml(e.message));addInline([{label:'Riprova',action:'ordini',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);}}
+function showOrderMerchantPicker(){stage='order_shop';bot('<p><strong>🧾 ORDINA BUONI</strong></p><p>Scegli il buono per il supermercato o il servizio in base ai tagli disponibili.</p>');addActions(orderMerchants.map(m=>({icon:'',label:m.name,action:'order_shop_'+encodeURIComponent(m.id),merchant:true,merchantColor:merchantColor(m.name,m),wide:true})).concat([{icon:'✖️',label:'✖ Annulla',action:'home',wide:true}]));}
+function showOrderAmounts(m){orderSelectedMerchant=m;const denoms=Array.isArray(m.telegram_denoms)?m.telegram_denoms:(()=>{try{return JSON.parse(m.telegram_denoms_json||'[]')}catch{return[]}})();const amounts=[...new Set(denoms.map(Number).filter(n=>[5,10,25,50,100].includes(n)))].sort((a,b)=>a-b);stage='order_amount';let html=`<p><strong>${`<span class="merchant-title">${escapeHtml(m.name)}</span>`}</strong></p><p>Scegli il taglio del buono.</p>`;if(!amounts.length&&!m.telegram_custom_enabled){html+='<p>Non sono configurati tagli disponibili per questo esercente.</p>';bot(html);addInline([{label:'Scegli un altro esercente',action:'order_backshops'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}bot(html);const actions=amounts.map(a=>({icon:'🎟️',label:euro(a),action:'order_amount_'+a}));if(m.telegram_custom_enabled&&Number(m.telegram_custom_amount)>0)actions.push({icon:'✏️',label:`Importo personalizzato · max ${euro(Number(m.telegram_custom_amount))} · frazionabile`,action:'order_custom'});actions.push({icon:'↩️',label:'Torna agli esercenti',action:'order_backshops'});actions.push({icon:'✖️',label:'✖ Annulla',action:'home',wide:true});addActions(actions);}
+function showOrderQty(amount,fractionable){orderSelectedAmount=Number(amount);orderSelectedFractionable=!!fractionable;stage='order_qty';bot(`<p><strong>${`<span class="merchant-title">${escapeHtml(orderSelectedMerchant.name)}</span>`} — ${euro(orderSelectedAmount)}</strong></p><p>${fractionable?'FRAZIONABILE':'NON FRAZIONABILE'}</p><p>Quanti buoni vuoi ordinare?</p>`);addActions([1,2,3,4,5].map(n=>({icon:'🔢',label:String(n),action:'order_qty_'+n})).concat([{icon:'↩️',label:'Torna ai tagli',action:'order_backamounts'},{icon:'✖️',label:'✖ Annulla',action:'home',wide:true}]));}
+function showOrderCart(){stage='order_cart';const total=orderCart.reduce((s,x)=>s+x.qty*x.amount,0);let html='<p><strong>🛒 RIEPILOGO ORDINE</strong></p>';orderCart.forEach(x=>{html+=`<p>• ${x.qty} × ${escapeHtml(x.shop)} da ${euro(x.amount)} — ${x.fractionable?'FRAZIONABILE':'NON FRAZIONABILE'} = ${euro(x.qty*x.amount)}</p>`;});html+=`<p><strong>Totale richiesto: ${euro(total)}</strong></p><p>Controlla il riepilogo: ogni buono aggiunto compare qui. L’ordine sarà inviato all’amministratore e non significa che i buoni siano già disponibili.</p>`;bot(html);addActions([{icon:'➕',label:'Aggiungi buono',action:'order_add'},{icon:'✅',label:'Invia ordine',action:'order_send'},{icon:'✏️',label:'Ricomincia ordine',action:'order_restart',wide:true},{icon:'✖️',label:'✖ Annulla',action:'home',wide:true}]);}
+async function sendGuidedOrder(){if(!orderCart.length){showOrderMerchantPicker();return;}const total=orderCart.reduce((s,x)=>s+x.qty*x.amount,0);const message='ORDINE GUIDATO TUTTOBON CON TE\n'+orderCart.map(x=>`${x.qty} x ${x.shop} da ${euro(x.amount)} — ${x.fractionable?'FRAZIONABILE':'NON FRAZIONABILE'} = ${euro(x.qty*x.amount)}`).join('\n')+'\nTotale: '+euro(total);try{const r=await workerRequest('/api/webapp/request',{method:'POST',body:{type:'order',message}});bot(`<p><strong>✅ Ordine inviato!</strong></p><p>Numero ordine: <strong>${escapeHtml(r.requestId||'registrato')}</strong></p><p>Quando l’ordine sarà completato, riceverai un messaggio all’interno dell’area Assistenza.</p><p>Grazie e buona spesa! 🛒</p>`);orderCart=[];addInline([{label:'Torna all’inizio',action:'home',kind:'primary'}]);}catch(e){bot('Invio non riuscito: '+escapeHtml(e.message));addInline([{label:'Riprova invio',action:'order_send',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);}}
+function handleWorkflowAction(action){if(action.startsWith('checkout_shop_')){checkoutShop=decodeURIComponent(action.slice(14));showCheckoutKeypad();return true;}if(action==='checkout_edit'){showCheckoutKeypad();return true;}if(action==='checkout_summary'){showCheckoutFinal();return true;}if(action.startsWith('checkout_used_')){checkoutMarkUsed(Number(action.slice(14)));return true;}if(action.startsWith('checkout_open_')){const i=Number(action.slice(14));showCheckoutCode(i);return true;}if(action==='checkout_complete'){completeCheckout();return true;}if(action==='order_backshops'){showOrderMerchantPicker();return true;}if(action.startsWith('order_shop_')){const id=decodeURIComponent(action.slice(11));const m=orderMerchants.find(x=>String(x.id)===id);if(!m){bot('Esercente non disponibile.');showOrderMerchantPicker();return true;}showOrderAmounts(m);return true;}if(action.startsWith('order_amount_')){const amount=Number(action.slice(13));const denoms=Array.isArray(orderSelectedMerchant.telegram_denoms)?orderSelectedMerchant.telegram_denoms:(()=>{try{return JSON.parse(orderSelectedMerchant.telegram_denoms_json||'[]')}catch{return[]}})();const allowed=denoms.map(Number).includes(amount);if(!allowed){bot('Taglio non più disponibile.');showOrderAmounts(orderSelectedMerchant);return true;}showOrderQty(amount,false);return true;}if(action==='order_custom'){orderCustomMax=Number(orderSelectedMerchant?.telegram_custom_amount||0);stage='order_custom_amount';bot(`<p><strong>${escapeHtml(orderSelectedMerchant.name)}</strong></p><p>Inserisci l'importo personalizzato (massimo ${euro(orderCustomMax)}). Sarà frazionabile, come nella procedura Telegram.</p>`);addInline([{label:'✖ Annulla',action:'home',kind:'cancel'}]);return true;}if(action.startsWith('order_qty_')){const qty=Number(action.slice(10));const denoms=Array.isArray(orderSelectedMerchant.telegram_denoms)?orderSelectedMerchant.telegram_denoms:(()=>{try{return JSON.parse(orderSelectedMerchant.telegram_denoms_json||'[]')}catch{return[]}})();const item={shop:orderSelectedMerchant.name,qty,amount:orderSelectedAmount,fractionable:orderSelectedFractionable};const key=normalizedShop(item.shop)+'|'+item.amount.toFixed(2);const old=orderCart.find(x=>normalizedShop(x.shop)+'|'+Number(x.amount).toFixed(2)===key);if(old)old.qty+=qty;else orderCart.push(item);showOrderCart();return true;}if(action==='order_add'){showOrderMerchantPicker();return true;}if(action==='order_backamounts'){showOrderAmounts(orderSelectedMerchant);return true;}if(action==='order_restart'){orderCart=[];showOrderMerchantPicker();return true;}if(action==='order_send'){sendGuidedOrder();return true;}return false;}
+function resetCheckoutConversation(){tbStopCheckoutNetworkMonitor();tbCheckoutOfflineMode=false;sectionChats.cassa='';checkoutShop='';checkoutTotalCents=0;checkoutAmountDraft='';checkoutPlan=[];checkoutVisited=[];stage='home';}
+function runAction(action,label){if(!tbCanUseOnlineFeatures()&&(action==='ordini'||action==='aiuto'||action.startsWith('order_')||action==='send_web_order'||action==='retry_web_request'||(action==='connect'&&!gwAuth?.currentUser))){notify('Questa funzione sarà disponibile quando la connessione all’account TUTTOBON sarà ripristinata. La cassa e i buoni salvati restano disponibili.');return;}if(action==='exit_assistance'){if(activeSection==='aiuto'){ensureAssistanceWelcome();sectionChats.aiuto=chat.innerHTML;}activateSection('home',true);return;}if(action==='clear_buoni'||action==='home'){tbStopCheckoutNetworkMonitor();tbCheckoutOfflineMode=false;if(activeSection==='cassa'||/^cassa_|^checkout_/.test(stage)||stage==='cassa_amount'||stage==='cassa_shop')resetCheckoutConversation();if(activeSection && !(activeSection==='aiuto' && action==='home')) {sectionChats[activeSection]='';}if(action==='clear_buoni')sectionChats.buoni='';pendingWebRequest=null;orderCart=[];orderSelectedMerchant=null;checkoutPlan=[];chat.innerHTML='';activateSection('home',true);return;}const targetSection=sectionForAction(action);if(targetSection&&targetSection!==activeSection){activateSection(targetSection,true);stage=targetSection;label='';}if(label)addMessage(label,true);if(action.startsWith('live_')){handleLiveAction(action);scrollLatest();return;}if(handleWorkflowAction(action)){scrollLatest();return;}switch(action){
+case 'home':activateSection('home',true);break;
+case 'cassa':stage='cassa';startCheckoutFlow();break;
+case 'buoni':stage='buoni';if(liveMode){showLiveMerchants('buoni');}else{bot('<p><strong>Ecco i tuoi buoni disponibili 🎟️</strong></p><p>Collega il tuo account TUTTOBON per caricare i buoni reali dal Worker e visualizzare i codici a barre.</p>');addInline([{label:'Collega account TUTTOBON',action:'connect',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);}break;
+case 'scadenze':stage='scadenze';if(liveMode){renderLiveExpiry();}else{bot('<p><strong>Le tue scadenze 📅</strong></p><p>Collega il tuo account TUTTOBON per leggere le scadenze effettive dal Worker.</p>');addInline([{label:'Collega account TUTTOBON',action:'connect',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);}break;
+case 'ordini':stage='ordini';startGuidedOrderFlow();break;
+case 'aiuto':stage='aiuto';if(!sectionChats.aiuto){bot('<p><strong>Benvenuto nell’area assistenza <span class=\"welcome-brand\"><span class=\"tutto\">tutto</span><span class=\"bon\">bon</span></span></strong></p><p>Scrivi o manda un messaggio e verrai ricontattato appena possibile!</p>');if(chat.lastElementChild)chat.lastElementChild.classList.add('assistance-welcome');}sectionChats.aiuto=chat.innerHTML;saveSupportHistory(chat.innerHTML);break;
+case 'merchant_rossetto':case 'merchant_tosano':case 'merchant_ip':case 'merchant_tamoil':case 'merchant_martinelli':case 'merchant_pam':{const m=action.split('_')[1];const names={rossetto:'Rossetto',tosano:'Tosano',ip:'IP',tamoil:'Tamoil',martinelli:'Martinelli',pam:'Pam'};stage='merchant';if(liveMode){renderLiveMerchant(m);}else{bot(`<p><strong>${names[m]} — anteprima</strong></p><p>Collega il tuo account per vedere i buoni reali e provare la visualizzazione del codice a barre.</p>`);addInline([{label:'Collega account TUTTOBON',action:'connect',kind:'primary'},{label:'Torna agli esercenti',action:'buoni'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);}break;}
+case 'show_code':bot('Collega il tuo account e seleziona un buono reale per visualizzare il codice corretto.');addInline([{label:'Collega account TUTTOBON',action:'connect',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);break;
+case 'used':bot('Per sicurezza questa interfaccia non scala il saldo quando si preme un pulsante. Segui la procedura di utilizzo prevista da TUTTOBON oppure contatta l’amministratore.');addInline([{label:'✖ Annulla',action:'home',kind:'cancel'}]);break;
+case 'search':bot('Scrivi il nome dell’esercente nella casella qui sotto.');input.focus();stage='search';break;
+case 'connect':if(gwAuth?.currentUser){if(!navigator.onLine){notify('Account già collegato: in attesa di connessione.');setNetworkConnecting(false);}else{setNetworkConnecting(true);loadLiveData().then(()=>notify('Account già collegato. Dati aggiornati.')).catch(()=>notify('Connessione in attesa: non serve rifare il login.')).finally(()=>setNetworkConnecting(false));}}else{openAuthModal();}break;case 'refresh':if(liveMode){handleLiveAction('live_refresh');}else if(gwAuth?.currentUser){setNetworkConnecting(true);loadLiveData().catch(()=>notify('Connessione in attesa: il collegamento resta attivo.')).finally(()=>setNetworkConnecting(false));}else{openAuthModal();}break;
+case 'free_text':handleText(label||'');break;case 'send_web_order':if(pendingWebRequest?.type==='order')sendWebRequest('order',pendingWebRequest.message);else bot('La richiesta non è più disponibile. Scrivila di nuovo.');break;case 'retry_web_request':if(pendingWebRequest)sendWebRequest(pendingWebRequest.type,pendingWebRequest.message);else bot('Nessuna richiesta da riprovare.');break;
+default:bot('Questa funzione sarà collegata al sistema TUTTOBON nella fase successiva.');addInline([{label:'✖ Annulla',action:'home',kind:'cancel'}]);}scrollLatest();}
+function homeButtons(){addActions([{icon:'🛒',label:'SONO ALLA CASSA',sub:'Usa un buono adesso',action:'cassa',wide:true},{icon:'🧾',label:'ORDINA I BUONI',sub:'Prepara una richiesta',action:'ordini',wide:true},{icon:'🎟️',label:'I MIEI BUONI',sub:'Cerca per esercente',action:'buoni',wide:true},{icon:'📅',label:'SCADENZE',sub:'Controlla le date',action:'scadenze',wide:true},{icon:'💬',label:'ASSISTENZA',sub:'Scrivi all’assistenza',action:'aiuto',wide:true}]);updateSupportUnreadBadge();updateExpiryWarningBadge();}
+let pendingWebRequest=null;async function sendWebRequest(kind,message){if(!liveMode||!gwAuth?.currentUser){bot('Per inviare una richiesta reale, prima collega il tuo account TUTTOBON.');addInline([{label:'Collega account TUTTOBON',action:'connect',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}try{const result=await workerRequest('/api/webapp/request',{method:'POST',body:{type:kind,message:String(message||'').trim(),firstName:String(liveState?.profile?.firstName||liveUser?.displayName?.split(' ')?.[0]||''),lastName:String(liveState?.profile?.lastName||''),displayName:String(liveUser?.displayName||'')}});bot(kind==='order'?'<p><strong>✅ Ordine inviato!</strong></p><p>Numero ordine: <strong>'+escapeHtml(result.requestId||'registrato')+'</strong></p><p>Quando l’ordine sarà completato, riceverai un messaggio all’interno dell’area Assistenza.</p><p>Grazie e buona spesa! 🛒</p>':'<p><strong>Messaggio inviato ✅</strong></p><p>Il tuo messaggio è stato inoltrato all’assistenza TUTTOBON.</p><p><strong>Riferimento:</strong> '+escapeHtml(result.requestId||'registrato')+'</p><p>Ti risponderemo nell’area Assistenza.</p>');}catch(e){bot('<p><strong>Invio non riuscito</strong></p><p>'+escapeHtml(e.message)+'</p><p>Nessuna conferma di invio è stata registrata. Riprova tra poco o contatta l’assistenza.</p>');addInline([{label:'Riprova',action:'retry_web_request',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);}}
+function handleText(raw){const t=raw.trim();if(!t)return;if(!tbCanUseOnlineFeatures()&&(stage==='aiuto'||stage==='ordini'||stage==='order_custom_amount')){notify('Invio e ordini richiedono la connessione all’account TUTTOBON. La cassa offline resta disponibile.');return;}addMessage(t,true);const l=t.toLowerCase();if(stage==='cassa_amount'){const amount=parseMoneyInput(t);if(amount===null){bot('Importo non valido. Scrivi ad esempio 156,25.');addInline([{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}checkoutTotalCents=amount;const result=buildCheckoutPlan(checkoutShop,checkoutTotalCents);checkoutPlan=result.plan;const used=checkoutPlan.reduce((a,x)=>a+x.useCents,0);if(used>checkoutTotalCents||used+result.remainingCents!==checkoutTotalCents){bot('Errore nel calcolo: nessun saldo è stato modificato. Annulla e riprova.');addInline([{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}showCheckoutPlan();return;}if(stage==='order_custom_amount'){const amountCents=parseMoneyInput(t);if(amountCents===null||amountCents>Math.round(orderCustomMax*100)){bot('Importo non valido oppure superiore al massimo consentito. Inserisci un importo entro '+euro(orderCustomMax)+'.');return;}showOrderQty(amountCents/100,true);return;}if(/retry_web_request/.test(l)&&pendingWebRequest){sendWebRequest(pendingWebRequest.type,pendingWebRequest.message);return;}if(/\b(annulla|annullare|indietro|inizio|menu)\b/.test(l)){pendingWebRequest=null;runAction('home');return;}if(stage==='aiuto'){pendingWebRequest={type:'support',message:t};sendWebRequest('support',t);return;}if(stage==='ordini'){pendingWebRequest={type:'order',message:t};bot('<p><strong>Controlla la richiesta 🧾</strong></p><p>'+escapeHtml(t)+'</p><p>Confermi che vuoi inviare questa richiesta all’amministratore TUTTOBON?</p><p>Non verrà modificato alcun saldo e la conferma non significa che i buoni siano già disponibili.</p>');addInline([{label:'Conferma e invia',action:'send_web_order',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}if(/cassa|sono all.?ip|benzina|distributore/.test(l)){runAction('cassa');return;}if(/scaden/.test(l)){runAction('scadenze');return;}if(/ordina|ordine|vorrei|mi servono|mi serve/.test(l)){stage='ordini';pendingWebRequest={type:'order',message:t};bot('<p><strong>Controlla la richiesta 🧾</strong></p><p>'+escapeHtml(t)+'</p><p>Confermi che vuoi inviarla all’amministratore TUTTOBON?</p>');addInline([{label:'Conferma e invia',action:'send_web_order',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}if(/buon|gift card|rossetto|tosano|martinelli|pam|tamoil|\bip\b/.test(l)){runAction('buoni');return;}if(stage==='search'){const names=[...new Set(liveCards.map(cardShop))].filter(n=>normalizedShop(n).includes(normalizedShop(t)));bot(names.length?'<p><strong>Risultati</strong></p><p>'+names.map(escapeHtml).join('<br>')+'</p>':'Non ho trovato esercenti corrispondenti.');addInline([{label:'Cerca un altro esercente',action:'search',kind:'primary'},{label:'✖ Annulla',action:'home',kind:'cancel'}]);return;}bot('Per procedere, scegli un’operazione oppure scrivi “ordina buoni” o “assistenza”.');addActions([{icon:'🛒',label:'Sono alla cassa',action:'cassa'},{icon:'🎟️',label:'I miei buoni',action:'buoni'},{icon:'↩️',label:'✖ Annulla',action:'home',wide:true}]);}
+function resetChat(){Object.keys(sectionChats).forEach(k=>delete sectionChats[k]);activateSection('home',true);chat.innerHTML='';stage='home';const welcome=addMessage('<p><strong>Ciao! 👋 Bentornato in <span class="welcome-brand"><span class="tutto">tutto</span><span class="bon">bon</span></span>.</strong></p><p><strong>Sei alla cassa?</strong></p>',false,true);welcome.parentElement.classList.add('welcome-message');homeButtons();sectionChats.home=chat.innerHTML;notify('Schermata iniziale ripristinata. I tuoi buoni non sono stati cancellati.');}
+const clearModal=document.getElementById('clearModal');
+document.getElementById('clearAssistanceChatBtn').addEventListener('click',()=>{clearModal.hidden=false;});
+document.getElementById('assistanceHomeBtn').hidden=false;
+document.getElementById('assistanceHomeBtn').textContent='✖ Annulla';
+document.getElementById('assistanceHomeBtn').addEventListener('click',()=>runAction('exit_assistance'));
+
+document.getElementById('keepChatBtn').addEventListener('click',()=>{clearModal.hidden=true;});
+document.getElementById('confirmClearBtn').addEventListener('click',async()=>{const btn=document.getElementById('confirmClearBtn');clearModal.hidden=true;if(btn)btn.disabled=true;try{supportClearedThrough=Math.max(supportClearedThrough,supportLastMessageId);try{localStorage.setItem('tuttobon_support_cleared_through',String(supportClearedThrough));}catch(e){}pendingSupportReplies=[];supportUnreadCount=0;updateSupportUnreadBadge();sectionChats.aiuto='';saveSupportHistory('');if(activeSection==='aiuto'){chat.innerHTML='<div class="date-pill">'+new Date().toLocaleDateString('it-IT')+'</div>';ensureAssistanceWelcome();sectionChats.aiuto=chat.innerHTML;saveSupportHistory(chat.innerHTML);stage='aiuto';}notify('Chat cancellata. I vecchi messaggi non verranno più mostrati su questo dispositivo.');}finally{if(btn)btn.disabled=false;}});
+clearModal.addEventListener('click',e=>{if(e.target===clearModal)clearModal.hidden=true;});
+document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click',()=>runAction(b.dataset.nav,b.querySelector('small').textContent)));
+
+const barcodeModal=document.getElementById('barcodeModal');
+const barcodeModalContent=document.getElementById('barcodeModalContent');
+const barcodeRotateBtn=document.getElementById('barcodeRotateBtn');
+function setVoucherVertical(enabled){if(!barcodeModal)return;barcodeModal.classList.toggle('vertical-voucher',!!enabled);if(barcodeRotateBtn){barcodeRotateBtn.setAttribute('aria-pressed',enabled?'true':'false');barcodeRotateBtn.setAttribute('aria-label',enabled?'Torna alla visualizzazione orizzontale':'Ruota il buono in verticale');barcodeRotateBtn.title=enabled?'Torna alla visualizzazione orizzontale':'Ruota il buono';barcodeRotateBtn.textContent='⟳';}}
+barcodeRotateBtn?.addEventListener('click',()=>setVoucherVertical(!barcodeModal.classList.contains('vertical-voucher')));
+function openBarcodeModal(panel){
+  if(!panel||!barcodeModal||!barcodeModalContent)return;
+  checkoutPopupActive=false;barcodeModal.style.background='rgba(8,20,35,.48)';
+  setVoucherVertical(false);
+  barcodeModalContent.innerHTML='';
+  const clone=panel.cloneNode(true);
+  clone.style.cursor='default';
+  clone.querySelectorAll('svg').forEach(svg=>{svg.style.width='100%';svg.style.height='auto';svg.style.maxHeight='190px';});
+  barcodeModalContent.appendChild(clone);
+  barcodeModal.hidden=false;
+  document.body.style.overflow='hidden';
+}
+function closeBarcodeModal(){if(barcodeModal){setVoucherVertical(false);barcodeModal.hidden=true;barcodeModalContent.innerHTML='';barcodeModal.style.background='rgba(8,20,35,.48)';}document.body.style.overflow='';}
+document.getElementById('barcodeModalClose')?.addEventListener('click',()=>{if(checkoutPopupActive)cancelCheckoutPopup();else closeBarcodeModal();});
+document.getElementById('checkoutPopupNext')?.addEventListener('click',advanceCheckoutPopup);
+barcodeModal?.addEventListener('click',e=>{if(e.target===barcodeModal){if(checkoutPopupActive)cancelCheckoutPopup();else closeBarcodeModal();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&barcodeModal&&!barcodeModal.hidden){if(checkoutPopupActive)cancelCheckoutPopup();else closeBarcodeModal();}});
+chat.addEventListener('click',e=>{const panel=e.target.closest('.barcode-panel');if(panel){openBarcodeModal(panel);return;}});
+// V3.1: rende chiaramente interattivo l'intero riquadro del buono/codice.
+chat.addEventListener('touchend',e=>{const panel=e.target.closest('.barcode-panel');if(!panel)return;if(e.target.closest('button,a,input'))return;openBarcodeModal(panel);},{passive:true});
+chat.addEventListener('click',e=>{if(e.target.closest('[data-key]'))return;if(e.target.closest('button'))setTimeout(scrollLatest,0);});chat.addEventListener('click',e=>{const k=e.target.closest('[data-key]');if(!k)return;const key=k.dataset.key;if(key==='cancel'){runAction('home');return;}if(key==='⌫'){checkoutAmountDraft=checkoutAmountDraft.slice(0,-1);updateCheckoutDisplay();return;}if(key==='submit'){submitCheckoutAmount();return;}if(key===','){if(!checkoutAmountDraft.includes(','))checkoutAmountDraft=(checkoutAmountDraft||'0')+',';updateCheckoutDisplay();return;}if(/^\d$/.test(key)){if(checkoutAmountDraft.includes(',')){if(checkoutAmountDraft.split(',')[1].length>=2)return;}else if(checkoutAmountDraft.length>=6)return;checkoutAmountDraft+=key;updateCheckoutDisplay();return;}});
+const chatObserver=new MutationObserver(()=>scrollLatest());chatObserver.observe(chat,{childList:true,subtree:true});
+window.addEventListener('resize',scrollLatest);
+document.getElementById('composerForm').addEventListener('submit',e=>{e.preventDefault();if(!tbCanUseOnlineFeatures()){notify('Assistenza non disponibile: in attesa della connessione all’account TUTTOBON.');return;}const v=input.value;input.value='';handleText(v);});// Delegazione sul contenitore stabile: il blocco homeButtons viene ricreato quando si torna alla schermata iniziale.
+chat.addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b||!chat.contains(b))return;if(e.target.closest('[data-key]'))return;const label=b.dataset.actionLabel||b.querySelector('.label')?.childNodes?.[0]?.textContent?.trim()||b.innerText.trim();runAction(b.dataset.action,label);});document.getElementById('menuBtn').addEventListener('click',()=>{settingsModal.hidden=false;});
+document.getElementById('refreshAppBtn')?.addEventListener('click',async()=>{const b=document.getElementById('refreshAppBtn');if(b){b.disabled=true;b.style.opacity='.55';b.textContent='…';}try{if(gwAuth?.currentUser){await loadLiveData();notify('Buoni aggiornati.');if(activeSection==='cassa'&&stage==='cassa_shop')await startCheckoutFlow();}else{notify('Collega il tuo account per aggiornare i buoni reali.');openAuthModal();}}catch(e){notify('Aggiornamento non riuscito: verifica la connessione.');}finally{if(b){b.disabled=false;b.style.opacity='1';b.textContent='↻';}}});
+// Impostazioni accessibilità: dimensione testo e pulsanti, salvate sul dispositivo.
+const settingsModal=document.getElementById('settingsModal');
+const textSizeRange=document.getElementById('textSizeRange');
+const buttonSizeRange=document.getElementById('buttonSizeRange');
+const textSizeValue=document.getElementById('textSizeValue');
+const buttonSizeValue=document.getElementById('buttonSizeValue');
+const buttonContrastRange=document.getElementById('buttonContrastRange');
+const buttonContrastValue=document.getElementById('buttonContrastValue');
+function applyAccessibilitySettings(save=false){
+  const textScale=Math.min(1.7,Math.max(1,Number(textSizeRange.value)/100));
+  const buttonScale=Math.min(1.8,Math.max(1,Number(buttonSizeRange.value)/100));
+  document.documentElement.style.setProperty('--tb-text-scale',String(textScale));
+  document.documentElement.style.setProperty('--tb-button-scale',String(buttonScale));
+  const contrast=Number(buttonContrastRange.value);const strokes=['0px','0.2px','0.45px','0.7px'];document.documentElement.style.setProperty('--tb-button-text-stroke',strokes[Math.max(0,Math.min(3,contrast))]);buttonContrastValue.value=['Basso','Normale','Alto','Massimo'][contrast]||'Alto';buttonContrastValue.textContent=buttonContrastValue.value;
+  textSizeValue.value=textSizeRange.value+'%';textSizeValue.textContent=textSizeRange.value+'%';
+  buttonSizeValue.value=buttonSizeRange.value+'%';buttonSizeValue.textContent=buttonSizeRange.value+'%';
+  if(save){try{localStorage.setItem('tuttobon_accessibility',JSON.stringify({text:textSizeRange.value,buttons:buttonSizeRange.value,inputHeight:inputHeightRange.value,contrast:buttonContrastRange.value}));}catch(e){} }
+}
+try{const saved=JSON.parse(localStorage.getItem('tuttobon_accessibility')||'null');if(saved){if(Number(saved.text)>=100&&Number(saved.text)<=170)textSizeRange.value=String(saved.text);if(Number(saved.buttons)>=100&&Number(saved.buttons)<=160)buttonSizeRange.value=String(saved.buttons);if(Number.isInteger(Number(saved.contrast))&&Number(saved.contrast)>=0&&Number(saved.contrast)<=3)buttonContrastRange.value=String(saved.contrast);}}catch(e){console.info('Impostazioni locali non disponibili; uso i valori predefiniti.');}
+applyAccessibilitySettings(false);
+textSizeRange.addEventListener('input',()=>applyAccessibilitySettings(true));
+buttonSizeRange.addEventListener('input',()=>applyAccessibilitySettings(true));
+buttonContrastRange.addEventListener('input',()=>applyAccessibilitySettings(true));
+function closeSettings(){applyAccessibilitySettings(true);settingsModal.hidden=true;notify('Impostazioni di accessibilità salvate.');}
+document.getElementById('settingsConnectBtn').addEventListener('click',()=>{settingsModal.hidden=true;openAuthModal();});
+document.getElementById('closeSettingsBtn').addEventListener('click',closeSettings);
+document.getElementById('resetSettingsBtn').addEventListener('click',()=>{textSizeRange.value='100';buttonSizeRange.value='100';buttonContrastRange.value='2';applyAccessibilitySettings(false);});
+settingsModal.addEventListener('click',e=>{if(e.target===settingsModal)closeSettings();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!settingsModal.hidden)closeSettings();});
+// Accesso Firebase condiviso con l'app TUTTOBON; il prototipo esegue solo letture.
+document.getElementById('authCancelBtn').addEventListener('click',closeAuthModal);
+document.getElementById('authSubmitBtn').addEventListener('click',connectAccount);
+document.getElementById('authPassword').addEventListener('keydown',e=>{if(e.key==='Enter')connectAccount();});
+document.getElementById('authEmail').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('authPassword').focus();});
+document.getElementById('authDisconnectBtn').addEventListener('click',async()=>{try{await gwAuth?.signOut();}catch(e){}liveMode=false;liveUser=null;liveState=null;liveCards=[];setConnectionStatus(false);closeAuthModal();notify('Account scollegato.');runAction('home');});
+document.getElementById('authModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAuthModal();});
+try{if(window.firebase){if(!firebase.apps||!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);gwAuth=firebase.auth();gwAuth.onAuthStateChanged(async user=>{if(!user){accountOnlineReady=false;liveMode=false;liveUser=null;liveState=null;liveCards=[];updateOfflineControls();if(supportPollTimer)clearInterval(supportPollTimer);if(tbAccountBlockPollTimer)clearInterval(tbAccountBlockPollTimer);tbAccountBlockPollTimer=null;setConnectionStatus(false);return;}try{if(navigator.onLine&&!(await tbCheckAccountStatus()))return;await loadLiveData();startSupportPolling();tbStartAccountBlockMonitor();}catch(e){accountOnlineReady=false;liveMode=false;updateOfflineControls();setConnectionStatus(false,'Account presente · Worker non raggiungibile');document.getElementById('authMessage').textContent='⚠️ '+friendlyFirebaseError(e);}});}else{setConnectionStatus(false,'Firebase non disponibile · demo');}}catch(e){console.warn('Firebase init:',e);setConnectionStatus(false,'Firebase non disponibile · demo');}
+
+// Diagnostica non invasiva: rende visibili errori di avvio senza bloccare l'interfaccia.
+window.addEventListener('error',function(ev){console.error('Errore interfaccia TUTTOBON CON TE:',ev.message||ev.error||'errore sconosciuto');});
+window.addEventListener('unhandledrejection',function(ev){console.error('Richiesta non completata TUTTOBON CON TE:',ev.reason||'errore sconosciuto');});
+
+// PWA: registra il service worker solo su HTTPS o localhost.
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) { window.addEventListener('load',()=>{tbRegisterPwa();tbSetNetworkBadge();updateOfflineControls();}); }
+
+// V3.7: registrazione vocale nel solo pannello Assistenza e inoltro sicuro al bot Telegram.
+const voiceButton=document.getElementById('voiceButton');const voiceStatus=document.getElementById('voiceStatus');
+let voiceRecorder=null,voiceStream=null,voiceChunks=[],voiceStartedAt=0;
+function setVoiceStatus(s){if(voiceStatus)voiceStatus.textContent=s||'';}
+function blobToBase64(blob){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result).split(',')[1]||'');r.onerror=()=>reject(new Error('Non riesco a leggere la registrazione.'));r.readAsDataURL(blob);});}
+async function sendRecordedVoice(blob,mime){
+  if(!gwAuth?.currentUser)throw new Error('Prima collega il tuo account TUTTOBON dal menu impostazioni.');
+  if(blob.size>8*1024*1024)throw new Error('Il vocale supera 8 MB. Registra un messaggio più breve.');
+  const audioBase64=await blobToBase64(blob);
+  const audioMime=String(mime||blob.type||'audio/webm').split(';')[0].replace(/[^a-zA-Z0-9/.+-]/g,'')||'audio/webm';
+  const durationSeconds=Math.max(1,Math.round((Date.now()-voiceStartedAt)/1000));
+  const result=await workerRequest('/api/webapp/voice',{method:'POST',body:{audioBase64,audioMime,durationSeconds,firstName:String(liveState?.profile?.firstName||liveUser?.displayName?.split(' ')?.[0]||''),lastName:String(liveState?.profile?.lastName||''),displayName:String(liveUser?.displayName||'')}});
+  return {...result,audioBase64,audioMime,durationSeconds};
+}
+voiceButton.addEventListener('click',async()=>{
+  if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){setVoiceStatus('Questo browser non supporta la registrazione vocale. Apri TUTTOBON da Chrome aggiornato.');return;}
+  if(voiceRecorder&&voiceRecorder.state==='recording'){voiceRecorder.stop();voiceButton.disabled=true;voiceButton.classList.remove('recording');voiceButton.textContent='⏳';setVoiceStatus('Invio del vocale all’assistenza…');return;}
+  try{
+    voiceStream=await navigator.mediaDevices.getUserMedia({audio:true});voiceChunks=[];
+    const mimeCandidates=['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus'];const mime=mimeCandidates.find(x=>MediaRecorder.isTypeSupported(x));
+    voiceRecorder=new MediaRecorder(voiceStream,mime?{mimeType:mime}:undefined);voiceStartedAt=Date.now();
+    voiceRecorder.ondataavailable=e=>{if(e.data&&e.data.size)voiceChunks.push(e.data);};
+    voiceRecorder.onerror=()=>{setVoiceStatus('Registrazione non riuscita. Riprova.');voiceButton.disabled=false;voiceButton.textContent='🎙️';};
+    voiceRecorder.onstop=async()=>{try{const blob=new Blob(voiceChunks,{type:voiceRecorder.mimeType||'audio/webm'});if(blob.size<1000)throw new Error('Vocale troppo breve. Tieni premuto qualche secondo e riprova.');const result=await sendRecordedVoice(blob,blob.type);setVoiceStatus('Richiesta inviata. Attendi la risposta dell’amministratore.');const audioMime=String(result.audioMime||blob.type||'audio/webm').replace(/[^a-zA-Z0-9/;=.+-]/g,'');addMessage('<p><strong>🎤 Il tuo messaggio vocale</strong></p><audio class="client-voice-message" controls preload="metadata" playsinline src="data:'+audioMime+';base64,'+result.audioBase64+'"></audio>',true,true);sectionChats.aiuto=chat.innerHTML;saveSupportHistory(chat.innerHTML);bot('<p><strong>Richiesta inviata ✅</strong></p><p>Il tuo messaggio vocale è stato inoltrato all’assistenza TUTTOBON.</p><p><strong>Riferimento:</strong> '+escapeHtml(result?.requestId||'registrato')+'</p><p>Attendi la risposta dell’amministratore.</p>');sectionChats.aiuto=chat.innerHTML;saveSupportHistory(chat.innerHTML);notify('Richiesta di assistenza inviata.');}catch(e){setVoiceStatus('⚠️ '+e.message);}finally{voiceStream?.getTracks().forEach(t=>t.stop());voiceStream=null;voiceButton.disabled=false;voiceButton.textContent='🎙️';voiceButton.classList.remove('recording');voiceChunks=[];}};
+    voiceRecorder.start();voiceButton.textContent='■';voiceButton.classList.add('recording');setVoiceStatus('Registrazione in corso… Tocca ■ per terminare e inviare.');
+  }catch(e){setVoiceStatus(e.name==='NotAllowedError'?'Consenti l’accesso al microfono nelle impostazioni del telefono.':'Microfono non disponibile: '+e.message);voiceButton.disabled=false;voiceButton.textContent='🎙️';}
+});
+</script>
+
+
+<style id="tuttobon_v363_checkout_popup">
+/* V3.63: popup cassa più leggibile; contenuti leggermente più in basso */
+.modal-backdrop#barcodeModal{align-items:stretch!important;justify-content:center!important}
+#barcodeModal .barcode-modal-card{justify-content:flex-start!important;padding-top:calc(12dvh + env(safe-area-inset-top))!important;padding-bottom:calc(20px + env(safe-area-inset-bottom))!important;gap:8px!important}
+#barcodeModal #barcodeModalTitle{font-size:clamp(22px,6vw,29px)!important;line-height:1.2!important;margin:0 0 12px!important}
+#barcodeModal #barcodeModalContent{width:100%;}
+#barcodeModal #barcodeModalContent .barcode-panel{margin:10px 0!important;padding:20px 10px!important;border:3px solid #111!important;border-radius:15px!important;background:#fff!important}
+#barcodeModal #barcodeModalContent .barcode-panel svg{width:100%!important;max-height:25dvh!important;min-height:125px!important}
+#barcodeModal #barcodeModalContent .barcode-value{font-size:clamp(24px,7vw,35px)!important;line-height:1.35!important;font-weight:950!important;overflow-wrap:anywhere!important;color:#000!important}
+#barcodeModal .barcode-modal-close{margin-top:auto!important;min-height:58px!important;font-size:18px!important;font-weight:950!important}
+/* Colori netti per le fasi: utilizzato rosso, successivo verde, annulla rosso */
+.action-btn.used-buono{background:#b91c1c!important;color:#fff!important;border:3px solid #7f1d1d!important;font-weight:950!important;min-height:58px!important}
+.action-btn.used-confirmed{background:#dc2626!important;color:#fff!important;border:3px solid #991b1b!important;font-weight:950!important}
+.action-btn.checkout-next{background:#16a34a!important;color:#fff!important;border:3px solid #08752b!important;font-weight:950!important;min-height:58px!important}
+.action-btn.checkout-final{background:#16a34a!important;color:#fff!important;border:3px solid #08752b!important;font-weight:950!important;min-height:60px!important}
+.action-btn.cancel,.action-btn[data-action="home"]{border:2px solid #dc2626!important;color:#b91c1c!important;font-weight:950!important}
+/* Pulsanti cassa centrati e rialzati dal bordo inferiore del telefono */
+body:not(.assistance-mode) #chatArea .quick-grid:has(.action-btn.used-buono),
+body:not(.assistance-mode) #chatArea .quick-grid:has(.action-btn.checkout-next),
+body:not(.assistance-mode) #chatArea .quick-grid:has(.action-btn.checkout-final),
+body:not(.assistance-mode) #chatArea .inline-actions:has(.action-btn.used-buono),
+body:not(.assistance-mode) #chatArea .inline-actions:has(.action-btn.checkout-next),
+body:not(.assistance-mode) #chatArea .inline-actions:has(.action-btn.checkout-final){
+  width:100%!important;max-width:100%!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:12px!important;margin:18px auto calc(26px + env(safe-area-inset-bottom))!important;padding:0 4px 8px!important;box-sizing:border-box!important
+}
+body:not(.assistance-mode) #chatArea .quick-grid:has(.action-btn.used-buono) .action-btn,
+body:not(.assistance-mode) #chatArea .quick-grid:has(.action-btn.checkout-next) .action-btn,
+body:not(.assistance-mode) #chatArea .quick-grid:has(.action-btn.checkout-final) .action-btn,
+body:not(.assistance-mode) #chatArea .inline-actions:has(.action-btn.used-buono) .action-btn,
+body:not(.assistance-mode) #chatArea .inline-actions:has(.action-btn.checkout-next) .action-btn,
+body:not(.assistance-mode) #chatArea .inline-actions:has(.action-btn.checkout-final) .action-btn{width:100%!important;max-width:100%!important;min-height:58px!important;margin:0!important;font-size:clamp(16px,4.4vw,19px)!important;line-height:1.25!important;white-space:normal!important}
+</style>
+
+<style id="tuttobon_v365_voucher_rotation">
+/* V3.66: icona rotazione compatta sopra i comandi fissi della cassa; importo più discreto. */
+#barcodeModal .barcode-rotate-btn{order:3!important;align-self:center!important;display:grid!important;place-items:center!important;flex:0 0 46px!important;width:46px!important;min-width:46px!important;height:46px!important;min-height:46px!important;margin:2px 0 0!important;padding:0!important;border:2px solid #1769aa!important;border-radius:50%!important;background:#eaf4ff!important;color:#104a7d!important;font-size:31px!important;font-weight:950!important;line-height:1!important;box-shadow:0 2px 5px #0002!important}
+#barcodeModal #barcodeModalTitle{order:0!important;flex:0 0 auto!important;font-size:clamp(16px,4.4vw,22px)!important;line-height:1.1!important;padding:7px 6px!important;margin:0 0 2px!important}
+#barcodeModal #barcodeModalContent{order:1!important;min-height:0;display:flex;align-items:center;justify-content:center;flex:1 1 auto!important;width:100%!important}
+#barcodeModal #barcodeModalContent .checkout-popup-amount{font-size:12px!important;line-height:1.1!important;padding:4px 7px!important;margin:0 0 4px!important;border-width:1px!important;border-radius:7px!important}
+#barcodeModal #barcodeModalContent .barcode-panel{margin:4px 0!important;padding:7px 6px!important}
+#barcodeModal #barcodeModalContent .barcode-panel svg{max-height:31dvh!important;min-height:90px!important}
+#barcodeModal #barcodeModalContent .barcode-value{font-size:clamp(19px,5.5vw,29px)!important;line-height:1.15!important}
+#barcodeModal.vertical-voucher #barcodeModalContent{height:min(54dvh,500px)!important;flex:1 1 auto!important;overflow:visible!important}
+#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel{width:min(54dvh,500px)!important;height:min(75vw,310px)!important;min-height:0!important;max-width:none!important;flex:0 0 auto!important;display:flex!important;flex-direction:column!important;justify-content:center!important;overflow:hidden!important;transform:rotate(90deg)!important;transform-origin:center center!important;margin:0 auto!important;padding:7px!important}
+#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel svg{width:100%!important;height:auto!important;min-height:0!important;max-height:25dvh!important;flex:0 1 auto!important}
+#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel .barcode-value{font-size:clamp(12px,3.4vw,18px)!important;line-height:1.05!important;letter-spacing:0!important;margin-top:2px!important}
+#barcodeModal #barcodeModalHint{order:2!important;flex:0 0 auto!important;font-size:11px!important;line-height:1.15!important;padding:2px 0!important}
+#barcodeModal .checkout-popup-controls{order:4!important;margin-top:0!important;flex:0 0 auto!important}
+@media(max-height:600px){#barcodeModal.vertical-voucher #barcodeModalContent{height:38dvh!important}#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel{width:38dvh!important;height:66vw!important}#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel svg{max-height:20dvh!important}}
+</style>
+</body>
+</html>
+
+<style id="v3_7_accessibility_voice">
+.quick-btn .label,.quick-btn .sub,.action-btn,.nav-btn small,.send-btn,.attach-btn{ -webkit-text-stroke:var(--tb-button-text-stroke,.25px); }
+#voiceButton{background:#e8f2ff;color:#0758bd;border:2px solid #0758bd;font-size:22px;font-weight:900}
+#voiceButton.recording{background:#b91c1c;color:#fff;border-color:#7f1d1d;animation:voicePulse 1s infinite}
+#voiceButton:disabled{opacity:.65;cursor:wait}
+@keyframes voicePulse{50%{box-shadow:0 0 0 5px #ef444455}}
+.voice-status{font-size:12px;font-weight:750;color:var(--ink);padding:4px 2px 0;min-height:18px}
+
+/* V3.37: saldo zero spostato nel Cestino; pulsante Annulla uniforme */
+/* V3.38: più spazio tra messaggio cassa, esercenti e Annulla. */
+body:not(.assistance-mode) #chatArea .quick-grid:has(.checkout-merchant){margin-top:18px!important;gap:13px!important;}
+body:not(.assistance-mode) #chatArea .quick-grid:has(.checkout-merchant) .checkout-merchant{min-height:calc(76px * var(--tb-button-scale));padding:calc(13px * var(--tb-button-scale)) calc(14px * var(--tb-button-scale));}
+body:not(.assistance-mode) #chatArea .quick-grid:has(.checkout-merchant) .cancel-quick{margin-top:12px;min-height:calc(58px * var(--tb-button-scale));font-size:calc(15px * var(--tb-text-scale));}
+body:not(.assistance-mode) #chatArea .message-row + .quick-grid:has(.checkout-merchant){margin-top:22px!important;}
+
+.action-btn.cancel, .quick-btn[data-action="home"], .quick-btn[data-action="clear_buoni"], .quick-btn[data-action="exit_assistance"]{color:#c90000!important;border-color:#e32626!important;}
+.action-btn.cancel{background:#fff!important;font-weight:900!important;}
+.quick-btn.cancel-quick{color:#c90000!important;border:2px solid #e32626!important;background:#fff!important;font-weight:900!important;}
+.quick-btn.cancel-quick .ico{background:#fff!important;color:#c90000!important;font-weight:1000!important;}
+.quick-btn.cancel-quick .label{color:#c90000!important;font-weight:900!important;}
+.action-btn.cancel::first-letter{color:#c90000!important;}
+.cancel-mark{color:#c90000!important;font-weight:1000!important;}
+
+/* V3.55: CASSA con schede grandi come I MIEI BUONI e bordo nero */
+body:not(.assistance-mode) #chatArea .quick-grid:has(.checkout-merchant){
+  grid-template-columns:1fr!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:18px 0 17px!important;
+  gap:16px!important;
+}
+body:not(.assistance-mode) #chatArea .quick-grid:has(.checkout-merchant) .checkout-merchant{
+  width:100%!important;
+  min-height:112px!important;
+  padding:20px 18px!important;
+  gap:14px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  text-align:left!important;
+  border:2px solid #111!important;
+  border-radius:17px!important;
+  box-shadow:none!important;
+}
+body:not(.assistance-mode) #chatArea .quick-grid:has(.checkout-merchant) .checkout-merchant .ico{
+  display:flex!important;
+  flex:0 0 48px!important;
+  width:48px!important;
+  height:48px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:27px!important;
+  border-radius:13px!important;
+}
+body:not(.assistance-mode) #chatArea .quick-grid:has(.checkout-merchant) .checkout-merchant .label{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  gap:7px!important;
+  min-width:0!important;
+  font-size:clamp(20px,5.4vw,25px)!important;
+  line-height:1.25!important;
+  font-weight:900!important;
+  overflow-wrap:anywhere!important;
+}
+body:not(.assistance-mode) #chatArea .quick-grid:has(.checkout-merchant) .checkout-merchant .sub{
+  font-size:clamp(17px,4.5vw,21px)!important;
+  line-height:1.35!important;
+  font-weight:800!important;
+}
+/* Anche le schede colorate di I MIEI BUONI mantengono il colore ma hanno perimetro nero */
+.merchant-summary-list .quick-btn{border:2px solid #111!important;box-shadow:none!important;}
+
+</style>
+<!-- V3.38: cronologia assistenza mantenuta quando si esce; cancellazione solo col pulsante Cancella chat. -->
+
+
+<style id="tuttobon_v364_checkout_popup_unico">
+/* V3.64: una sola finestra cassa; barra esterna a colori, scheda del buono bianca. */
+#barcodeModal{display:flex!important;align-items:stretch!important;justify-content:center!important;z-index:2147483000!important;}
+#barcodeModal[hidden]{display:none!important;}
+#barcodeModal .barcode-modal-card{width:100%!important;height:100%!important;max-width:760px!important;max-height:100dvh!important;overflow-y:auto!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;gap:8px!important;background:#fff!important;color:#111!important;border:0!important;border-radius:18px!important;padding:calc(10px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom))!important;box-shadow:0 8px 30px #0004!important;text-align:center!important;}
+#barcodeModal #barcodeModalTitle{order:0!important;flex:0 0 auto!important;width:100%!important;font-size:clamp(21px,5.7vw,29px)!important;line-height:1.15!important;font-weight:950!important;}
+#barcodeModal #barcodeModalContent{order:1!important;width:100%!important;flex:1 0 auto!important;}
+#barcodeModal .checkout-popup-amount{font-size:18px;font-weight:950;color:#111;background:#f3f6fa;border:2px solid #111;border-radius:10px;padding:8px;margin:0 0 8px;}
+#barcodeModal #barcodeModalContent .barcode-panel{margin:7px 0!important;padding:10px 8px!important;border:3px solid #111!important;border-radius:12px!important;background:#fff!important;color:#111!important;}
+#barcodeModal #barcodeModalContent .barcode-panel svg{width:100%!important;height:auto!important;max-height:24dvh!important;min-height:100px!important;}
+#barcodeModal #barcodeModalContent .barcode-value{font-size:clamp(23px,6.5vw,34px)!important;line-height:1.25!important;font-weight:950!important;overflow-wrap:anywhere!important;color:#000!important;}
+#barcodeModal #barcodeModalHint{order:2!important;flex:0 0 auto!important;margin:0!important;padding:4px 0!important;color:#222!important;}
+#barcodeModal .checkout-popup-controls{order:3!important;display:flex!important;flex:0 0 auto!important;gap:12px!important;width:100%!important;margin-top:5px!important;}
+#barcodeModal .checkout-popup-controls button{width:50%!important;min-height:64px!important;font-size:38px!important;line-height:1!important;font-weight:1000!important;border-radius:14px!important;margin:0!important;padding:5px!important;}
+#barcodeModal #barcodeModalClose{background:#dc2626!important;color:#fff!important;border:3px solid #991b1b!important;}
+#barcodeModal #checkoutPopupNext{background:#16a34a!important;color:#fff!important;border:3px solid #08752b!important;animation:checkoutPopupPulse 1.05s ease-in-out infinite!important;}
+#barcodeModal .checkout-popup-no-code{font-size:17px;font-weight:900;padding:20px 8px;border:2px solid #111;border-radius:12px;background:#fff;color:#111;}
+@keyframes checkoutPopupPulse{0%,100%{filter:brightness(1);transform:scale(1)}50%{filter:brightness(1.15);transform:scale(1.015)}}
+</style>
+
+<style id="tuttobon_v367_popup_layout">
+/* V3.68: solo l'essenziale sopra, barcode centrato e rotazione sopra X/V. */
+#barcodeModal .barcode-modal-card{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;gap:4px!important;overflow:hidden!important;padding:calc(7px + env(safe-area-inset-top)) 10px calc(8px + env(safe-area-inset-bottom))!important;}
+#barcodeModal #barcodeModalTitle{order:0!important;flex:0 0 auto!important;width:100%!important;font-size:clamp(19px,5vw,25px)!important;line-height:1.08!important;padding:7px 5px!important;margin:0!important;}
+#barcodeModal #checkoutPopupAmount{order:1!important;display:block!important;flex:0 0 auto!important;width:100%!important;font-size:clamp(12px,3.2vw,15px)!important;line-height:1.05!important;font-weight:800!important;padding:2px 4px!important;margin:0!important;border:0!important;background:transparent!important;color:#111!important;}
+#barcodeModal #barcodeModalContent{order:2!important;flex:1 1 0!important;min-height:0!important;width:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:visible!important;}
+#barcodeModal #barcodeModalContent .barcode-panel{width:100%!important;max-width:100%!important;margin:3px auto!important;padding:8px 6px!important;border:2px solid #111!important;border-radius:10px!important;box-sizing:border-box!important;}
+#barcodeModal #barcodeModalContent .barcode-panel svg{width:100%!important;height:auto!important;max-height:35dvh!important;min-height:100px!important;}
+#barcodeModal #barcodeModalContent .barcode-value{font-size:clamp(22px,6vw,32px)!important;line-height:1.1!important;margin-top:3px!important;}
+#barcodeModal .barcode-rotate-btn{order:3!important;position:relative!important;flex:0 0 40px!important;width:40px!important;min-width:40px!important;height:40px!important;min-height:40px!important;margin:2px auto!important;font-size:28px!important;}
+#barcodeModal .checkout-popup-controls{order:4!important;flex:0 0 auto!important;margin-top:2px!important;width:100%!important;gap:10px!important;}
+#barcodeModal .checkout-popup-controls button{min-height:58px!important;height:58px!important;}
+#barcodeModal #barcodeModalHint{display:none!important;}
+/* In verticale il pannello viene ruotato attorno al centro dell'area disponibile; la colonna del barcode usa tutta la larghezza utile prima della rotazione. */
+#barcodeModal.vertical-voucher #barcodeModalContent{flex:1 1 0!important;height:auto!important;min-height:0!important;overflow:visible!important;position:relative!important;}
+#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel{width:min(72dvh,calc(100vw - 24px))!important;height:min(62vw,310px)!important;max-width:none!important;min-height:0!important;flex:0 0 auto!important;display:flex!important;flex-direction:column!important;justify-content:center!important;overflow:hidden!important;transform:rotate(90deg)!important;transform-origin:center center!important;margin:0 auto!important;padding:8px!important;}
+#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel svg{width:100%!important;height:auto!important;max-height:30dvh!important;min-height:0!important;flex:0 1 auto!important;}
+#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel .barcode-value{font-size:clamp(16px,4vw,24px)!important;line-height:1.05!important;letter-spacing:0!important;margin-top:3px!important;overflow-wrap:anywhere!important;}
+@media(max-height:600px){#barcodeModal #barcodeModalContent .barcode-panel svg{max-height:26dvh!important;min-height:75px!important;}#barcodeModal .checkout-popup-controls button{min-height:50px!important;height:50px!important;}#barcodeModal .barcode-rotate-btn{flex-basis:34px!important;width:34px!important;height:34px!important;min-height:34px!important;}}
+</style>
+
+
+<style id="tuttobon_v369_barcode_rotazione_ingrandito">
+/* V3.70: ulteriore ingrandimento moderato del barcode in rotazione, con margini di sicurezza. */
+#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel{
+  width:min(78dvh,calc(100vw - 16px))!important;
+  height:min(68vw,330px)!important;
+  padding:9px!important;
+}
+#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel svg{
+  max-height:34dvh!important;
+}
+#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel .barcode-value{
+  font-size:clamp(17px,4.2vw,25px)!important;
+}
+@media(max-height:600px){
+  #barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel{
+    width:min(70dvh,calc(100vw - 16px))!important;
+    height:min(70vw,320px)!important;
+  }
+  #barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel svg{
+    max-height:29dvh!important;
+  }
+}
+</style>
+
+<style id="tuttobon_v369_barcode_rotazione_maximizzato">
+/* V3.70: aumento moderato rispetto alla V3.68, mantenendo margini per non tagliare il buono. */
+#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel{
+  width:min(84dvh,calc(100vw - 12px))!important;
+  height:min(72vw,345px)!important;
+  padding:10px!important;
+}
+#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel svg{
+  max-height:36dvh!important;
+}
+#barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel .barcode-value{
+  font-size:clamp(17px,4.3vw,26px)!important;
+}
+@media(max-height:600px){
+  #barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel{
+    width:min(74dvh,calc(100vw - 12px))!important;
+    height:min(74vw,330px)!important;
+  }
+  #barcodeModal.vertical-voucher #barcodeModalContent .barcode-panel svg{
+    max-height:31dvh!important;
+  }
+}
+</style>

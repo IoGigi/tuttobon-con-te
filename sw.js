@@ -1,4 +1,4 @@
-/* TUTTOBON CON TE SERVICE WORKER V4.35 — cache shell aggiornata. */
+/* TUTTOBON CON TE SERVICE WORKER V4.37 — cache shell aggiornata. */
 /* TUTTOBON CON TE SERVICE WORKER V4.23 REV4 — Aggiornamento cache per fix notifiche assistenza. */
 /* TUTTOBON CON TE SERVICE WORKER V4.23 REV3 — Rinnovo cache shell per distribuire index V4.23; logica offline e sincronizzazione invariate. */
 /* TUTTOBON CON TE SERVICE WORKER V4.23 — Aggiornamento visualizzazione risposta vocale assistenza; funzioni offline invariate. */
@@ -7,7 +7,7 @@
    Cache PWA + sincronizzazione sicura della coda cassa offline in background. */
 'use strict';
 
-const SHELL_CACHE = 'tb-con-te-shell-v4-35';
+const SHELL_CACHE = 'tb-con-te-shell-v4-37';
 const OFFLINE_DB = 'tuttobon-con-te-offline-v2';
 const DB_VERSION = 2;
 const SYNC_TAG = 'tb-checkout-sync';
@@ -28,8 +28,8 @@ self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(SHELL_CACHE);
     const index = await fetch(new Request('./index.html', {cache:'reload'}));
-    if (!index.ok || !(await index.clone().text()).includes('TUTTOBON CON TE V4.35: aggiungi i tuoi buoni')) {
-      throw new Error('Shell V4.35 non disponibile.');
+    if (!index.ok || !(await index.clone().text()).includes('TUTTOBON CON TE V4.37: aggiungi i tuoi buoni')) {
+      throw new Error('Shell V4.37 non disponibile.');
     }
     await cache.put('./index.html', index);
     for (const file of SHELL_FILES) {
@@ -78,7 +78,7 @@ self.addEventListener('fetch', event => {
         const response = await fetch(request, { cache: 'no-cache' });
         const root = new URL('./', self.registration.scope).pathname;
         if (response && response.ok && (url.pathname === root || url.pathname === root + 'index.html') &&
-            (await response.clone().text()).includes('TUTTOBON CON TE V4.35: aggiungi i tuoi buoni')) {
+            (await response.clone().text()).includes('TUTTOBON CON TE V4.37: aggiungi i tuoi buoni')) {
           const cache = await caches.open(SHELL_CACHE);
           await cache.put('./index.html', response.clone());
         }

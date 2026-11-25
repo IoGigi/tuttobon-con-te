@@ -1,4 +1,4 @@
-<!-- TUTTOBON CON TE V4.35: aggiungi i tuoi buoni -->
+<!-- TUTTOBON CON TE V4.37: aggiungi i tuoi buoni -->
 <!-- TUTTOBON CON TE V4.23 REV2 | Rimosso solo messaggio di conferma vocale in chat; versione visibile 4.23; play audio evidenziato via CSS. Logica invio invariata. -->
 <!-- TUTTOBON CON TE V4.23 REV1 — Solo fix bolla TB: nessuna conferma automatica dopo messaggio assistenza; conferme ordini e resto invariati. -->
 <!-- TUTTOBON CON TE V4.23 — Risposta vocale assistenza: rimossa soltanto la dicitura con microfono "Messaggio vocale dell’amministratore"; titolo, player audio, data e ora invariati. -->
@@ -349,7 +349,7 @@ body.tb-offline-mode .bottom-nav [data-nav]:disabled{cursor:not-allowed;}
 <body>
 <main class="app" aria-label="Assistente TUTTOBON CON TE">
   <header class="topbar" aria-label="Menu impostazioni">
-    <div class="tb-back-version-wrap"><button class="top-action tb-back-main" id="backToMainAppBtn" type="button" aria-label="Torna" title="Torna">Torna <span aria-hidden="true">→</span></button><span class="tb-app-version" aria-label="Versione app 4.30">V4.35</span></div>
+    <div class="tb-back-version-wrap"><button class="top-action tb-back-main" id="backToMainAppBtn" type="button" aria-label="Torna" title="Torna">Torna <span aria-hidden="true">→</span></button><span class="tb-app-version" aria-label="Versione app 4.30">V4.37</span></div>
     <span id="tbNetworkBadge" class="tb-network-badge" role="status" aria-live="polite" title="Stato della connessione"><i></i><span>Connessione da verificare</span></span>
     <button class="top-action refresh-app-btn" id="refreshAppBtn" aria-label="Aggiorna buoni e sito" title="Aggiorna buoni e sito">↻</button>
     <button class="top-action" id="menuBtn" aria-label="Apri impostazioni" title="Impostazioni">☰</button>
@@ -1333,33 +1333,31 @@ async function guidedRecord(draft,button,status){
 }
 function guidedAttachment(draft){
   const rule=draft.rule;
-  const box=guidedBox('<strong>'+escapeHtml(draft.merchant.name)+' · '+euro(draft.amount)+'</strong><p><b>'+(rule.fractionable?'Frazionabile':'Buono a uso singolo')+'</b> · '+guidedUsage(rule)+'</p><label>📁 Scegli file (PDF o immagine)<input data-attachment type="file" accept="application/pdf,image/jpeg,image/png,image/webp"></label><label>✉️ Allega email (.eml)<input data-eml type="file" accept=".eml,message/rfc822"></label><label>📷 Scatta una foto<input data-camera type="file" accept="image/*" capture="environment"></label><p data-filename aria-live="polite"></p><button type="button" data-record>🎙 Registra vocale</button><p data-voice role="status">Vocale facoltativo</p><button type="button" data-analyze disabled>Analizza il buono</button><p data-result role="status"></p>');
-  const file=box.querySelector('[data-attachment]'),camera=box.querySelector('[data-camera]'),email=box.querySelector('[data-eml]'),record=box.querySelector('[data-record]'),send=box.querySelector('[data-analyze]'), status=box.querySelector('[data-result]');
-  const selectedFile=()=>file.files[0]||camera.files[0]||email.files[0];
-  const fileMime=f=>/\.eml$/i.test(f.name)?'message/rfc822':f.type;
-  const valid=()=>{const f=selectedFile();return f&&f.size>0&&f.size<=8*1024*1024&&/^(message\/rfc822|application\/pdf|image\/(jpeg|png|webp))$/.test(fileMime(f));};
+  const box=guidedBox('<strong>'+escapeHtml(draft.merchant.name)+' · '+euro(draft.amount)+'</strong><p><b>'+(rule.fractionable?'Frazionabile':'Buono a uso singolo')+'</b> · '+guidedUsage(rule)+'</p><label>📁 Scegli file (PDF o immagine)<input data-attachment type="file" accept="application/pdf,image/jpeg,image/png,image/webp"></label><p><a href="https://mail.google.com/" target="_blank" rel="noopener noreferrer">✉️ Apri Gmail</a></p><details><summary>✉️ Apri posta</summary><p><a href="https://outlook.live.com/mail/" target="_blank" rel="noopener noreferrer">Outlook / Hotmail</a></p><p><a href="https://mail.yahoo.com/" target="_blank" rel="noopener noreferrer">Yahoo Mail</a></p><p><a href="https://mail.libero.it/" target="_blank" rel="noopener noreferrer">Libero Mail</a></p><p><a href="https://mail.virgilio.it/" target="_blank" rel="noopener noreferrer">Virgilio Mail</a></p><p>Per altre caselle, apri la tua app di posta. Scarica il PDF o la foto del buono, poi torna qui e premi Scegli file.</p></details><label>📷 Scatta una foto<input data-camera type="file" accept="image/*" capture="environment"></label><p data-filename aria-live="polite"></p><button type="button" data-record>🎙 Registra vocale</button><p data-voice role="status">Vocale facoltativo</p><button type="button" data-analyze disabled>Analizza il buono</button><p data-result role="status"></p>');
+  const file=box.querySelector('[data-attachment]'),camera=box.querySelector('[data-camera]'),record=box.querySelector('[data-record]'),send=box.querySelector('[data-analyze]'), status=box.querySelector('[data-result]');
+  const selectedFile=()=>file.files[0]||camera.files[0];
+  const valid=()=>{const f=selectedFile();return f&&f.size>0&&f.size<=8*1024*1024&&/^(application\/pdf|image\/(jpeg|png|webp))$/.test(f.type);};
   function selectFile(input){
     if(!input.files[0])return;
-    for(const picker of [file,camera,email])if(picker!==input)picker.value='';
+    for(const picker of [file,camera])if(picker!==input)picker.value='';
     send.disabled=!valid();
     box.querySelector('[data-filename]').textContent=send.disabled?'':'Allegato: '+input.files[0].name;
-    status.textContent=send.disabled?'Scegli un EML, PDF, JPG, PNG o WebP fino a 8 MB.':'';
+    status.textContent=send.disabled?'Scegli un PDF, JPG, PNG o WebP fino a 8 MB.':'';
   }
   file.onchange=()=>selectFile(file);
   camera.onchange=()=>selectFile(camera);
-  email.onchange=()=>selectFile(email);
   record.onclick=()=>{if(guidedCurrent(draft))void guidedRecord(draft,record,box.querySelector('[data-voice]'));};
   send.onclick=async()=>{
     if(!guidedCurrent(draft)||!valid()||send.disabled)return;
     if(draft.recording||record.disabled){status.textContent='Attendi che la registrazione sia terminata.';return;}
-    send.disabled=true;file.disabled=true;camera.disabled=true;email.disabled=true;record.disabled=true;
+    send.disabled=true;file.disabled=true;camera.disabled=true;record.disabled=true;
     try{
       const selected=selectedFile(),audio=draft.audio||'';
       status.textContent='Invio al Radar…';
       if(!draft.job||draft.job.file!==selected||draft.job.audio!==audio){
         const encoded=await guidedBase64(selected);
         if(!guidedCurrent(draft))return;
-        const job=await workerRequest('/api/voice-voucher',{method:'POST',timeoutMs:45000,body:{name:selected.name,mime:fileMime(selected),file:encoded,audio}});
+        const job=await workerRequest('/api/voice-voucher',{method:'POST',timeoutMs:45000,body:{name:selected.name,mime:selected.type,file:encoded,audio}});
         if(!job.id||job.target!==draft.uid)throw new Error('Invio non confermato.');
         draft.job={id:job.id,file:selected,audio};
       }
@@ -1367,12 +1365,12 @@ function guidedAttachment(draft){
       for(let i=0;i<120&&guidedCurrent(draft);i++){
         const job=await workerRequest('/api/voice-voucher?id='+encodeURIComponent(draft.job.id));
         if(!guidedCurrent(draft))return;
-        if(job.status==='done'){if(job.result?.analysisBlocked){status.textContent=(job.result.issues||[]).join(' ');return;}draft.file=selected.type===fileMime(selected)?selected:new File([selected],selected.name,{type:fileMime(selected)});guidedSummary(draft,job.result||{});box.hidden=true;return;}
+        if(job.status==='done'){if(job.result?.analysisBlocked){status.textContent=(job.result.issues||[]).join(' ');return;}draft.file=selected;guidedSummary(draft,job.result||{});box.hidden=true;return;}
         await new Promise(resolve=>setTimeout(resolve,5000));
       }
       if(guidedCurrent(draft))status.textContent='Analisi ancora in corso. Premi Analizza il buono per controllare lo stesso invio.';
     }catch(e){if(guidedCurrent(draft))status.textContent=e.message||'Analisi non disponibile.';}
-    finally{send.disabled=!valid();file.disabled=false;camera.disabled=false;email.disabled=false;record.disabled=false;}
+    finally{send.disabled=!valid();file.disabled=false;camera.disabled=false;record.disabled=false;}
   };
   addInline([{label:'Annulla',action:'home',kind:'cancel'}]);
 }

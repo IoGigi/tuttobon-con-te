@@ -1,4 +1,4 @@
-/* TUTTOBON CON TE SERVICE WORKER V4.37 — cache shell aggiornata. */
+/* TUTTOBON CON TE SERVICE WORKER V4.38 — cache shell aggiornata. */
 /* TUTTOBON CON TE SERVICE WORKER V4.23 REV4 — Aggiornamento cache per fix notifiche assistenza. */
 /* TUTTOBON CON TE SERVICE WORKER V4.23 REV3 — Rinnovo cache shell per distribuire index V4.23; logica offline e sincronizzazione invariate. */
 /* TUTTOBON CON TE SERVICE WORKER V4.23 — Aggiornamento visualizzazione risposta vocale assistenza; funzioni offline invariate. */
@@ -7,7 +7,7 @@
    Cache PWA + sincronizzazione sicura della coda cassa offline in background. */
 'use strict';
 
-const SHELL_CACHE = 'tb-con-te-shell-v4-37';
+const SHELL_CACHE = 'tb-con-te-shell-v4-38';
 const OFFLINE_DB = 'tuttobon-con-te-offline-v2';
 const DB_VERSION = 2;
 const SYNC_TAG = 'tb-checkout-sync';
@@ -28,8 +28,8 @@ self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(SHELL_CACHE);
     const index = await fetch(new Request('./index.html', {cache:'reload'}));
-    if (!index.ok || !(await index.clone().text()).includes('TUTTOBON CON TE V4.37: aggiungi i tuoi buoni')) {
-      throw new Error('Shell V4.37 non disponibile.');
+    if (!index.ok || !(await index.clone().text()).includes('TUTTOBON CON TE V4.38: aggiungi i tuoi buoni')) {
+      throw new Error('Shell V4.38 non disponibile.');
     }
     await cache.put('./index.html', index);
     for (const file of SHELL_FILES) {
@@ -59,6 +59,28 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const request = event.request;
   const url = new URL(request.url);
+  const shareAction=new URL('./condividi-buono',self.registration.scope);
+  if(request.method==='POST' && url.href===shareAction.href){
+    event.respondWith((async()=>{
+      const landing=new URL('./index.html',self.registration.scope);
+      try{
+        const length=Number(request.headers.get('Content-Length')||0);
+        if(length>9*1024*1024)throw new Error('File troppo grande');
+        const file=(await request.formData()).get('voucher');
+        if(!file || typeof file==='string' || !file.size || file.size>8*1024*1024 ||
+           !/^(application\/pdf|image\/(jpeg|png|webp))$/.test(file.type))throw new Error('Formato non supportato');
+        const cache=await caches.open('tb-con-te-shared-voucher-v1');
+        for(const key of await cache.keys())await cache.delete(key);
+        const id=crypto.randomUUID();
+        await cache.put(new URL('./__shared-voucher/'+id,self.registration.scope),new Response(file,{headers:{
+          'Content-Type':file.type,'X-File-Name':encodeURIComponent(file.name),'X-Share-Time':String(Date.now())
+        }}));
+        landing.searchParams.set('buonoCondiviso',id);
+      }catch{landing.searchParams.set('erroreCondivisione','1');}
+      return Response.redirect(landing,303);
+    })());
+    return;
+  }
   if (request.method !== 'GET') return;
   if (EXTERNAL_SCRIPTS.includes(request.url)) {
     event.respondWith((async () => {
@@ -78,7 +100,7 @@ self.addEventListener('fetch', event => {
         const response = await fetch(request, { cache: 'no-cache' });
         const root = new URL('./', self.registration.scope).pathname;
         if (response && response.ok && (url.pathname === root || url.pathname === root + 'index.html') &&
-            (await response.clone().text()).includes('TUTTOBON CON TE V4.37: aggiungi i tuoi buoni')) {
+            (await response.clone().text()).includes('TUTTOBON CON TE V4.38: aggiungi i tuoi buoni')) {
           const cache = await caches.open(SHELL_CACHE);
           await cache.put('./index.html', response.clone());
         }

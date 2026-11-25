@@ -1,4 +1,4 @@
-<!-- TUTTOBON CON TE V4.37: aggiungi i tuoi buoni -->
+<!-- TUTTOBON CON TE V4.38: aggiungi i tuoi buoni -->
 <!-- TUTTOBON CON TE V4.23 REV2 | Rimosso solo messaggio di conferma vocale in chat; versione visibile 4.23; play audio evidenziato via CSS. Logica invio invariata. -->
 <!-- TUTTOBON CON TE V4.23 REV1 — Solo fix bolla TB: nessuna conferma automatica dopo messaggio assistenza; conferme ordini e resto invariati. -->
 <!-- TUTTOBON CON TE V4.23 — Risposta vocale assistenza: rimossa soltanto la dicitura con microfono "Messaggio vocale dell’amministratore"; titolo, player audio, data e ora invariati. -->
@@ -349,7 +349,7 @@ body.tb-offline-mode .bottom-nav [data-nav]:disabled{cursor:not-allowed;}
 <body>
 <main class="app" aria-label="Assistente TUTTOBON CON TE">
   <header class="topbar" aria-label="Menu impostazioni">
-    <div class="tb-back-version-wrap"><button class="top-action tb-back-main" id="backToMainAppBtn" type="button" aria-label="Torna" title="Torna">Torna <span aria-hidden="true">→</span></button><span class="tb-app-version" aria-label="Versione app 4.30">V4.37</span></div>
+    <div class="tb-back-version-wrap"><button class="top-action tb-back-main" id="backToMainAppBtn" type="button" aria-label="Torna" title="Torna">Torna <span aria-hidden="true">→</span></button><span class="tb-app-version" aria-label="Versione app 4.30">V4.38</span></div>
     <span id="tbNetworkBadge" class="tb-network-badge" role="status" aria-live="polite" title="Stato della connessione"><i></i><span>Connessione da verificare</span></span>
     <button class="top-action refresh-app-btn" id="refreshAppBtn" aria-label="Aggiorna buoni e sito" title="Aggiorna buoni e sito">↻</button>
     <button class="top-action" id="menuBtn" aria-label="Apri impostazioni" title="Impostazioni">☰</button>
@@ -1333,12 +1333,25 @@ async function guidedRecord(draft,button,status){
 }
 function guidedAttachment(draft){
   const rule=draft.rule;
-  const box=guidedBox('<strong>'+escapeHtml(draft.merchant.name)+' · '+euro(draft.amount)+'</strong><p><b>'+(rule.fractionable?'Frazionabile':'Buono a uso singolo')+'</b> · '+guidedUsage(rule)+'</p><label>📁 Scegli file (PDF o immagine)<input data-attachment type="file" accept="application/pdf,image/jpeg,image/png,image/webp"></label><p><a href="https://mail.google.com/" target="_blank" rel="noopener noreferrer">✉️ Apri Gmail</a></p><details><summary>✉️ Apri posta</summary><p><a href="https://outlook.live.com/mail/" target="_blank" rel="noopener noreferrer">Outlook / Hotmail</a></p><p><a href="https://mail.yahoo.com/" target="_blank" rel="noopener noreferrer">Yahoo Mail</a></p><p><a href="https://mail.libero.it/" target="_blank" rel="noopener noreferrer">Libero Mail</a></p><p><a href="https://mail.virgilio.it/" target="_blank" rel="noopener noreferrer">Virgilio Mail</a></p><p>Per altre caselle, apri la tua app di posta. Scarica il PDF o la foto del buono, poi torna qui e premi Scegli file.</p></details><label>📷 Scatta una foto<input data-camera type="file" accept="image/*" capture="environment"></label><p data-filename aria-live="polite"></p><button type="button" data-record>🎙 Registra vocale</button><p data-voice role="status">Vocale facoltativo</p><button type="button" data-analyze disabled>Analizza il buono</button><p data-result role="status"></p>');
+  const box=guidedBox('<strong>'+escapeHtml(draft.merchant.name)+' · '+euro(draft.amount)+'</strong><p><b>'+(rule.fractionable?'Frazionabile':'Buono a uso singolo')+'</b> · '+guidedUsage(rule)+'</p><label>📁 Scegli file (PDF o immagine)<input data-attachment type="file" accept="application/pdf,image/jpeg,image/png,image/webp"></label><p><a href="https://mail.google.com/" data-mail-app="com.google.android.gm">✉️ Apri Gmail</a></p><details><summary>✉️ Apri posta</summary><p><a href="https://outlook.live.com/mail/" data-mail-app="com.microsoft.office.outlook">Outlook / Hotmail</a></p><p><a href="https://mail.yahoo.com/" data-mail-app="com.yahoo.mobile.client.android.mail">Yahoo Mail</a></p><p><a href="https://mail.libero.it/" target="_blank" rel="noopener noreferrer">Libero Mail</a></p><p><a href="https://mail.virgilio.it/" target="_blank" rel="noopener noreferrer">Virgilio Mail</a></p><p>Apri il PDF o la foto e scegli Condividi → TuttoBon con te. Puoi anche scaricare il file e usare Scegli file.</p></details><label>📷 Scatta una foto<input data-camera type="file" accept="image/*" capture="environment"></label><p data-filename aria-live="polite"></p><button type="button" data-record>🎙 Registra vocale</button><p data-voice role="status">Vocale facoltativo</p><button type="button" data-analyze disabled>Analizza il buono</button><p data-result role="status"></p>');
   const file=box.querySelector('[data-attachment]'),camera=box.querySelector('[data-camera]'),record=box.querySelector('[data-record]'),send=box.querySelector('[data-analyze]'), status=box.querySelector('[data-result]');
-  const selectedFile=()=>file.files[0]||camera.files[0];
+  if(sharedGuidedFile?.uid===draft.uid){draft.sharedFile=sharedGuidedFile.file;sharedGuidedFile=null;}
+  const selectedFile=()=>file.files[0]||camera.files[0]||draft.sharedFile;
+  for(const link of box.querySelectorAll('a')){
+    const fallback=link.href;
+    if(link.dataset.mailApp && /Android/i.test(navigator.userAgent)){
+      const url=new URL(fallback);
+      link.href='intent://'+url.host+url.pathname+'#Intent;scheme=https;package='+link.dataset.mailApp+';S.browser_fallback_url='+encodeURIComponent(fallback)+';end';
+      link.removeAttribute('target');
+    }
+    link.addEventListener('click',()=>{
+      try{localStorage.setItem('tb-mail-voucher:'+draft.uid,JSON.stringify({merchant:draft.merchant.id,amount:draft.amount,channel:draft.rule.id,created:Date.now()}));}catch{}
+    });
+  }
   const valid=()=>{const f=selectedFile();return f&&f.size>0&&f.size<=8*1024*1024&&/^(application\/pdf|image\/(jpeg|png|webp))$/.test(f.type);};
   function selectFile(input){
     if(!input.files[0])return;
+    draft.sharedFile=null;
     for(const picker of [file,camera])if(picker!==input)picker.value='';
     send.disabled=!valid();
     box.querySelector('[data-filename]').textContent=send.disabled?'':'Allegato: '+input.files[0].name;
@@ -1346,6 +1359,7 @@ function guidedAttachment(draft){
   }
   file.onchange=()=>selectFile(file);
   camera.onchange=()=>selectFile(camera);
+  if(draft.sharedFile){send.disabled=!valid();box.querySelector('[data-filename]').textContent='Allegato: '+draft.sharedFile.name;}
   record.onclick=()=>{if(guidedCurrent(draft))void guidedRecord(draft,record,box.querySelector('[data-voice]'));};
   send.onclick=async()=>{
     if(!guidedCurrent(draft)||!valid()||send.disabled)return;
@@ -1425,6 +1439,49 @@ function guidedSummary(draft,result){
     }catch(e){if(guidedCurrent(draft)){status.textContent='Salvataggio non riuscito. '+(e.message||'Controlla i dati e riprova.');get('confirm').disabled=false;}}
   };
   addInline([{label:'Annulla',action:'home',kind:'cancel'}]);
+}
+let sharedGuidedFile=null;
+async function receiveGuidedShare(user){
+  const url=new URL(location.href), id=url.searchParams.get('buonoCondiviso');
+  if(url.searchParams.has('erroreCondivisione')){
+    notify('Condivisione non riuscita. Scegli un PDF, JPG, PNG o WebP fino a 8 MB.');
+    url.searchParams.delete('erroreCondivisione');history.replaceState(null,'',url);
+  }
+  if(!user || !id || !/^[0-9a-f-]{36}$/i.test(id))return;
+  const cache=await caches.open('tb-con-te-shared-voucher-v1');
+  const key=new URL('./__shared-voucher/'+id,location.href);
+  const response=await cache.match(key);
+  if(!response){notify('File condiviso non disponibile. Ripeti la condivisione.');return;}
+  const blob=await response.blob();
+  if(gwAuth.currentUser?.uid!==user.uid)return;
+  await cache.delete(key);
+  url.searchParams.delete('buonoCondiviso');history.replaceState(null,'',url);
+  if(Date.now()-Number(response.headers.get('X-Share-Time'))>15*60*1000){notify('Condivisione scaduta. Ripeti l’invio.');return;}
+  const file=new File([blob],decodeURIComponent(response.headers.get('X-File-Name')||'buono'),{type:blob.type});
+  sharedGuidedFile={uid:user.uid,file};
+  try{
+    const storageKey='tb-mail-voucher:'+user.uid;
+    const saved=JSON.parse(localStorage.getItem(storageKey)||'null');
+    localStorage.removeItem(storageKey);
+    if(saved && Date.now()-saved.created<30*60*1000){
+      const catalog=await workerRequest('/api/merchants');
+      if(gwAuth.currentUser?.uid!==user.uid)return;
+      const merchant=catalog.merchants?.find(m=>m.id===saved.merchant && m.active===true && m.approved===true);
+      const rule=merchant?.purchaseOptions?.find(r=>r.id===saved.channel && r.usageStatus==='configured' && r.cashbackStatus==='configured');
+      const amount=Number(saved.amount);
+      const validAmount=merchant && amount>0 && ((merchant.telegram_denoms||[]).map(Number).includes(amount) || (merchant.telegram_custom_enabled && amount<=merchant.telegram_custom_amount));
+      if(rule && validAmount){
+        const draft=guidedVoucher={merchant,rule,amount,uid:user.uid,generation:++guidedGeneration,id:crypto.randomUUID()};
+        stage='order_supplier';
+        guidedAttachment(draft);
+        return;
+      }
+    }
+  }catch{}
+  notify('File ricevuto. Apri Aggiungi i tuoi buoni e scegli esercente, taglio e fornitore.');
+}
+if(new URL(location.href).searchParams.has('buonoCondiviso') || new URL(location.href).searchParams.has('erroreCondivisione')){
+  if(gwAuth)gwAuth.onAuthStateChanged(user=>{if(user)receiveGuidedShare(user).catch(()=>notify('Impossibile recuperare il file condiviso.'));});
 }
 </script>
 
